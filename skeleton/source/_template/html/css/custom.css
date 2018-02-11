@@ -21,12 +21,12 @@ blockquote
 
 
 h1, h2, h3, h4, h5, h6 { display: inline-block; width: 100%; }
-h1 { font-size: 3.0rem; counter-reset: subsection fig equation; }
-h2 { font-size: 2.6rem; counter-reset: subsubsection;   }
-h3 { font-size: 2.0rem; counter-reset: paragraph;       }
-h4 { font-size: 1.8rem; counter-reset: subparagraph;    }
-h5 { font-size: 1.4rem; counter-reset: subsubparagraph; }
-h6 { font-size: 1.4rem; }
+h1 { font-size: 3.0rem !important; counter-reset: subsection fig equation; }
+h2 { font-size: 2.6rem !important; counter-reset: subsubsection;   }
+h3 { font-size: 2.0rem !important; counter-reset: paragraph;       }
+h4 { font-size: 1.8rem !important; counter-reset: subparagraph;    }
+h5 { font-size: 1.4rem !important; counter-reset: subsubparagraph; }
+h6 { font-size: 1.4rem !important; }
 
 h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
 { display: inline-block; text-align: right; width: 3.4em; margin-left: -3.5em; margin-right: 1rem; }
