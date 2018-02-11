@@ -63,10 +63,9 @@ h6::before {
   margin-top: -5rem;
 }
 
-h1.title { font-size: 4rem; }
+h1.title { font-size: 4rem !important; }
 h1.title::before { counter-increment: none; content: ""; }
-h2.author { background-color: #eee; }
-h2.author::before { content: ""; }
+.author::before { content: ""; }
 
 h1:target, h2:target, h3:target,
 h4:target, h5:target, h6:target
