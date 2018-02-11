@@ -1,0 +1,154 @@
+body
+{
+	counter-reset: section;
+  width: 80%;
+	max-width: 1000px;
+	margin: 2em auto;
+}
+
+header
+{
+	border-bottom: 1px solid #a2a2a2;
+	margin: 1em -1em;
+	padding: 0em 1em;
+}
+
+blockquote
+{
+	border-left: 1px solid #1EAEDB;
+	padding: 0.5em;
+}
+
+
+h1, h2, h3, h4, h5, h6 { display: inline-block; width: 100%; }
+h1 { font-size: 3.0rem; counter-reset: subsection fig equation; }
+h2 { font-size: 2.6rem; counter-reset: subsubsection;   }
+h3 { font-size: 2.0rem; counter-reset: paragraph;       }
+h4 { font-size: 1.8rem; counter-reset: subparagraph;    }
+h5 { font-size: 1.4rem; counter-reset: subsubparagraph; }
+h6 { font-size: 1.4rem; }
+
+h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
+{ display: inline-block; text-align: right; width: 3.4em; margin-left: -3.5em; margin-right: 1rem; }
+
+h1::before {
+  counter-increment: section;
+  content: counter(section) " - ";
+}
+h2::before {
+  counter-increment: subsection;
+  content: counter(section)"."counter(subsection) " - ";
+}
+h3::before {
+  counter-increment: subsubsection;
+  content: counter(section)"."counter(subsection)"."counter(subsubsection) " - ";
+}
+h4::before {
+  counter-increment: paragraph;
+  content: counter(paragraph)" ⇝ ";
+}
+h5::before {
+  counter-increment: subparagraph;
+  content: counter(paragraph)"."counter(subparagraph) " ⇝ ";
+}
+h6::before {
+  counter-increment: subsubparagraph;
+  content: counter(paragraph)"."counter(subparagraph)"."counter(subsubparagraph) " ⇝ ";
+}
+.math.display::after {
+  counter-increment: equation;
+  content: "("counter(section)"."counter(equation)")";
+  display: inline-block;
+  float: right;
+  margin-top: -5rem;
+}
+
+h1.title { font-size: 4rem; }
+h1.title::before { counter-increment: none; content: ""; }
+h2.author { background-color: #eee; }
+h2.author::before { content: ""; }
+
+h1:target, h2:target, h3:target,
+h4:target, h5:target, h6:target
+{ background-color: #fbe54e; }
+
+.anchor::before
+{
+  visibility:hidden;
+  display: inline-block;
+  float: right;
+  padding: 0 2rem;
+  font-size: 2rem;
+  text-decoration: none;
+  font-weight: lighter;
+  content: "\260D";
+  margin: 0.2rem 0;
+}
+
+h1:hover .anchor::before, h2:hover .anchor::before, h3:hover .anchor::before,
+h4:hover .anchor::before, h5:hover .anchor::before, h6:hover .anchor::before
+{ visibility:visible; }
+
+h1:target .anchor::before, h2:target .anchor::before, h3:target .anchor::before,
+h4:target .anchor::before, h5:target .anchor::before, h6:target .anchor::before
+{ visibility:visible; color: #db5022; }
+
+div { counter-reset: subfig }
+figure
+{
+  display: inline-block;
+  width: 90%;
+  margin: 2rem auto;
+  text-align: center;
+}
+div figure { width: 49%; }
+
+figcaption::before , div p::before {
+  counter-increment: fig;
+  content: "Fig"counter(section)"."counter(fig)" - ";
+}
+
+div figcaption::before {
+  counter-increment: none;
+  counter-increment: subfig;
+  content: "("counter(subfig,lower-alpha)") ";
+}
+
+div p { text-align: center; }
+
+code { font-size: 100%; }
+.term code::before { content: "$ "; }
+
+pre.numberSource a.sourceLine::before { left: -7em; }
+pre.numberSource a.sourceLine:target, pre.numberSource a.sourceLine:target::before
+{ background-color:  #f9eb90; }
+pre.numberSource a.sourceLine:target { min-width: 100%; }
+
+.sourceCode { position: relative; }
+.sourceCode a.code-anchor
+{
+  z-index: 4;
+  display: block;
+  position: absolute;
+  top: 0.4rem; right : 0.4rem;
+  text-decoration: none;
+}
+
+.sourceCode a.code-anchor::before
+{
+  content: "\260D";
+  visibility:hidden;
+  padding: 0 2rem;
+  font-size: 2rem;
+  text-decoration: none;
+  font-weight: lighter;
+}
+.sourceCode:hover  a.code-anchor::before { visibility:visible; }
+.sourceCode:target a.code-anchor::before { visibility:visible; color: #db5022; }
+
+
+@media screen and (max-width: 800px) {
+  body { width: 90%; }
+  h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
+  { display: inline; margin: 0; }
+}
