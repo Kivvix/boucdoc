@@ -27,7 +27,7 @@ def action ( elem,doc ) :
 
 		f = u'png'
 		if doc.format == 'latex' :
-			f = u'eps'
+			f = u'pdf'
 		elif u'format' in elem.attributes :
 			f = elem.attributes[u'format']
 
@@ -42,9 +42,14 @@ def action ( elem,doc ) :
 
 		subprocess.check_call(" ".join([renderer,"-T"+f,gv_in,"-o",gv_out]),shell=True)
 		raw_title = pf.stringify(elem).split('\n',1)[0][1:]
-		title = pf.convert_text(raw_title)
-		title = (title[0]).content
-		return pf.Para(pf.Image(*title,url=image,title=u'fig:'+raw_title))
+		title = (pf.convert_text(raw_title))[0].content 
+		
+		if doc.format == 'html' :
+			gv_out = image
+		elif doc.format == 'latex' :
+			gv_out = gv_out[:-len(f)-1]
+
+		return pf.Para(pf.Image(*title,url=gv_out,title=u'fig:'+raw_title))
 
 def main(doc=None):
 	return pf.run_filter(action,doc=doc)
