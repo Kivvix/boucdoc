@@ -1,7 +1,7 @@
 body
 {
 	counter-reset: section;
-  width: 80%;
+	width: 80%;
 	max-width: 1000px;
 	margin: 2em auto;
 }
@@ -32,35 +32,35 @@ h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
 { display: inline-block; text-align: right; width: 3.4em; margin-left: -3.5em; margin-right: 1rem; }
 
 h1::before {
-  counter-increment: section;
-  content: counter(section) " - ";
+	counter-increment: section;
+	content: counter(section) " - ";
 }
 h2::before {
-  counter-increment: subsection;
-  content: counter(section)"."counter(subsection) " - ";
+	counter-increment: subsection;
+	content: counter(section)"."counter(subsection) " - ";
 }
 h3::before {
-  counter-increment: subsubsection;
-  content: counter(section)"."counter(subsection)"."counter(subsubsection) " - ";
+	counter-increment: subsubsection;
+	content: counter(section)"."counter(subsection)"."counter(subsubsection) " - ";
 }
 h4::before {
-  counter-increment: paragraph;
-  content: counter(paragraph)" ⇝ ";
+	counter-increment: paragraph;
+	content: counter(paragraph)" ⇝ ";
 }
 h5::before {
-  counter-increment: subparagraph;
-  content: counter(paragraph)"."counter(subparagraph) " ⇝ ";
+	counter-increment: subparagraph;
+	content: counter(paragraph)"."counter(subparagraph) " ⇝ ";
 }
 h6::before {
-  counter-increment: subsubparagraph;
-  content: counter(paragraph)"."counter(subparagraph)"."counter(subsubparagraph) " ⇝ ";
+	counter-increment: subsubparagraph;
+	content: counter(paragraph)"."counter(subparagraph)"."counter(subsubparagraph) " ⇝ ";
 }
 .math.display::after {
-  counter-increment: equation;
-  content: "("counter(section)"."counter(equation)")";
-  display: inline-block;
-  float: right;
-  margin-top: -5rem;
+	counter-increment: equation;
+	content: "("counter(section)"."counter(equation)")";
+	display: inline-block;
+	float: right;
+	margin-top: -5rem;
 }
 
 h1.title { font-size: 4rem !important; }
@@ -73,15 +73,15 @@ h4:target, h5:target, h6:target
 
 .anchor::before
 {
-  visibility:hidden;
-  display: inline-block;
-  float: right;
-  padding: 0 2rem;
-  font-size: 2rem;
-  text-decoration: none;
-  font-weight: lighter;
-  content: "\260D";
-  margin: 0.2rem 0;
+	visibility:hidden;
+	display: inline-block;
+	float: right;
+	padding: 0 2rem;
+	font-size: 2rem;
+	text-decoration: none;
+	font-weight: lighter;
+	content: "\260D";
+	margin: 0.2rem 0;
 }
 
 h1:hover .anchor::before, h2:hover .anchor::before, h3:hover .anchor::before,
@@ -95,22 +95,22 @@ h4:target .anchor::before, h5:target .anchor::before, h6:target .anchor::before
 div { counter-reset: subfig }
 figure
 {
-  display: inline-block;
-  width: 90%;
-  margin: 2rem auto;
-  text-align: center;
+	display: inline-block;
+	width: 90%;
+	margin: 2rem auto;
+	text-align: center;
 }
 div figure { width: 49%; }
 
 figcaption::before , div p::before {
-  counter-increment: fig;
-  content: "Fig"counter(section)"."counter(fig)" - ";
+	counter-increment: fig;
+	content: "Fig"counter(section)"."counter(fig)" - ";
 }
 
 div figcaption::before {
-  counter-increment: none;
-  counter-increment: subfig;
-  content: "("counter(subfig,lower-alpha)") ";
+	counter-increment: none;
+	counter-increment: subfig;
+	content: "("counter(subfig,lower-alpha)") ";
 }
 
 div p { text-align: center; }
@@ -126,28 +126,28 @@ pre.numberSource a.sourceLine:target { min-width: 100%; }
 .sourceCode { position: relative; }
 .sourceCode a.code-anchor
 {
-  z-index: 4;
-  display: block;
-  position: absolute;
-  top: 0.4rem; right : 0.4rem;
-  text-decoration: none;
+	z-index: 4;
+	display: block;
+	position: absolute;
+	top: 0.4rem; right : 0.4rem;
+	text-decoration: none;
 }
 
 .sourceCode a.code-anchor::before
 {
-  content: "\260D";
-  visibility:hidden;
-  padding: 0 2rem;
-  font-size: 2rem;
-  text-decoration: none;
-  font-weight: lighter;
+	content: "\260D";
+	visibility:hidden;
+	padding: 0 2rem;
+	font-size: 2rem;
+	text-decoration: none;
+	font-weight: lighter;
 }
 .sourceCode:hover  a.code-anchor::before { visibility:visible; }
 .sourceCode:target a.code-anchor::before { visibility:visible; color: #db5022; }
 
 
 @media screen and (max-width: 800px) {
-  body { width: 90%; }
-  h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
-  { display: inline; margin: 0; }
+	body { width: 90%; }
+	h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
+	{ display: inline; margin: 0; }
 }
