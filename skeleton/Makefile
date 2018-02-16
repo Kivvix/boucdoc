@@ -1,17 +1,30 @@
+# Markdown sources
 MD_dir = source
+MD_list = $(shell find $(MD_dir) -type f -name '*.md')
+MD_HTML_template = $(wildcard $(MD_dir)/_template/html/*)
+
+# Build informations
 BUILD_dir = build
 
-MD_list = $(shell find $(MD_dir) -type f -name '*.md')
-HTML_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/html/%.html, $(MD_list))
+# HTML info
+# HTML_bdir : directory where build HTML version, this could be www dir of Apache or something else
+HTML_bdir = $(BUILD_dir)/html
+
+# autogen list of html files from MD_list
+HTML_list  = $(patsubst $(MD_dir)/%.md, $(HTML_bdir)/%.html, $(MD_list))
+# list of files in _template/html directory (to copy in HTML_bdir
+HTML_template = $(patsubst $(MD_dir)/_template/html/%, $(HTML_bdir)/template/%, $(MD_HTML_template))
+# list of css files to add in pandoc command line
+CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(shell find $(MD_dir)/_template/html -type f -name '*.css'))
+
+# LaTeX/pdf info
 LATEX_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/latex/%.tex, $(MD_list))
 PDF_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/pdf/%.pdf, $(MD_list))
 
-MD_HTML_template = $(wildcard $(MD_dir)/_template/html/*)
-HTML_template = $(patsubst $(MD_dir)/_template/html/%, $(BUILD_dir)/html/template/%, $(MD_HTML_template))
-MD_CSS_template = $(shell find $(MD_dir)/_template/html -type f -name '*.css')
-CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(MD_CSS_template))
 
-FILTERS = ../filter/panviz/main.py pandoc-crossref
+
+FILTERS = ../filters/panviz.py pandoc-crossref
+EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists
 
 all :
 	@ echo "Do something"
@@ -19,15 +32,15 @@ all :
 clean :
 	rm -Rf build/*
 
-$(BUILD_dir)/html/%.html : $(MD_dir)/%.md
+$(HTML_bdir)/%.html : $(MD_dir)/%.md
 	@ mkdir -p "$(@D)"
 	@ echo "\033[36m$(notdir $@) \033[0m"
-	pandoc -s --from=markdown+yaml_metadata_block+implicit_figures $(foreach filter,$(FILTERS), -F $(filter))  --katex $(foreach css,$(CSS_template), -c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango $< -o $@
+	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter))  --katex $(foreach css,$(CSS_template), -c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango $< -o $@
 
 $(BUILD_dir)/html/template/% : $(MD_dir)/_template/html/%
 	@ echo "\033[35mcopy $< to $@\033[0m"
 	@ mkdir -p "$(@D)"
-	@ cp -R $< $@
+	@ cp -R $< $(@D)
 
 html : $(HTML_template) $(HTML_list)
 	@ echo "\033[46m HTML done \033[0m"
