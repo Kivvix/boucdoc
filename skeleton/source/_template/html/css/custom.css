@@ -1,3 +1,7 @@
+/*
+ * CSS custom for boucdoc project
+ * this file is complementary of skeleton.css
+ */
 body
 {
 	counter-reset: section;
@@ -5,6 +9,20 @@ body
 	max-width: 1000px;
 	margin: 2em auto;
 }
+
+nav
+{
+  position: fixed; left: 0; top:0;
+  width: 100%;
+  border-bottom: 1px solid #424242;
+  box-shadow: -1px 2px 5px 1px rgba(0, 0, 0, 0.7),
+            -1px 2px 20px rgba(255, 255, 255, 0.6) inset;
+  background-color: rgba(255,255,255,0.8);
+  z-index: 9;
+}
+nav h1, nav ul, nav li { display : table-cell !important; vertical-align: middle; }
+nav h1 { padding-right: 1em; }
+nav h1::before { content: ""; counter-increment: none; }
 
 header
 {
@@ -115,7 +133,8 @@ div figcaption::before {
 
 div p { text-align: center; }
 
-code { font-size: 100%; }
+code { font-size: 100% !important; }
+code.sourceCode { white-space: pre-line !important; }
 .term code::before { content: "$ "; }
 
 pre.numberSource a.sourceLine::before { left: -7em; }
@@ -151,3 +170,4 @@ pre.numberSource a.sourceLine:target { min-width: 100%; }
 	h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
 	{ display: inline; margin: 0; }
 }
+
