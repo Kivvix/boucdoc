@@ -21,10 +21,11 @@ CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(shell find 
 LATEX_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/latex/%.tex, $(MD_list))
 PDF_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/pdf/%.pdf, $(MD_list))
 
+NATIVE_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/native/%.pandoc, $(MD_list))
 
-
-FILTERS = ../filters/panviz.py pandoc-crossref
-EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists
+#FILTERS = ../filters/panviz.py pandoc-crossref
+FILTERS = ../filters/panviz2.py ../filters/panref.py ../filters/pancode.py ../filters/panabstract.py mermaid-filter 
+EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists+example_lists+pipe_tables+table_captions
 
 all :
 	@ echo "Do something"
@@ -32,10 +33,17 @@ all :
 clean :
 	rm -Rf build/*
 
-$(HTML_bdir)/%.html : $(MD_dir)/%.md
+$(BUILD_dir)/native/%.pandoc : $(MD_dir)/%.md
 	@ mkdir -p "$(@D)"
+	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter)) -t native $< -o $@
+
+native : $(NATIVE_list)
+	@ echo "\033[105m HTML done \033[0m"
+
+$(HTML_bdir)/%.html : $(MD_dir)/%.md
+	@ [[ -d $(@D) ]] && mkdir -p "$(@D)"
 	@ echo "\033[36m$(notdir $@) \033[0m"
-	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter))  --katex $(foreach css,$(CSS_template), -c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango $< -o $@
+	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter))  --katex=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/ $(foreach css,$(CSS_template), -c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango -t html5 $< -o $@
 
 $(BUILD_dir)/html/template/% : $(MD_dir)/_template/html/%
 	@ echo "\033[35mcopy $< to $@\033[0m"
@@ -54,7 +62,7 @@ latex : $(LATEX_list)
 	@ echo "\033[46m LaTeX done \033[0m"
 
 $(BUILD_dir)/pdf/%.pdf : $(BUILD_dir)/latex/%.tex
-	@ mkdir -p "$(@D)"
+	@ [[ -d $(@D) ]] && mkdir -p "$(@D)"
 	@ echo "\033[36m$(notdir $@) \033[0m"
 	pdflatex -output-directory=./$(@D) $<
 
