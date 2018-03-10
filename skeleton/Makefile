@@ -16,6 +16,10 @@ HTML_list  = $(patsubst $(MD_dir)/%.md, $(HTML_bdir)/%.html, $(MD_list))
 HTML_template = $(patsubst $(MD_dir)/_template/html/%, $(HTML_bdir)/template/%, $(MD_HTML_template))
 # list of css files to add in pandoc command line
 CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(shell find $(MD_dir)/_template/html -type f -name '*.css'))
+MATH_render = --katex=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/ 
+MATH_render = --katex
+#MATH_render = --mathml
+#MATH_render = --mathjax
 
 # LaTeX/pdf info
 LATEX_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/latex/%.tex, $(MD_list))
@@ -35,6 +39,7 @@ clean :
 
 $(BUILD_dir)/native/%.pandoc : $(MD_dir)/%.md
 	@ mkdir -p "$(@D)"
+	@ echo "\033[95m$(notdir $@) \033[0m"
 	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter)) -t native $< -o $@
 
 native : $(NATIVE_list)
@@ -43,7 +48,7 @@ native : $(NATIVE_list)
 $(HTML_bdir)/%.html : $(MD_dir)/%.md
 	@ [[ -d $(@D) ]] && mkdir -p "$(@D)"
 	@ echo "\033[36m$(notdir $@) \033[0m"
-	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter))  --katex=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/ $(foreach css,$(CSS_template), -c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango -t html5 $< -o $@
+	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter)) $(MATH_render) $(foreach css,$(CSS_template), -c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango -t html5 $< -o $@
 
 $(BUILD_dir)/html/template/% : $(MD_dir)/_template/html/%
 	@ echo "\033[35mcopy $< to $@\033[0m"
