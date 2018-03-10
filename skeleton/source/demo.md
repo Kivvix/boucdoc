@@ -13,7 +13,7 @@ eq: 1
 
 # Adsit prima amicis honesta monendum
 
-Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?
+Quam ob rem id primum videamus, si placet, quatenus amor in amicitia progredi debeat $a^b = c$. Numne, si Coriolanus habuit amicos, ferre contra patriam arma illi cum Coriolano debuerunt? num Vecellinum amici regnum adpetentem, num Maelium debuerunt iuvare?
 
 $$
   \left \{ \begin{array}{l}

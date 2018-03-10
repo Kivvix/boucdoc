@@ -31,6 +31,10 @@ header
 	padding: 0em 1em;
 }
 
+.author { display: inline-block; }
+.author:after { content: ", "; }
+.author:last-child:after { content: ""; }
+
 blockquote
 {
 	border-left: 1px solid #1EAEDB;
@@ -73,12 +77,21 @@ h6::before {
 	counter-increment: subsubparagraph;
 	content: counter(paragraph)"."counter(subparagraph)"."counter(subsubparagraph) " ⇝ ";
 }
-.math.display::after {
+.math.display         , .math.display+a ,
+math[display=block] , math[display=block]+a
+{ display:block; }
+.math.display+a , math[display=block]+a { width: 0.10%; float:right; margin-top: -5rem; }
+.math.display   , math[display=block]   { width: 99.9%; }
+
+.math.display+a::after ,
+math[display=block]+a::after
+{
 	counter-increment: equation;
-	content: "("counter(section)"."counter(equation)")";
+/*	content: "("counter(section)"."counter(equation)")";*/
+  content: "("attr(id)")" ;
 	display: inline-block;
 	float: right;
-	margin-top: -5rem;
+  color: #222;
 }
 
 h1.title { font-size: 4rem !important; }
@@ -164,6 +177,19 @@ pre.numberSource a.sourceLine:target { min-width: 100%; }
 .sourceCode:hover  a.code-anchor::before { visibility:visible; }
 .sourceCode:target a.code-anchor::before { visibility:visible; color: #db5022; }
 
+table { border-collapse: collapse; margin-left: auto; margin-right:auto; caption-side: bottom; }
+
+#abstract blockquote {
+  border-left-color: #aaa;
+  border-left-width: 3px;
+}
+#abstract p {
+  text-align: left !important;
+}
+#abstract p::before {
+  content: "";
+  counter-increment: none; 
+}
 
 @media screen and (max-width: 800px) {
 	body { width: 90%; }
