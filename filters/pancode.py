@@ -1,12 +1,11 @@
 #! /usr/bin/env python
+# coding: utf8
 
 import panflute as pf
-import itertools
 
 def action ( elem,doc ) :
   if isinstance( elem , pf.CodeBlock ) and u'include' in elem.attributes :
     fromLine = toLine = 0
-    pf.debug(elem.attributes[u'include'])
     data = open(elem.attributes[u'include'],'r').readlines()
     
     if u'from' in elem.attributes :
