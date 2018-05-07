@@ -123,7 +123,7 @@ h1:target .anchor::before, h2:target .anchor::before, h3:target .anchor::before,
 h4:target .anchor::before, h5:target .anchor::before, h6:target .anchor::before
 { visibility:visible; color: #db5022; }
 
-div { counter-reset: subfig }
+div { counter-reset: subfig; text-align: center; }
 figure
 {
 	display: inline-block;
@@ -147,13 +147,15 @@ div figcaption::before {
 div p { text-align: center; }
 
 code { font-size: 100% !important; }
-code.sourceCode { white-space: pre-line !important; }
+code.sourceCode { white-space: pre-wrap !important; }
 .term code::before { content: "$ "; }
 
 pre.numberSource a.sourceLine::before { left: -7em; }
 pre.numberSource a.sourceLine:target, pre.numberSource a.sourceLine:target::before
 { background-color:  #f9eb90; }
 pre.numberSource a.sourceLine:target { min-width: 100%; }
+
+img { max-width: 100%; }
 
 .sourceCode { position: relative; }
 .sourceCode a.code-anchor
@@ -190,6 +192,45 @@ table { border-collapse: collapse; margin-left: auto; margin-right:auto; caption
   content: "";
   counter-increment: none; 
 }
+
+#refs:before {
+	content: "Bibliographie";
+	line-height: 1.2;
+	letter-spacing: -.1rem;
+	font-weight: 300;
+	font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #222;
+	font-size: 3.0rem;
+}
+#refs, #refs div {
+	counter-reset: none; text-align: left;
+}
+#refs p:before {
+	counter-increment: none;
+	content: "";
+}
+#refs p {
+	text-align: left;
+	display: list-item;
+}
+
+#end {
+	position: relative;
+	margin-bottom: -1.5em; padding-bottom: 0;
+	bottom: 0;
+	height: 1em;
+	font-size: 0.8em;
+	text-align: center;
+}
+#end ul { display: block; margin-bottom: 0; padding-bottom: 0; background: #eee; }
+#end li {
+	display: inline-block;
+	padding: 0.02em 1em;
+	margin: 0;
+	border-left: 1px solid #a2a2a2;
+}
+#end li:first-child { border-left: none; }
+
 
 @media screen and (max-width: 800px) {
 	body { width: 90%; }
