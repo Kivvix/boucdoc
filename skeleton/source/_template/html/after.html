@@ -1,1 +1,67 @@
+<footer id="end" >
+  <ul>
+    <li>Josselin Massot</li>
+    <li><a href="https://irmar.univ-rennes1.fr/" >IRMAR</a></li>
+    <li><a href="https://www.univ-rennes1.fr" >Université de Rennes 1</a></li>
+    <li><a href="https://www.inria.fr/centre/rennes" >INRIA</a></li>
+    <li><a href="http://www.dr17.cnrs.fr/" >CNRS</a></li>
+    <!-- -->
+    <li><a href="https://hostux.fr/" style="text-decoration: none;"><img style="background-color: rgb(255, 255, 255);" src="https://hostux.fr//static/images/bannieres/verticale.png" alt="Un site hébergé par Hostux.fr, hébergeur à prix libre, hébergeur de services Internet à prix libre" height="20px" >Hébergé par Hostux.fr</a></li>
+     <!-- -->
+  </ul>
+  <a href="#top" style="display:inline-block; position: absolute; right: 1rem; margin-top: -2.7rem; font-size: 1.8rem;" >↥</a>
+</footer>
+<script type="text/javascript" src="template/linkcitations.js" ></script>
 <script type="text/javascript" src="template/anchors.js" ></script>
+<script type="text/javascript" src="template/copypasteKaTeX.js" ></script>
+
+<!--
+<script>
+var editing  = false;
+
+if (document.getElementById && document.createElement) {
+	var butt = document.createElement('BUTTON');
+	var buttext = document.createTextNode('Ready!');
+	butt.appendChild(buttext);
+	butt.onclick = saveEdit;
+}
+
+function catchIt(e) {
+	if (editing) return;
+	if (!document.getElementById || !document.createElement) return;
+	if (!e) var obj = window.event.srcElement;
+	else var obj = e.target;
+	while (obj.nodeType != 1) {
+		obj = obj.parentNode;
+	}
+	if (obj.tagName == 'TEXTAREA' || obj.tagName == 'A') return;
+	while (obj.nodeName != 'P' && obj.nodeName != 'HTML') {
+		obj = obj.parentNode;
+	}
+	if (obj.nodeName == 'HTML') return;
+	var x = obj.innerHTML;
+	var y = document.createElement('TEXTAREA');
+	var z = obj.parentNode;
+	z.insertBefore(y,obj);
+	z.insertBefore(butt,obj);
+	z.removeChild(obj);
+	y.value = x;
+	y.focus();
+	editing = true;
+}
+
+function saveEdit() {
+	var area = document.getElementsByTagName('TEXTAREA')[0];
+	var y = document.createElement('P');
+	var z = area.parentNode;
+	y.innerHTML = area.value;
+	z.insertBefore(y,area);
+	z.removeChild(area);
+	z.removeChild(document.getElementsByTagName('button')[0]);
+	editing = false;
+}
+
+document.onclick = catchIt;
+</script>
+-->
+
