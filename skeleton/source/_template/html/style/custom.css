@@ -10,6 +10,7 @@ body
 	margin: 2em auto;
 }
 
+/*
 nav
 {
   position: fixed; left: 0; top:0;
@@ -23,6 +24,7 @@ nav
 nav h1, nav ul, nav li { display : table-cell !important; vertical-align: middle; }
 nav h1 { padding-right: 1em; }
 nav h1::before { content: ""; counter-increment: none; }
+*/
 
 header
 {
@@ -77,6 +79,7 @@ h6::before {
 	counter-increment: subsubparagraph;
 	content: counter(paragraph)"."counter(subparagraph)"."counter(subsubparagraph) " ⇝ ";
 }
+
 .math.display         , .math.display+a ,
 math[display=block] , math[display=block]+a
 { display:block; }
@@ -97,10 +100,20 @@ math[display=block]+a::after
 h1.title { font-size: 4rem !important; }
 h1.title::before { counter-increment: none; content: ""; }
 .author::before { content: ""; }
-
+/*
 h1:target, h2:target, h3:target,
 h4:target, h5:target, h6:target
 { background-color: #fbe54e; }
+*/
+h1:target, h2:target, h3:target,
+h4:target, h5:target, h6:target,
+div:target , a.eq:target , a.citation:target
+{ animation: highlight 2.5s ease; }
+
+@keyframes highlight {
+	from { background: yellow; }
+	to { background: white; }
+}
 
 .anchor::before
 {
@@ -147,7 +160,7 @@ div figcaption::before {
 div p { text-align: center; }
 
 code { font-size: 100% !important; }
-code.sourceCode { white-space: pre-wrap !important; }
+code.sourceCode { white-space: pre-wrap !important; text-align: left !important; }
 .term code::before { content: "$ "; }
 
 pre.numberSource a.sourceLine::before { left: -7em; }
@@ -156,6 +169,11 @@ pre.numberSource a.sourceLine:target, pre.numberSource a.sourceLine:target::befo
 pre.numberSource a.sourceLine:target { min-width: 100%; }
 
 img { max-width: 100%; }
+
+ol,ul {
+  list-style-position: outside;
+  padding-left: 2em;
+}
 
 .sourceCode { position: relative; }
 .sourceCode a.code-anchor
@@ -179,6 +197,8 @@ img { max-width: 100%; }
 .sourceCode:hover  a.code-anchor::before { visibility:visible; }
 .sourceCode:target a.code-anchor::before { visibility:visible; color: #db5022; }
 
+.eq { width:100% !important; }
+
 table { border-collapse: collapse; margin-left: auto; margin-right:auto; caption-side: bottom; }
 
 #abstract blockquote {
@@ -192,7 +212,7 @@ table { border-collapse: collapse; margin-left: auto; margin-right:auto; caption
   content: "";
   counter-increment: none; 
 }
-
+/*
 #refs:before {
 	content: "Bibliographie";
 	line-height: 1.2;
@@ -202,6 +222,8 @@ table { border-collapse: collapse; margin-left: auto; margin-right:auto; caption
 	color: #222;
 	font-size: 3.0rem;
 }
+*/
+#refs h1::before { content: ""; }
 #refs, #refs div {
 	counter-reset: none; text-align: left;
 }
@@ -209,9 +231,27 @@ table { border-collapse: collapse; margin-left: auto; margin-right:auto; caption
 	counter-increment: none;
 	content: "";
 }
-#refs p {
-	text-align: left;
+#refs > div {
 	display: list-item;
+  margin-bottom: 1rem;
+  display:flex;
+  flex-direction: inherit;
+}
+#refs > div:before {
+  content: "\25B6";
+  margin-right: 1rem;
+  font-size: 1rem;
+  margin-top: 0.6rem;
+}
+#refs p {
+  text-align: left !important;
+  display: inline;
+}
+#refs a.autoref {
+  display: inline-block;
+  margin: auto 1rem;
+  float: right;
+  flex: 0 0 auto;
 }
 
 #end {
@@ -230,11 +270,13 @@ table { border-collapse: collapse; margin-left: auto; margin-right:auto; caption
 	border-left: 1px solid #a2a2a2;
 }
 #end li:first-child { border-left: none; }
+#end a { color: #424242; text-decoration: none; }
+#end a:hover { color: #1EAEDB; font-weight: bold; }
 
-
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 800px)
+{
 	body { width: 90%; }
-	h1::before, h2::before, h3::before, h4::before, h5::before, h6::before
+	h1:before, h2:before, h3:before, h4:before, h5:before, h6:before
 	{ display: inline; margin: 0; }
 }
 
