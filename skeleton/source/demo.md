@@ -22,7 +22,7 @@ $$
   \end{array}\right.
 $${#ito}
 
-Ultima Syriarum est Palaestina per intervalla magna protentai ([-@ito]), cultis abundans terris et nitidis et civitates habens quasdam egregias, nullam nulli cedentem sed sibi vicissim velut ad perpendiculum aemulas: Caesaream, quam ad honorem Octaviani principis exaedificavit Herodes, et Eleutheropolim et Neapolim itidemque Ascalonem Gazam aevo superiore exstructas.
+Ultima Syriarum est Palaestina per intervalla magna protentai ([!ito]), cultis abundans terris et nitidis et civitates habens quasdam egregias, nullam nulli cedentem sed sibi vicissim velut ad perpendiculum aemulas: Caesaream, quam ad honorem Octaviani principis exaedificavit Herodes, et Eleutheropolim et Neapolim itidemque Ascalonem Gazam aevo superiore exstructas.
 
 # Novo praefectum nos quae quid
 
@@ -34,7 +34,7 @@ $${#iso_ito}
 
 ## Indigno causa enim enim acerbius
 
-Denique Antiochensis ordinis vertices sub uno elogio iussit occidi ideo efferatus, quod ei celebrari vilitatem intempestivam urgenti, cum inpenderet inopia ([-@iso_ito]), gravius rationabili responderunt; et perissent ad unum ni comes orientis tunc Honoratus ([-@const_mass]) fixa constantia restitisset.
+Denique Antiochensis ordinis vertices sub uno elogio iussit occidi ideo efferatus, quod ei celebrari vilitatem intempestivam urgenti, cum inpenderet inopia ([!iso_ito]), gravius rationabili responderunt; et perissent ad unum ni comes orientis tunc Honoratus ([!const_mass]) fixa constantia restitisset.
 
 ```{ .dot renderer=neato caption="Titre de ma figure" }
 # Figure caption
@@ -49,6 +49,21 @@ digraph network_ring {
 	n4 -> n0
 }
 ```
+
+```{ .dot renderer="dot -Gweight=5.0" caption="Diagramme UML" }
+  digraph hierarchy {
+    node[shape=record]
+    edge[dir=back, arrowtail=empty]
+
+    class1[label = "{Classe1|+ machin|+ compactLabel(...)\n...}"]
+    class2[label = "{Classe2|+ machin|+ compactLabel(...)\n...}"]
+    class3[label = "{Classe3|+ machin|+ compactLabel(...)\n...}"]
+
+    class1 -> class2
+    class3 -> class1[arrowtail=odiamond]
+  }
+```
+
 
 Soleo saepe ante oculos ponere, idque libenter crebris usurpare sermonibus, omnis nostrorum imperatorum, omnis exterarum gentium potentissimorumque populorum, omnis clarissimorum regum res gestas, cum tuis nec contentionum magnitudine nec numero proeliorum nec varietate regionum nec celeritate conficiendi nec dissimilitudine bellorum posse conferri; nec vero disiunctissimas terras citius passibus cuiusquam potuisse peragrari, quam tuis non dicam cursibus, sed victoriis lustratae sunt.
 
