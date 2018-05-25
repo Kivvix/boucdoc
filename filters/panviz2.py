@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/local/bin/python3
 # coding: utf8
 
 import panflute as pf
@@ -47,7 +47,8 @@ def base64_renderer(dot,renderer=u'dot'):
   p1.communicate(input=dot)
   p1.stdout.close()
 
-  return u"data:image/png;base64,"+p2.communicate()[0].rstrip()
+  tmp = p2.communicate()[0].rstrip()
+  return u"data:image/png;base64,"+tmp.decode("utf-8")
 
 
 class gvimg:
