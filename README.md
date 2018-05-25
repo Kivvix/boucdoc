@@ -1,5 +1,13 @@
 # boucdoc
 
+*Boucdoc* est à la fois un ensemble de filtres pour *Pandoc* ainsi qu'un cadre pour écrire facilement des documents *Markdown* et les convertir dans un autre format (essentiellement HTML, mais un support améliorer de LaTeX est prévu, entre autre pour la rédaction d'un rapport de stage).
+
+## Les filtres
+
+Différents filtres ont été développés, et ils sont prévu pour
+
+----
+
 Ce projet est juste un utilitaire supplémentaire pour `pandoc` similaire à ce que peut proposer *Sphinx* (utilitaire de documentation pour le projet Python). Il s'agit de convertir des fichiers *Markdown* (car simple à rédiger) en des fichiers HTML (car simple d'échanger, à l'aide en plus d'un petit serveur statique, non sécurisé), ou en PDF (avec LaTeX) pour un export plus traditionnel (il est recommandé de retravailler le fichier LaTeX de sortie, en particulier en cas de gros fichiers, il est sans doute nécessaire de revoir la structure).
 
 En plus de cela le projet propose un filtre pour convertir des blocs de code GraphViz en diagramme (`.png` par défaut, `.pdf` par défaut en LaTeX).

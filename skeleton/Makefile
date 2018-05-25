@@ -1,85 +1,140 @@
 # Markdown sources
 MD_dir = source
 MD_list = $(shell find $(MD_dir) -type f -name '*.md')
-MD_HTML_template = $(wildcard $(MD_dir)/_template/html/*)
+
+# image list
+IMG_list = $(shell find $(MD_dir)/img -type f -name '*.png')
 
 # Build informations
 BUILD_dir = build
 
-# HTML info
-# HTML_bdir : directory where build HTML version, this could be www dir of Apache or something else
-HTML_bdir = $(BUILD_dir)/html
+FILTERS = ../filters/panviz2.py ../filters/panref.py ../filters/pancode.py ../filters/panabstract.py mermaid-filter
+#pandoc-citeproc
+EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists+example_lists+pipe_tables+table_captions+smart
 
-# autogen list of html files from MD_list
-HTML_list  = $(patsubst $(MD_dir)/%.md, $(HTML_bdir)/%.html, $(MD_list))
-# list of files in _template/html directory (to copy in HTML_bdir
-HTML_template = $(patsubst $(MD_dir)/_template/html/%, $(HTML_bdir)/template/%, $(MD_HTML_template))
+all :
+	@ echo "Do something"
+
+# function to autogen rules about pandoc compilation for output type $(1)
+# $(1) : name of rule and directory
+# $(2) : extension of output format
+# $(3) : output format in pandoc
+# $(4) : spectial options for pandoc (before and after file, css, math renderer, etc.
+# $(5) : list of rules which $(1) depends
+define OUTPUT_format
+
+list = $$(patsubst $(MD_dir)/%.md, $(BUILD_dir)/$(1)/%.$(2),$(MD_list))
+imgs = $$(patsubst $(MD_dir)/img/%.png, $(BUILD_dir)/$(1)/img/%.png,$(IMG_list))
+
+$(BUILD_dir)/$(1) :
+	@ echo "\033[34m$$@\033[0m"
+	mkdir -p $$@
+
+$(BUILD_dir)/$(1)/%.$(2) : $(MD_dir)/%.md $(wildcard $(MD_dir)/_template/$(1)/*.$(2))
+	@ echo "\033[95m$$(notdir $$@)\033[0m"
+	pandoc --wrap=preserve -s \
+		--from=$(EXTENSIONS) \
+		$(foreach filter,$(FILTERS),-F $(filter)) -F pandoc-citeproc \
+		$(4) \
+		-t $(3) $$< -o $$@
+
+$(BUILD_dir)/$(1)/img/%.png : $(MD_dir)/img/%.png
+	@ echo "\033[36m$$@\033[0m"
+	@ mkdir -p "$$(@D)"
+	cp $$< $$(@D)
+
+$(1) : $(BUILD_dir)/$(1) $$(list) $$(imgs) $(5)
+	@ echo "\033[46m $(1) done \033[0m"
+
+endef
+
+
+# HTML ################################################################
 # list of css files to add in pandoc command line
-CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(shell find $(MD_dir)/_template/html -type f -name '*.css'))
+#CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(shell find $(MD_dir)/_template/html -type f -name '*.css' | sort -r))
+CSS_template = $(patsubst $(MD_dir)/_template/html/style/%.css, template/style/%.css , $(shell find $(MD_dir)/_template/html/style -type f -name '*.css' | sort -r))
 MATH_render = --katex=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/ 
 #MATH_render = --katex
 #MATH_render = --mathml
 #MATH_render = --mathjax
 
-# LaTeX/pdf info
-LATEX_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/latex/%.tex, $(MD_list))
-PDF_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/pdf/%.pdf, $(MD_list))
+# concatenate all HTML options
+HTML_opt = $(MATH_render) $(foreach css,$(CSS_template),-c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango
 
-NATIVE_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/native/%.pandoc, $(MD_list))
+# HTML template data
+HTML_template = $(patsubst $(MD_dir)/_template/html/%.js, $(BUILD_dir)/html/template/%.js, $(wildcard $(MD_dir)/_template/html/*.js))
+$(BUILD_dir)/html/template/% : $(MD_dir)/_template/html/%
+	@ echo "\033[35mcopy $< to $@\033[0m"
+	@ mkdir -p "$(@D)"
+	cp -R $< $(@D)
+$(BUILD_dir)/html/template/style/%.css : $(MD_dir)/_template/html/style/%.css
+	@ echo "\033[36mcopy $< to $@\033[0m"
+	@ mkdir -p "$(@D)"
+	cp $< $(@D)
 
-#FILTERS = ../filters/panviz.py pandoc-crossref
-FILTERS = ../filters/panviz2.py ../filters/panref.py ../filters/pancode.py ../filters/panabstract.py mermaid-filter 
-EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists+example_lists+pipe_tables+table_captions
+HTML_template_rules=$(HTML_template) $(patsubst %.css,$(BUILD_dir)/html/%.css,$(CSS_template))
 
-all :
-	@ echo "Do something"
+$(eval $(call OUTPUT_format,html,html,html5,$$(HTML_opt),$$(HTML_template_rules)))
+
+# LaTeX ###############################################################
+LATEX_opt = -B source/_template/latex/before.tex -A source/_template/latex/after.tex --highlight-style tango
+$(eval $(call OUTPUT_format,latex,tex,latex,$$(LATEX_opt)))
+
+# PDF #################################################################
+PDF_list = $(patsubst $(MD_dir)/%.md, $(BUILD_dir)/pdf/%.pdf,$(MD_list))
+
+$(BUILD_dir)/pdf :
+	mkdir -p $@
+
+$(BUILD_dir)/pdf/img/%.png : $(MD_dir)/img/%.png
+	@ echo "\033[36m$@\033[0m"
+	@ mkdir -p "$(@D)"
+	cp $< $(@D)
+
+$(BUILD_dir)/pdf/%.pdf : $(BUILD_dir)/latex/%.tex
+	pdflatex -output-directory $(@D) $<
+#	pdflatex -interaction=batchmode -output-directory=./$(@D) $<
+
+pdf : | $(patsubst $(MD_dir)/img/%.png, $(BUILD_dir)/pdf/img/%.png,$(IMG_list)) $(BUILD_dir)/pdf $(BUILD_dir)/latex $(PDF_list)
+	@ echo "\033[46m PDF done \033[0m"
+
+# native ##############################################################
+$(eval $(call OUTPUT_format,native,pandoc,native))
+
+# ODT #################################################################
+$(eval $(call OUTPUT_format,odt,odt,odt))
 
 clean :
 	rm -Rf build/*
 
-$(BUILD_dir)/native/%.pandoc : $(MD_dir)/%.md
-	@ mkdir -p "$(@D)"
-	@ echo "\033[95m$(notdir $@) \033[0m"
-	pandoc -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter)) -t native $< -o $@
-
-native : $(NATIVE_list)
-	@ echo "\033[105m HTML done \033[0m"
-
-$(HTML_bdir)/%.html : $(MD_dir)/%.md
-	@ [[ -d $(@D) ]] && mkdir -p "$(@D)"
-	@ echo "\033[36m$(notdir $@) \033[0m"
-	pandoc --wrap=preserve -s --from=$(EXTENSIONS) $(foreach filter,$(FILTERS), -F $(filter)) $(MATH_render) $(foreach css,$(CSS_template), -c $(css)) -B source/_template/html/before.html -A source/_template/html/after.html --highlight-style tango -t html5 $< -o $@
-
-$(BUILD_dir)/html/template/% : $(MD_dir)/_template/html/%
-	@ echo "\033[35mcopy $< to $@\033[0m"
-	@ mkdir -p "$(@D)"
-	@ cp -R $< $(@D)
-
-html : $(HTML_template) $(HTML_list)
-	@ echo "\033[46m HTML done \033[0m"
-
-$(BUILD_dir)/latex/%.tex : $(MD_dir)/%.md
-	@ mkdir -p "$(@D)"
-	@ echo "\033[36m$(notdir $@) \033[0m"
-	pandoc --wrap=preserve -s --from=markdown+yaml_metadata_block+implicit_figures $(foreach filter,$(FILTERS), -F $(filter)) -B source/_template/latex/before.tex -A source/_template/latex/after.tex --highlight-style tango $< -o $@
-
-latex : $(LATEX_list)
-	@ echo "\033[46m LaTeX done \033[0m"
-
-$(BUILD_dir)/pdf/%.pdf : $(BUILD_dir)/latex/%.tex
-	@ [[ -d $(@D) ]] && mkdir -p "$(@D)"
-	@ echo "\033[36m$(notdir $@) \033[0m"
-	pdflatex -output-directory=./$(@D) $<
-
-pdf : $(PDF_list)
-	@ echo "\033[46m PDF done \033[0m"
+# how to launch web server in different version of python
+2.ws : webserver = python -m SimpleHTTPServer 8080
+3.ws : webserver = python -m http.server 8080
+%.ws :
+	cd $(BUILD_dir)/html && $(webserver)
 
 PYTHON_V = $(shell python -c 'import sys; print(sys.version_info[0])')
-ifeq "$(PYTHON_V)" "2"
-	PYTHON_ws = python -m SimpleHTTPServer 8080
-else
-	PYTHON_ws = python -m http.server 8080
-endif
-http_start : html
-	cd $(BUILD_dir)/html && $(PYTHON_ws)
+http_start : | html $(PYTHON_V).ws
+	@ echo "end"
+
+# for gnuplot with maths export in png
+# first set terminal in gnuplot :
+# ```
+# 	set terminal epslatex color font 'Helvetica,10'
+# ```
+# plot your graph
+# insert your gnuplot's output tex file in a minimal document with standalone document class
+# ```
+#	\documentclass[preview]{standalone}
+#	\usepackage{graphicx}
+#	\begin{document}
+#	\input{YOURGNUPLOT.tex}
+#	\end{document}
+# ```
+# compile it and use ImageMagick to convert it as base64 png :
+# ```
+#	convert -density 300 file.pdf -quality 90 png:- | base64
+# ```
+#
+# Ce qui reste à améliorer dans cette procédure : trop de fichiers intermédiaire (il est possible d'avoir directement la sortie en png avec pdflatex mais il génère quoiqu'il arrive le pdf, et on a pas notre png en base64).
 
