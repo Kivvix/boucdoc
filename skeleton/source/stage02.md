@@ -1,7 +1,9 @@
 ---
-title: Stage
+title: Modèles hybrides fluide/cinétique pour les plasmas chauds
 author: Josselin
-bibliography: source/biblio/bib.yaml
+bibliography: source/biblio/paper.bib 
+nocite: |
+  @crestetto
 ...
 
 # Présentation des différents modèles
@@ -60,13 +62,13 @@ Les variables de bases du problème sont $t$ et $x$. La simulation n'impose que 
 
 # Couplage des modèles
 
-Nous nous intéresserons à un plasma dans un domaine $\Omega$ dans lequel nous considérerons une zone cinétique, où le modèle valide est un modèle cinétique (aussi appelé microscopique), une zone fluide où le modèle valide est un modèle macroscopique basé sur les équations d'Euler, ainsi qu'une zone de transition où la modélisation utilise une combinaison des deux modèles. Le modèle générale se nomme *micro-macro* car il utilise conjointement un modèle microscopique et macroscopique.
+Nous nous intéresserons à un plasma dans un domaine $\Omega$ dans lequel nous considérerons une zone cinétique, où le modèle valide est un modèle cinétique (aussi appelé microscopique), une zone fluide où le modèle valide est un modèle macroscopique basé sur les équations d'Euler, ainsi qu'une zone de transition où la modélisation utilise une combinaison des deux modèles. Le modèle général se nomme *micro-macro* car il utilise conjointement un modèle microscopique et macroscopique.
 
 À cause de la dépendance au modèle cinétique nos variables $(t,x,v)$ vivent dans $[0,T]\times\Omega\times\mathbb{R}^d$, où $\Omega$ est un fermé borné de $\mathbb{R}^d$ périodique, la vitesse $v$ n'est a priori pas borné par notre modélisation. Dans la pratique $d = 1,2,3$.
 
 > Idéalement $d=3$ mais pour simplifier les notations ainsi que les représentations graphiques nous prendrons $d=1$.
 
-Lorsque les particules de notre plasma ne sont pas chargées, le terme $E_f\cdot \nabla_v f$ du modèle cinétique est nul, de plus nous utiliseront l'opérateur de collisions le plus simple, s'exprimant à partir d'un équilibre qui est une maxwellienne :
+Lorsque les particules de notre plasma ne sont pas chargées, le terme $E_f\cdot \nabla_v f$ du modèle cinétique est nul, de plus nous utiliseront l'opérateur de collisions le plus simple, s'exprimant à partir d'un équilibre qui est une loi de distribution maxwellienne :
 
 $$
   Q(f,f) = \frac{1}{\varepsilon}(\mathcal{M}_{[f]} - f)
@@ -103,17 +105,17 @@ $$
   f = \mathcal{M}_{[f]} + g
 $$
 
-où $g$ est l'écart à l'équilibre prédit par la physique. On peut montrer que $g$ est à moyenne nulle en $v$, or il existe une décomposition unique dans $L^2$ de $f$ en somme d'une fonction $M$ et d'une fonction de moyenne nulle en $v$. Cette décomposition peut s'exprimer comme une projection de projecteur $\Pi$, d'où la décomposition suivante de $f$ :
+où $g$ est l'écart à l'équilibre maxwellien. On peut montrer que $g$ est à moyenne nulle en $v$, or il existe une décomposition unique dans $L^2$ de $f$ en somme d'une fonction $M$ et d'une fonction de moyenne nulle en $v$. Cette décomposition peut s'exprimer comme une projection de projecteur $\Pi$, d'où la décomposition suivante de $f$ :
 
 $$
   f = \Pi_f + (I-\Pi_f)f
 $$
 
-On a donc $\mathcal{M}_{[f]} = \Pi_f$ et $(I-\Pi_f)f$ = g$, où le projecteur $\Pi$ est défini par :
+On a donc $\mathcal{M}_{[f]} = \Pi_f$ et $(I-\Pi_f)f = g$, où le projecteur $\Pi$ est défini par :
 
 $$
   \Pi_{\mathcal{M}_{[f]}}(\varphi) = \frac{1}{\rho}\left[ \langle \varphi \rangle + \frac{(v-u)\langle(v-u)\varphi\rangle}{T} + \left( \frac{|v-u|^2}{2T} - \frac{1}{2} \right)\left\langle \left(\frac{|v-u|^2}{T}-1\right)\varphi \right\rangle \right]\mathcal{M}_{[f]}
-$$
+$${#eq:defPi}
 
 L'équation du modèle cinétique devient :
 
@@ -133,26 +135,26 @@ $$
       \end{pmatrix}
 $$
 
-où $m(v) = (1 \, v \, |v|^2)^{\mathsf{R}}$, $\rho_f$ est la densité de particules, $u_f$ la vitesse moyenne, et $T_f$ la température. Le vecteur $U$ est de dimension $d+2$, en effet la deuxième composante $\rho_f u_f$ est un vecteur de dimension $d$ qui s'obtient comme suit :
+où $m(v) = (1 \, v \, |v|^2)^{\mathsf{T}}$, $\rho_f$ est la densité de particules, $u_f$ la vitesse moyenne, et $T_f$ la température. Le vecteur $U$ est de dimension $d+2$, en effet la deuxième composante $\rho_f u_f$ est un vecteur de dimension $d$ qui s'obtient comme suit :
 
 $$
   \rho_f u_f = \int_{\mathbb{R}^d} v  f(v)\,\mathrm{d}v
 $$
 
-\ù $v$ est un vecteur de dimension $d$ et $f(v)$ un scalaire.
+où $v$ est un vecteur de dimension $d$ et $f(v)$ un scalaire.
 
 En utilisant la décomposition de $f$ vue précédemment on peut écrire :
 
 $$
-  U(t,x) = \int_{\mathbb{R}^d} m(v) f(v)\,\mathrm{d}v = \int_{\mathbb{R}^d} m(v) \mathcal{M}\,\mathrm{d}v + \int_{\mathbb{R}^d} m(v) g\,\mathrm{d}v
+  U(t,x) = \int_{\mathbb{R}^d} m(v) f(v)\,\mathrm{d}v = \int_{\mathbb{R}^d} m(v) \mathcal{M}_{[f]}\,\mathrm{d}v + \int_{\mathbb{R}^d} m(v) g\,\mathrm{d}v
 $$
 
 or $\int_{\mathbb{R}^d} m(v) g\,\mathrm{d}v = 0$ car $g$ est à moyenne nulle en $v$.
 
-En multipliant [-@eq:cine-Mg] par $v$ et en intégrant sur cette même variable on obtient :
+En multipliant [!eq:cine-Mg] par $m(v)$ et en intégrant sur cette même variable on obtient :
 
 $$
-  \partial_t U + \nabla_x \int_{\mathbb{R}^d} v\, m(v)(\mathcal{M}+g)\,\mathrm{d}v = 0
+  \partial_t U + \nabla_x \int_{\mathbb{R}^d} v\, m(v)(\mathcal{M}_{[f]}+g)\,\mathrm{d}v = 0
 $$
 
 Le produit $v\,m(v)$ est une opération triviale en dimension 1 mais se complexifie en dimension $d$, en effet celle-ci fait intervenir un produit tensoriel :
@@ -164,14 +166,14 @@ $$
 On trouve alors :
 
 $$
-  \partial_t U + \nabla_x \int_{\mathbb{R}^d}v\,m(v)\mathcal{M}_{[f]}\,\mathrm{d}v + \nabla_x\int_{mathbb{R}^d} v\,m(v)g\,\mathrm{d}v = 0
+  \partial_t U + \nabla_x \int_{\mathbb{R}^d}v\,m(v)\mathcal{M}_{[f]}\,\mathrm{d}v + \nabla_x\int_{\mathbb{R}^d} v\,m(v)g\,\mathrm{d}v = 0
 $${#eq:mm-macro}
 
-L'équation [-@eq:mm-macro] est l'équation macro du modèle micro-macro
+L'équation [!eq:mm-macro] est l'équation macro du modèle micro-macro
 
 ### Obtention du modèle micro
 
-Pour obtenir la partie micro on ne s'intéresse qu'à la perturbation $g$ de $f$, en effet toute l'information sur l'équilibre $\mathcal{M}_{[f]}$ est contenue dans la partie macro. Pour cela on reprend le modèle cinétique ([-@eq:cine-Mg]) et on projette dans la direction $Ker(\Pi)$, *ie* avec le projecteur $I-\Pi$ :
+Pour obtenir la partie micro on ne s'intéresse qu'à la perturbation $g$ de $f$, en effet toute l'information sur l'équilibre $\mathcal{M}_{[f]}$ est contenue dans la partie macro. Pour cela on reprend le modèle cinétique ([!eq:cine-Mg]) et on projette dans la direction $Ker(\Pi)$, *ie* avec le projecteur $I-\Pi$ :
 
 $$
   \partial_t g + (I-\Pi)(v\cdot\nabla_x(\mathcal{M}_{[f]} + g)) = - \frac{1}{\varepsilon}g
@@ -179,7 +181,7 @@ $${#eq:mm-micro}
 
 Il s'agit là de l'équation micro du modèle micro-macro.
 
-On peut montrer l'équivalence entre le modèle micro-macro composé des équations [-@eq:mm-micro] et [-@eq:mm-macro] sur $u$ et $g$, et le modèle cinétique [-@eq:cine-Mg] sur $f$. Dans l'état le modèle micro-macro n'a pas d'utilité propre mais cette réécriture du modèle cinétique sert de base pour des approximations. En effet il sera plus simple dans cette écriture de négliger la perturbation à l'équilibre $g$ dans une partie du domaine, aussi appelée partie fluide.
+On peut montrer l'équivalence entre le modèle micro-macro composé des équations [!eq:mm-micro] et [!eq:mm-macro] sur $u$ et $g$, et le modèle cinétique [!eq:cine-Mg] sur $f$. Dans l'état le modèle micro-macro n'a pas d'utilité propre mais cette réécriture du modèle cinétique sert de base pour des approximations. En effet il sera plus simple dans cette écriture de négliger la perturbation à l'équilibre $g$ dans une partie du domaine, aussi appelée partie fluide.
 
 # Résolution du modèle cinétique
 
@@ -229,7 +231,7 @@ $$
   y^{n} = \left(1-\frac{\Delta t}{\varepsilon}\right)^n y^0
 $$
 
-Or cela converge si et seulement si $\left|1-\frac{\Delta t}{\varepsilon}\right| \le 1$, *ie* $\Delta t \le \varepsilon$. Or le libre parcours moyen $\varepsilon$ peut être choisi arbitrairement petit, donc cette condition CFL n'est pas avantageuse. En effet $\varepsilon \rightarrow 0$ correspond au cas fluide, et le schéma doit rester stable dans ce cas.
+Or cela converge si et seulement si $\left|1-\frac{\Delta t}{\varepsilon}\right| \le 1$, *ie* $\Delta t \le 2\varepsilon$. Or le libre parcours moyen $\varepsilon$ peut être choisi arbitrairement petit, donc cette condition CFL n'est pas avantageuse. En effet $\varepsilon \rightarrow 0$ correspond au cas fluide, et le schéma doit rester stable dans ce cas.
 
 ### Schéma d'Euler implicite
 
@@ -289,11 +291,11 @@ On peut étudier les termes un à un :
 
 ## Terme de transport
 
-Il est possible, sur le terme de transport, de monter facilement en ordre, cela permet d'assurer une précision importe sur ce terme et nous espérons donc augmenter la précision global du schéma.
+Il est possible, sur le terme de transport, de monter facilement en ordre, cela permet d'assurer une précision importante sur ce terme et nous espérons donc augmenter la précision globale du schéma.
 
 Deux méthodes sont classiquement utilisées pour monter en ordre :
 
-* Les schémas compacts de B. Duprés.
+* Les schémas compacts de B. Després présenté dans [@despres].
 * Le schéma WENO de Shu.
 
 Nous utiliserons ici un schéma compact.
@@ -347,17 +349,17 @@ Maintenant nous allons présenter plusieurs flux qui dépendent du choix de $(p,
   $$
     u_{i+\frac{1}{2}}^n = u_i^n
   $$
-* Pour $(p,k)=(3,1)$, il s'agit d'une combinaison convexe des schémas de Lax-Wendroff et de Beam-Warming $(1-\alpha)LW+\alpha BW$ avec $\alpha = \frac{1+\nu}{3}$ :
+* Pour $(p,k)=(3,1)$, il s'agit d'une combinaison convexe des schémas de *Lax-Wendroff* et de Beam-Warming $(1-\alpha)LW+\alpha BW$ avec $\alpha = \frac{1+\nu}{3}$ :
   $$
-    u_{j+\frac{1}{2}} = u_j + \frac{2-\nu}{6}(1-\nu)(u_{j+1}-u_{j}) + \frac{1+\nu}{6}(1-\nu)(u_j-u_{j-1})
+    u_{i+\frac{1}{2}}^n = u_i^n + \frac{2-\nu}{6}(1-\nu)(u_{i+1}^n-u_{i}^n) + \frac{1+\nu}{6}(1-\nu)(u_i^n-u_{i-1}^n)
   $$
 * Pour $(p,k)=(5,2)$, on passe à un schéma à 5 points :
   $$
-    \begin{array}{rl}
-      u_{j+\frac{1}{2}} = & u_{j+2} + \frac{\nu+3}{2}(u_{j+1}-u_{j+2}) + \frac{(2+\nu)(1+\nu)}{6}(u_j - 2u_{j+1} + u_{j+2}) \\
-                          & + \frac{(2+\nu)(1+\nu)(\nu-1)}{24}(u_{j-1} - 3u_{j} + 3u_{j+1} - u_{j+2}) \\
-                          & + \frac{(2+\nu)(1+\nu)(\nu-1)(\nu-2)}{120}(u_{j-2} - 4u_{j-1} + 6u_{j} - 4u_{j+1} + u_{j+2})
-    \end{array}
+    \begin{aligned}
+      u_{i+\frac{1}{2}}^n = & \ u_{i+2}^n + \frac{\nu+3}{2}(u_{i+1}^n-u_{i+2}^n) + \frac{(2+\nu)(1+\nu)}{6}(u_i^n - 2u_{i+1}^n + u_{i+2}^n) \\
+                          & + \frac{(2+\nu)(1+\nu)(\nu-1)}{24}(u_{i-1}^n - 3u_{i}^n + 3u_{i+1}^n - u_{i+2}^n) \\
+                          & + \frac{(2+\nu)(1+\nu)(\nu-1)(\nu-2)}{120}(u_{i-2}^n - 4u_{i-1}^n + 6u_{i}^n - 4u_{i+1}^n + u_{i+2}^n)
+    \end{aligned}
   $$
 
 > Pour obtenir le schéma différences finis pour un couple $(p,k)$ il faut calculer les coefficients $\alpha_{k,p}$ donnés par :
@@ -410,15 +412,15 @@ En effectuant cette simulation pour différentes valeurs de $\Delta x$ on peut t
 
 Dans notre cas nous prendrons $\Delta x = \frac{2\pi}{20} , \frac{2\pi}{40} , \frac{2\pi}{60} , \frac{2\pi}{80}$. Pour assurer notre condition CFL nous choisirons $\Delta t < \frac{2\pi}{100}$ fixé.
 
-![Représentation de $U_i = f(x_i)$](template/result.png)
+![Représentation de $U_i = f(x_i)$](img/result.png)
 
-On peut tracer l'erreur local faite en chaque point :
+On peut tracer l'erreur locale calculée en chaque point :
 
-![Graphique de $U_i - \cos(x_i - \Delta t) = f(x_i)$](template/local_error.png)
+![Graphique de $U_i - \cos(x_i - \Delta t) = f(x_i)$](img/local_error.png)
 
 On remarque que l'erreur diminue drastiquement avec l'augmentation du nombre de cellules, pour mesure un peu plus exactement l'erreur nous traçons $log(e) = f(log(\Delta x)$ :
 
-![Graphique de $log(e_{1 | \infty}) = f(log(\Delta x))_{\,}$](template/global_error.png)
+![Graphique de $log(e_{1 | \infty}) = f(log(\Delta x))_{\,}$](img/global_error.png)
 
 Les données exactes sont :
 
@@ -468,7 +470,7 @@ La résolution nécessite une grille en espace et en vitesse (maillage de l'espa
       \frac{U_3}{U_1} - \left(\frac{U_2}{U_1}\right)^2
     \end{pmatrix}
   $$
-5. On calcule la maxwellienne $(\mathcal{M}_{[f^{n+1}]})_{i,k}$ en tout point $(i,k)$ de l'espace des phases, via sa définition (voir équation [-@eq:defM])
+5. On calcule la maxwellienne $(\mathcal{M}_{[f^{n+1}]})_{i,k}$ en tout point $(i,k)$ de l'espace des phases, via sa définition (voir équation [!eq:defM])
   $$
     (\mathcal{M}_{[f^{n+1}]})_{i,k} = \frac{\rho_i^{n+1}}{\sqrt{2\pi T^{n+1}_i}}\exp\left(-\frac{1}{2}\frac{|v_k - u_i^{n+1} |^2}{T^{n+1}_i} \right)
   $$
@@ -484,13 +486,13 @@ La résolution nécessite une grille en espace et en vitesse (maillage de l'espa
 
 ### Propriété sur la température
 
-À plusieurs reprises on extrait la racine carré de la température $(T_i)_{i}$, or celle-ci est uniquement donnée par :
+À plusieurs reprises on extrait la racine carrée de la température $(T_i)_{i}$, or celle-ci est uniquement donnée par :
 
 $$
   T_i^{n+1} = \frac{(U_3)_i^n}{(U_1)_i^n} - \left(\frac{(U_2)_i^n}{(U_1)_i^n}\right)^2
 $$
 
-Rien ne semble assurer la positivité de cette valeur, nécessaire pour la validité des calculs. De manière plus détaillées, en utilisant la définition du vecteur $U_i^n$, $T_i^{n+1}$ se calcule comme suit :
+Rien ne semble assurer la positivité de cette valeur, nécessaire pour la validité des calculs. De manière plus détaillée, en utilisant la définition du vecteur $U_i^n$, $T_i^{n+1}$ se calcule comme suit :
 
 $$
   %T_i^n \simeq \frac{\int_{\mathbb{R}}|v|^2 f(v)\,\mathrm{d}v}{\int_{\mathbb{R}} f(v)\,\mathrm{d}v} - \left(\frac{\int_{\mathbb{R}} v f(v)\,\mathrm{d}v}{\int_{\mathbb{R}} f(v)\,\mathrm{d}v} \right)^2
@@ -504,7 +506,7 @@ $$
   \sum_k |v_k|^2 f_{i,k}^n\Delta v \sum_k f_{i,k}^n\Delta v - \left( \sum_k v_k f_{i,k}^n\Delta v \right)^2 \geq 0
 $$
 
-Or, en appliquant l'inégalité de Cauchy-Schwarz discrète sur le premier terme avec le fonctions $v_k\sqrt{f_{i,k}^n}$ et $\sqrt{f_{i,k}^n}$ on obtient :
+Or, en appliquant l'inégalité de Cauchy-Schwarz discrète sur le premier terme avec les fonctions $v_k\sqrt{f_{i,k}^n}$ et $\sqrt{f_{i,k}^n}$ on obtient :
 
 $$
   %\int (v\sqrt{f})^2 \int (\sqrt{f})^2 \geq \left| \int v\sqrt{f}\sqrt{f} \right|^2
@@ -518,7 +520,7 @@ $$
   \sum_k |v_k|^2 f_{i,k}^n \Delta v \sum_k f_{i,k}^n \Delta v \geq \left( \sum_k v_k f_{i,k}^n \Delta v \right)^2
 $$
 
-Ce qui garantie bien la positivité de $T_i^n$ en tout point $x_i$ de l'espace et pour tout temps $t^n$.
+Ce qui garantit bien la positivité de $T_i^n$ en tout point $x_i$ de l'espace et pour tout temps $t^n$.
 
 ### Propriétés de conservations
 
@@ -552,7 +554,7 @@ $$
   \sum_{i,k} m(v_k)f^n_{i,k} \Delta x \Delta v
 $$
 
-> On constate bien une conservation de ces valeurs. La légère évolution de ces valeurs est dû à la mauvaise approximation de la maxwellienne.
+> On constate bien une conservation de ces valeurs. La légère évolution de ces valeurs est due à la mauvaise approximation de la maxwellienne.
 
 ### Condition de CFL
 
@@ -582,7 +584,7 @@ $$
   f_{j,k}^{n+1} = f_{j,k}^n\frac{\varepsilon}{\varepsilon + \Delta t}\left[ 1-\frac{\Delta t}{\Delta x}v_k(1-e^{-i\kappa\Delta x}) \right]
 $$
 
-On obtient bien la forme désiré $f_{j,k}^{n+1} = \mathcal{A} f_{j,k}$, pour simplifier l'étude de $\mathcal{A}$ écrivons ce terme sous la forme :
+On obtient bien la forme désirée $f_{j,k}^{n+1} = \mathcal{A} f_{j,k}$, pour simplifier l'étude de $\mathcal{A}$ écrivons ce terme sous la forme :
 
 $$
   \mathcal{A} = \frac{\varepsilon}{\varepsilon + \Delta t} \mathcal{B}
@@ -596,19 +598,22 @@ $$
 D'où :
 
 $$
-  \begin{array}{rcl}
-    |\mathcal{B}|^2 &=& \mathrm{Re}(\mathcal{B})^2 + \mathrm{Im}(\mathcal{B})^2 \\
-                    &=& 1 + 2(1-\cos(\kappa\Delta x))\Delta t \left[ \frac{\Delta t}{\Delta x^2}v_k^2 - \frac{v_k}{\Delta x}\right] \\
-  \end{array}
+  \begin{aligned}
+    |\mathcal{B}|^2 &= \mathrm{Re}(\mathcal{B})^2 + \mathrm{Im}(\mathcal{B})^2 \\
+                    &= 1 + 2(1-\cos(\kappa\Delta x))\Delta t \left[ \frac{\Delta t}{\Delta x^2}v_k^2 - \frac{v_k}{\Delta x}\right] \\
+  \end{aligned}
 $$
 
 On souhaite $|\mathcal{A}|^2 = \left(\frac{\varepsilon}{\varepsilon + \Delta t}\right)^2|\mathcal{B}|^2 \leq 1$ c'est-à-dire :
 
 $$
-  \begin{array}{rcl}
-    |\mathcal{B}|^2 &\leq& \left(\frac{\varepsilon + \Delta t}{\varepsilon}\right)^2 \\
-    \Delta t \left[(1-\cos(\kappa\Delta x))\frac{v^2}{\Delta x^2} - \frac{1}{2\varepsilon^2}\right] &\leq& \frac{1}{\varepsilon} + (1-\cos(\kappa\Delta x))\frac{v}{\Delta x} \\
-  \end{array}
+  |\mathcal{B}|^2 \leq \left(\frac{\varepsilon + \Delta t}{\varepsilon}\right)^2
+$$
+
+Ce que l'on peut reformuler comme suit, pour majorer $\Delta t$ :
+
+$$
+    \Delta t \left[(1-\cos(\kappa\Delta x))\frac{v^2}{\Delta x^2} - \frac{1}{2\varepsilon^2}\right] \leq \frac{1}{\varepsilon} + (1-\cos(\kappa\Delta x))\frac{v}{\Delta x}
 $$
 
 Cette inégalité doit être vérifiée pour toute vitesse $v_k$ nous allons donc majorer par $v_{\textrm{max}}$, de même quelque soit le nombre d'onde $\kappa$ nous allons donc majorer $1-\cos(\kappa\Delta x)=2\sin^2(\frac{\kappa\Delta x}{2})$ par 2. Ce qui nous donne après simplification :
@@ -619,7 +624,7 @@ $$
 
 Il est nécessaire d'étudier le signe de $2v\varepsilon - \Delta x$ :
 
-* $2v\varepsilon - \Delta x < 0$ alors $\Delta t >0$ ce qui est toujours vérifier. Cette condition est vérifiée si :
+* $2v\varepsilon - \Delta x < 0$ alors $\Delta t >0$ ce qui est toujours vérifié. Cette condition est vérifiée si :
   $$
     \varepsilon < \frac{\Delta x}{2v}
   $$
@@ -650,14 +655,16 @@ $$
 Pour la condition initiale eulérienne on ne se préoccupe d'aucune variation dans la direction $v$ on retire donc l'exponentielle et le terme de normalisation.
 
 <div>
-  ![Densité    ](template/periodic_rho.png)
+  ![Densité    ](img/periodic_rho.png)
 
-  ![Vitesse    ](template/periodic_u.png)
+  ![Vitesse    ](img/periodic_u.png)
 
-  ![Température](template/periodic_T.png)
+  ![Température](img/periodic_T.png)
 
-Grandeurs intensives dans le cas de condition aux bords périodique
+Grandeurs intensives dans le cas de condition aux bords périodique, *Euler* (en violet) correspond au code de référence de mécanique des fluides, *cinetic* fait référence au code décrit ci-dessus avec un schéma compact, *vlasov-BGK* fait référence à un code cinétique similaire avec un schéma *upwind*.
 </div>
+
+> On remarque que le schéma compact d'ordre élevé provoque une certaine diffusion, puisque l'on est obligé de monter à 2000 points pour se rapprocher de la simulation Euler avec 1000 points. La diffusion n'est cependant présente que d'un côté alors que le code ne présente pas d’asymétrie particulière.
 
 ### Conditions aux bords de Neumann
 
@@ -666,22 +673,130 @@ De la même manière qu'avec des conditions périodiques, on s'arrange ici pour 
 La condition initiale est donc donnée par :
 
 $$
-  \left\{ \begin{array}{ll}
+  \begin{cases}
     U_L = (\rho,u,T)_L = (1,0,1) & ,\,x\leq \frac{1}{2} \\
     U_R = (0.125,0,0.8)          & ,\,x\geq\frac{1}{2} \\
-  \end{array}\right.
+  \end{cases}
 $$
 
 Ce qui nous donne pour le code cinétique une condition initiale donnée par la maxwellienne de ces deux vecteurs de variables intensives.
 
 <div>
-![Densité    ](template/neumann_rho.png)
+![Densité    ](img/neumann_rho.png)
 
-![Vitesse    ](template/neumann_u.png)
+![Vitesse    ](img/neumann_u.png)
 
-![Température](template/neumann_T.png)
+![Température](img/neumann_T.png)
 
-Grandeurs intensives dans le cas de condition aux bords de Neumann
+Grandeurs intensives dans le cas de condition aux bords de Neumann, *Euler* (en violet) correspond au code de référence de mécanique des fluides, *cintetic* fait référence au code décrit ci-dessus avec un schéma compact, *vlasov-BGK* fait référence à un code cinétique similaire avec un schéma *upwind*.
 </div>
+
+
+# Modèle micro-macro
+
+À présent que la partie cinétique est validée par les différents tests, construisons le modèle micro-macro. Rappelons-le :
+
+$$
+  \begin{cases}
+    \partial_t U + \partial_x \mathcal{F}(U) + \partial_x \langle vm(v)g \rangle = 0 \\
+    \partial_t g + v\partial_x g = -\frac{1}{\varepsilon}g - (I-\Pi)(v\partial_x \mathcal{M}_{[f]}) + \Pi(v\partial_x g)
+  \end{cases}
+$${#eq:mima}
+
+La première équation correspond à la partie *macro* (équation [!eq:mm-macro]) du modèle, la seconde la partie *micro* (équation [!eq:mm-micro]). Les deux équations sont couplées par le biais de $g$ qui correspond aux perturbations par rapport à l'équilibre maxwellien et par la maxwellienne $\mathcal{M}_{[f]}$ dont le calcul dépend de $U$.
+
+Ce modèle est similaire à celui obtenu dans [@dimarco], l'impact de la fonction indicatrice du milieu cinétique : $h$, sera étuidié dans un second temps.
+
+## Écriture de la partie *macro*
+
+La partie *macro* du modèle est une modification du modèle d'Euler classique. Le code d'`euler` qui servait pour les précédents tests, utilise un flux de *Lax-Friedrichs* avec un limiteur de pente de *van Leer* symétrique.
+
+Nous obtenons alors le schéma suivant :
+
+$$
+  U_i^{n+1} = U_i^n - \frac{\Delta t}{\Delta x}(\mathcal{F}_{i+\frac{1}{2}}^n - \mathcal{F}_{i-\frac{1}{2}}^n) - \frac{\Delta t}{2\Delta x}(G_{i+1}^n - G_{i-1}^n) 
+$$
+
+Avec le flux numérique $\mathcal{F}_{i+\frac{1}{2}}^n$ donné par :
+
+$$
+  \mathcal{F}_{i+\frac{1}{2}}^n = \frac{1}{2}(\mathcal{F}(U^n_{i}) + \mathcal{F}(U^n_{i+1})) -\frac{1}{2}\lambda(U_{i+1}^n - U_i^n)) + \frac{1}{4}(\sigma_i^{n,+} - \sigma_{i+1}^{n,-}) 
+$$
+
+où :
+
+* $\mathcal{F}$ est la fonction du modèle d'Euler donné par :
+  $$
+    \mathcal{F}:U=\begin{pmatrix}\rho \\ \rho u \\ e\end{pmatrix} \mapsto \mathcal{F}(U) = \begin{pmatrix} \rho u \\ \rho u^2 + p \\ eu + pu \end{pmatrix}
+  $$
+  où $p=2e-\rho u^2$ est la pression.
+* $\sigma_i^{n,\pm}$ est un terme correcteur de second ordre, notons $\eta_i^{n,\pm} = \mathcal{F}(U_i^n)\pm\lambda U_i^n$ :
+  $$
+    \sigma_i^{n,\pm} = ( \eta_i^{n,\pm} - \eta_{i-1}^{n,\pm} )\phi(\chi_i^{n,\pm})
+    %\sigma_i^{n,\pm} = \left[ (\mathcal{F}(U_i^n) \pm \lambda U_i^n) - (\mathcal{F}(U_{i-1}) \pm \lambda U_{i-1}^n) \right] \phi(\chi_i^{n,\pm})
+  $$
+  avec $\phi$ la fonction de limiteur de pente de *van Leer* symétrique donnée par :
+  $$
+    \phi:x\mapsto \frac{|x|+x}{1+|x|}
+  $$
+  fonction que l'on applique à $\chi_i^{n,\pm}$ donné par :
+  $$
+    \chi_i^{n,\pm} = \frac{\eta_i^{n,\pm} - \eta_{i-1}^{n,\pm}}{\eta_{i+1}^{n,\pm} - \eta_i^{n,\pm}}
+    %\chi_i^{n,\pm} = \frac{\mathcal{F}(U^n_i)\pm\lambda U^n_i - \mathcal{F}(U^n_{i-1})\mp\lambda U^n_{i-1}}{\mathcal{F}(U^n_{i+1})\pm\lambda U^n_{i+1} - \mathcal{F}(U^n_i)\mp\lambda U^n_i}
+  $$
+* $\lambda$ est la plus grande valeur propre du système d'Euler.
+
+Le flux $G_{i}^n$ fait le lien avec la partie *micro* et sera détaillé plus tard.
+
+## Écriture schématique de la partie *micro*
+
+La partie *micro* ne correspond plus simplement au modèle cinétique précédemment étudié, l'impact du projecteur $\Pi$ ([!eq:defPi]) fait intervenir un nouveau terme.
+
+$$
+  g^{n+1} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ g^n - \Delta t (I-\Pi)(v \partial_x g^n) - \Delta t (I-\Pi)(v\partial_x \mathcal{M}_{[U^{n+1}]}) \right]
+$$
+
+## Algorithme général
+
+On souhaite résoudre le modèle *micro-macro* suivant ([!eq:mima]) :
+
+$$
+  \begin{cases}
+    \partial_t U + \partial_x \mathcal{F}(U) + \partial_x \langle vm(v)g \rangle = 0 \\
+    \partial_t g + v\partial_x g = -\frac{1}{\varepsilon}g - (I-\Pi)(v\partial_x \mathcal{M}_{[f]}) + \Pi(v\partial_x g)
+  \end{cases}
+$$
+
+On suppose donné un maillage de l'espace des phases, on suppose $g_{i,k}^n$ et $U_i^n$ donnés par l'itération précédente, le calcul de la nouvelle itération s'effectue schématiquement comme suit :
+
+1. On calcule le flux $G_i^n$ de $g_{i,k}^n$ :
+  $$
+    G_i^n \gets \sum_k v_k m(v_k) g_{i,k}^n \Delta v
+  $$
+  Ceci permettra d'effectuer une approximation de $\partial_x \langle vm(v)g \rangle$ par $\frac{G_{i+1}^n - G_{i-1}^n}{2\Delta x}$.
+2. Résolution de la partie *macro* : $\partial_t U + \partial_x \mathcal{F}(U) + \partial_x\langle vm(v)g \rangle = 0$ avec un schéma de *Lax-Friedrichs* (ce qui est effectué par le code `euler`), nous obtenons ainsi $U^{n+1}_i\,\forall i$.
+  $$
+    U_i^{n+1} \gets U_i^n - \frac{\Delta t}{\Delta x}(\mathcal{F}(U^n)_{i+\frac{1}{2}} - \mathcal{F}(U^n)_{i-\frac{1}{2}}) - \frac{\Delta t}{2\Delta x}(G_{i+1}^n - G_{i-1}^n)
+  $$
+3. On calcule la maxwellienne via l'incrémentation du vecteur $U^{n+1}$ :
+  $$
+    (\mathcal{M}_{[U^{n+1}]})_{i,k} = \frac{\rho^{n+1}_i}{\sqrt{2\pi T^{n+1}_i}} \exp\left(-\frac{1}{2}\frac{ | u^{n+1}_i - v_k |^2 }{T^{n+1}_i}\right)
+  $$
+4. On calcule les flux numériques d'ordre élevé de $g_{i+\frac{1}{2},k}^n$ et $(\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k}$, ceci permettra d'approximer les dérivées partielles en espace sur ces termes.
+  $$
+    g_{i+\frac{1}{2},k}^n \gets \left( (g_{j,k}^n)_{j\in [\![ i-2;i+2 ]\!] } , v_k \right)
+  $$
+  $$
+    (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k} \gets \left( ((\mathcal{M}_{[U^{n+1}]})_{j,k})_{j\in [\![ i-2;i+2 ]\!] } , v_k \right)
+  $$
+5. On incrémente $g_{i,k}^n$ via la partie *micro* :
+  $$
+  \begin{aligned}
+    g_{i,k}^{n+1} \gets \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[\vphantom{\frac{\Delta}{\Delta}} g_{i,k}^n \right. & - (I-\Pi)\left(\frac{\Delta t}{\Delta x}v_k(g_{i+\frac{1}{2},k}^n - g_{i-\frac{1}{2},k}^n)\right) \\
+    & \left. - (I-\Pi)\left( \frac{\Delta t}{\Delta x}v_k( (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k} - (\mathcal{M}_{[U^{n+1}]})_{i-\frac{1}{2},k})\right) \vphantom{\frac{\Delta}{\Delta}} \right]
+  \end{aligned}
+  $$
+  Ceci peut se résumer à deux termes de transports projetés selon $(I-\Pi)$. Il n'est sans doute pas nécessaire de monter autant en ordre dans le calcul du transport de $\mathcal{M}_{[U^{n+1}]}$, en effet cette donnée est contrainte par l'ordre de la résolution *macro*, donc un ordre élevé ici n'entrainera pas une augmentation de l'ordre général.
+
 
 
