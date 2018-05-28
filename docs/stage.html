@@ -50,20 +50,20 @@
   \end{cases}
 \]</span></p>
 <p>Ce modèle pose problème lorsque le nombre de particules devient très grand. La complexité algorithmique est alors en <span class="math inline">\(\mathcal{O}(2^n)\)</span> (nombre de couples dont on doit calculer l’interaction), avec <span class="math inline">\(n\)</span> le nombre de particules. Il devient donc très vite inenvisageable d’effectuer ce genre de calcul sans d’importantes approximations.</p>
-<p>La variable de base du problème est <span class="math inline">\(t\)</span>, à chaque pas de temps on calcule la somme des forces, par intégration on obtient la vitesse ce qui nous permet de remonter à la position de nous pas intégration.</p>
+<p>La variable de base du problème est <span class="math inline">\(t\)</span> ; à chaque pas de temps on calcule la somme des forces, ce qui nous donne l’accélération, par intégration on obtient la vitesse puis la position.</p>
 <h2 id="modèles-cinétique">Modèles cinétique</h2>
-<p>Les modèles cinétiques s’appliquent à l’échelle mésoscopique, on modélise les particules par une densité de particules, et on a en particulier <span class="math inline">\(f(x,t,v)\mathrm{d}x\mathrm{d}v\)</span> le nombre de particules (où <span class="math inline">\(\mathrm{d}x\mathrm{d}v\)</span> représente un élément de volume dans l’espace des phases).</p>
+<p>Les modèles cinétiques s’appliquent à l’échelle mésoscopique, on ne modélise plus un ensemble de particules mais une densité de particules ; on a en particulier <span class="math inline">\(f(x,t,v)\mathrm{d}x\mathrm{d}v\)</span> le nombre de particules (où <span class="math inline">\(\mathrm{d}x\mathrm{d}v\)</span> représente un élément de volume dans l’espace des phases).</p>
 <p>Ces modèles s’appuient sur une équation du type :</p>
 <p><span class="math display">\[
   \partial_t f + v\cdot\nabla_x f + E_f\cdot\nabla_v f = Q(f,f)
 \]</span></p>
 <p>où <span class="math inline">\(E_f\)</span> représente le champ électrique, et <span class="math inline">\(Q(f,f)\)</span> un opérateur quadratique de collision.</p>
-<p>Les variables de bases du problème sont <span class="math inline">\(t\)</span>, <span class="math inline">\(x\)</span> et <span class="math inline">\(v\)</span>. Une simulation directe impose donc de travailler en 7 dimensions : une de temps et 6 pour l’espace des phases <span class="math inline">\((x,v)\)</span>. Dans la pratique l’étude théorique du schéma se fait classiquement en dimension <span class="math inline">\(d\)</span>, mais pour simplifier l’étude, l’implémentation et la visualisation des résultats on prendra souvent <span class="math inline">\(d=1\)</span>.</p>
+<p>Les variables de base du problème sont <span class="math inline">\(t\)</span>, <span class="math inline">\(x\)</span> et <span class="math inline">\(v\)</span>. Une simulation directe impose donc de travailler en 7 dimensions : une de temps et 6 pour l’espace des phases <span class="math inline">\((x,v)\)</span>. Dans la pratique, l’étude théorique du schéma se fait classiquement en dimension <span class="math inline">\(d\)</span>, mais pour simplifier l’étude, l’implémentation et la visualisation des résultats on prendra souvent <span class="math inline">\(d=1\)</span>.</p>
 <blockquote>
-<p>Les modèles microscopiques étant inutilisables dans la pratique pour <span class="math inline">\(n\)</span> grand, les modèles cinétiques sont aussi appelé modèles microscopique, d’où la dénomination du modèle micro-macro que nous allons étudier par la suite.</p>
+<p>Les modèles microscopiques étant inutilisables dans la pratique pour <span class="math inline">\(n\)</span> grand, les modèles cinétiques sont aussi appelés modèles microscopiques, d’où la dénomination du modèle <em>micro-macro</em> que nous allons étudier par la suite.</p>
 </blockquote>
 <h2 id="modèle-macroscopique">Modèle macroscopique</h2>
-<p>Les modèles macroscopiques s’apparentent à la mécanique des fluides, le système d’équations dépend alors de peu d’équations qui permettent de résoudre le problème. Ces variables sont souvent condensées en un seul vecteur de variables intensives <span class="math inline">\(U\)</span> :</p>
+<p>Les modèles macroscopiques s’apparentent à la mécanique des fluides ; le système d’équations dépend alors de peu d’équations qui permettent de résoudre le problème. Ces variables sont souvent condensées en un seul vecteur de variables intensives <span class="math inline">\(U\)</span> :</p>
 <p><span class="math display">\[
   U = (\rho,u,T,\dots)(t,x)
 \]</span></p>
@@ -72,14 +72,14 @@
   \partial_t U + \nabla_x \cdot \mathcal{F}(U)(t,x) = S(U)
 \]</span></p>
 <p>Le terme source <span class="math inline">\(S(U)\)</span> non explicité vaut <span class="math inline">\(0\)</span> dans le cadre des équations d’Euler, et un ensemble de perturbations dans le cadre des équations de Navier-Stockes.</p>
-<p>Les variables de bases du problème sont <span class="math inline">\(t\)</span> et <span class="math inline">\(x\)</span>. La simulation n’impose que 4 dimensions, une de temps et 3 d’espace, donc dans une région se comportement globalement comme un fluide il est privilégié d’utiliser ce type de méthode, moins coûteuse en temps de calcul qu’un modèle cinétique.</p>
+<p>Les variables de bases du problème sont <span class="math inline">\(t\)</span> et <span class="math inline">\(x\)</span>. La simulation n’impose que 4 dimensions, une de temps et 3 d’espace, donc dans une région se comportant globalement comme un fluide il est privilégié d’utiliser ce type de méthode, moins coûteuse en temps de calcul qu’un modèle cinétique.</p>
 <h1 id="couplage-des-modèles">Couplage des modèles</h1>
 <p>Nous nous intéresserons à un plasma dans un domaine <span class="math inline">\(\Omega\)</span> dans lequel nous considérerons une zone cinétique, où le modèle valide est un modèle cinétique (aussi appelé microscopique), une zone fluide où le modèle valide est un modèle macroscopique basé sur les équations d’Euler, ainsi qu’une zone de transition où la modélisation utilise une combinaison des deux modèles. Le modèle général se nomme <em>micro-macro</em> car il utilise conjointement un modèle microscopique et macroscopique.</p>
 <p>À cause de la dépendance au modèle cinétique nos variables <span class="math inline">\((t,x,v)\)</span> vivent dans <span class="math inline">\([0,T]\times\Omega\times\mathbb{R}^d\)</span>, où <span class="math inline">\(\Omega\)</span> est un fermé borné de <span class="math inline">\(\mathbb{R}^d\)</span> périodique, la vitesse <span class="math inline">\(v\)</span> n’est a priori pas borné par notre modélisation. Dans la pratique <span class="math inline">\(d = 1,2,3\)</span>.</p>
 <blockquote>
 <p>Idéalement <span class="math inline">\(d=3\)</span> mais pour simplifier les notations ainsi que les représentations graphiques nous prendrons <span class="math inline">\(d=1\)</span>.</p>
 </blockquote>
-<p>Lorsque les particules de notre plasma ne sont pas chargées, le terme <span class="math inline">\(E_f\cdot \nabla_v f\)</span> du modèle cinétique est nul, de plus nous utiliseront l’opérateur de collisions le plus simple, s’exprimant à partir d’un équilibre qui est une loi de distribution maxwellienne :</p>
+<p>Lorsque les particules de notre plasma ne sont pas chargées, le terme <span class="math inline">\(E_f\cdot \nabla_v f\)</span> du modèle cinétique est nul ; de plus nous utiliserons l’opérateur de collisions le plus simple, s’exprimant à partir d’un équilibre qui est une loi de distribution maxwellienne :</p>
 <p><span class="math display">\[
   Q(f,f) = \frac{1}{\varepsilon}(\mathcal{M}_{[f]} - f)
 \]</span></p>
@@ -94,13 +94,13 @@
     f(t=0,x,v) = f_0 (x,v)
   \end{cases}
 \]</span></p>
-<p>Formellement, on remarque que si <span class="math inline">\(\varepsilon \rightarrow 0\)</span> alors <span class="math inline">\(f \rightarrow \mathcal{M}_{[f]}\)</span>, pour éviter la divergence du terme vers l’infini, on en déduit que la maxwellienne est bien un état d’équilibre et que la solution de notre inconnue <span class="math inline">\(f\)</span> doit être relativement proche de <span class="math inline">\(\mathcal{M}_{[f]}\)</span>, on retrouve alors les équations d’Euler :</p>
+<p>Formellement, on remarque que si <span class="math inline">\(\varepsilon \rightarrow 0\)</span> alors <span class="math inline">\(f \rightarrow \mathcal{M}_{[f]}\)</span>, pour éviter la divergence du terme vers l’infini ; on en déduit que la maxwellienne est bien un état d’équilibre et que la solution de notre inconnue <span class="math inline">\(f\)</span> doit être relativement proche de <span class="math inline">\(\mathcal{M}_{[f]}\)</span> ; on retrouve alors les équations d’Euler :</p>
 <p><span class="math display">\[
   \partial_t f + v\cdot\nabla_x f = 0
 \]</span></p>
 <p>Donc <span class="math inline">\(f\)</span> doit se comporter comme un fluide non visqueux. Cette remarque permettra de valider nos schémas et d’en vérifier les résultats.</p>
 <h2 id="approximations-et-modèle-micro-macro">Approximations et modèle micro-macro</h2>
-<p>Dans la pratique la fonction inconnue <span class="math inline">\(f\)</span> n’est jamais éloignée de son équilibre maxwellien, nous pouvons donc réécrire <span class="math inline">\(f\)</span> comme une somme :</p>
+<p>Dans la pratique la fonction inconnue <span class="math inline">\(f\)</span> n’est jamais éloignée de son équilibre maxwellien ; nous pouvons donc réécrire <span class="math inline">\(f\)</span> comme une somme :</p>
 <p><span class="math display">\[
   f = \mathcal{M}_{[f]} + g
 \]</span></p>
@@ -117,7 +117,7 @@
   \partial_t(\mathcal{M}_{[f]} + g) + v\cdot\nabla_x(\mathcal{M}_{[f]}+g) = -\frac{1}{\varepsilon}g
 \]</span><a href="#2.3" id="2.3" class="eq"></a></p>
 <h3 id="obtention-du-modèle-macro">Obtention du modèle macro</h3>
-<p>Notons <span class="math inline">\(U\)</span> le moment de <span class="math inline">\(f\)</span> définit par le vecteur suivant :</p>
+<p>Notons <span class="math inline">\(U\)</span> le moment de <span class="math inline">\(f\)</span> défini par le vecteur suivant :</p>
 <p><span class="math display">\[
   U = \int_{\mathbb{R}^d} m(v) f(v)\,\mathrm{d}v = \begin{pmatrix}
         \rho_f \\
@@ -125,7 +125,7 @@
         \rho_f |u_f|^2 + \frac{d}{2}\rho_f T_f
       \end{pmatrix}
 \]</span></p>
-<p>où <span class="math inline">\(m(v) = (1 \, v \, |v|^2)^{\mathsf{T}}\)</span>, <span class="math inline">\(\rho_f\)</span> est la densité de particules, <span class="math inline">\(u_f\)</span> la vitesse moyenne, et <span class="math inline">\(T_f\)</span> la température. Le vecteur <span class="math inline">\(U\)</span> est de dimension <span class="math inline">\(d+2\)</span>, en effet la deuxième composante <span class="math inline">\(\rho_f u_f\)</span> est un vecteur de dimension <span class="math inline">\(d\)</span> qui s’obtient comme suit :</p>
+<p>où <span class="math inline">\(m(v) = (1 \, v \, |v|^2)^{\mathsf{T}}\)</span>, <span class="math inline">\(\rho_f\)</span> est la densité de particules, <span class="math inline">\(u_f\)</span> la vitesse moyenne, et <span class="math inline">\(T_f\)</span> la température. Le vecteur <span class="math inline">\(U\)</span> est de dimension <span class="math inline">\(d+2\)</span> ; en effet la deuxième composante <span class="math inline">\(\rho_f u_f\)</span> est un vecteur de dimension <span class="math inline">\(d\)</span> qui s’obtient comme suit :</p>
 <p><span class="math display">\[
   \rho_f u_f = \int_{\mathbb{R}^d} v  f(v)\,\mathrm{d}v
 \]</span></p>
@@ -139,7 +139,7 @@
 <p><span class="math display">\[
   \partial_t U + \nabla_x \int_{\mathbb{R}^d} v\, m(v)(\mathcal{M}_{[f]}+g)\,\mathrm{d}v = 0
 \]</span></p>
-<p>Le produit <span class="math inline">\(v\,m(v)\)</span> est une opération triviale en dimension 1 mais se complexifie en dimension <span class="math inline">\(d\)</span>, en effet celle-ci fait intervenir un produit tensoriel :</p>
+<p>Le produit <span class="math inline">\(v\,m(v)\)</span> est une opération triviale en dimension 1 mais se complexifie en dimension <span class="math inline">\(d\)</span> ; en effet celle-ci fait intervenir un produit tensoriel :</p>
 <p><span class="math display">\[
   v\,m(v) = \begin{pmatrix}v_1 \\ v_2 \\ v_3 \end{pmatrix} \otimes \begin{pmatrix} 1 \\ v_1 \\ v_2 \\ v_3 \\ |v|^2 \end{pmatrix} = \cdots
 \]</span></p>
@@ -662,6 +662,33 @@ Ceci permettra d’effectuer une approximation de <span class="math inline">\(\p
   \]</span>
 Ceci peut se résumer à deux termes de transports projetés selon <span class="math inline">\((I-\Pi)\)</span>. Il n’est sans doute pas nécessaire de monter autant en ordre dans le calcul du transport de <span class="math inline">\(\mathcal{M}_{[U^{n+1}]}\)</span>, en effet cette donnée est contrainte par l’ordre de la résolution <em>macro</em>, donc un ordre élevé ici n’entrainera pas une augmentation de l’ordre général.</li>
 </ol>
+<h2 id="cas-tests-1">Cas tests</h2>
+<p>On considère les mêmes cas tests puisque l’on retrouve encore les équations d’Euler lors que <span class="math inline">\(\varepsilon \rightarrow 0\)</span>.</p>
+<h3 id="conditions-aux-bords-périodiques-1">Conditions aux bords périodiques</h3>
+<div>
+<figure>
+<img src="img/periodic_mimas_rho.png" alt="Densité" /><figcaption>Densité</figcaption>
+</figure>
+<figure>
+<img src="img/periodic_mimas_u.png" alt="Vitesse" /><figcaption>Vitesse</figcaption>
+</figure>
+<figure>
+<img src="img/periodic_mimas_T.png" alt="Température" /><figcaption>Température</figcaption>
+</figure>
+<p>Grandeurs intensives dans le cas de condition aux bords périodique, on compare ici la simulation de référence, c’est à dire la simulation des équations d’Euler, avec le code <em>micro-macro</em> (appelé ici <em>miMaS</em> pour <em>micro-macro simulation</em>, toute référence à un satellite de Saturne pouvant ressembler à l’Étoile Noire est fortuite).</p>
+</div>
+<div>
+<figure>
+<img src="img/periodic_mimas_diff_rho.png" alt="Densité" /><figcaption>Densité</figcaption>
+</figure>
+<figure>
+<img src="img/periodic_mimas_diff_u.png" alt="Vitesse" /><figcaption>Vitesse</figcaption>
+</figure>
+<figure>
+<img src="img/periodic_mimas_diff_T.png" alt="Température" /><figcaption>Température</figcaption>
+</figure>
+<p>Différence entre les 2 codes de simulation.</p>
+</div>
 <div id="refs" class="references">
 <div id="ref-crestetto">
 <p>Crestetto, Anaïs, Nicolas Crouseilles, and Mohammed Lemou. 2012. “Kinetic/fluid micro-macro numerical schemes for Vlasov-Poisson-BGK equation using particles.” <em>Kinetic and Related Models </em>5 (4). AIMS: 787–816. <a href="https://doi.org/10.3934/krm.2012.5.787" class="uri">https://doi.org/10.3934/krm.2012.5.787</a>.</p>
