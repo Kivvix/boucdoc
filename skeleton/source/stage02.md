@@ -23,11 +23,11 @@ $$
 
 Ce modèle pose problème lorsque le nombre de particules devient très grand. La complexité algorithmique est alors en $\mathcal{O}(2^n)$ (nombre de couples dont on doit calculer l'interaction), avec $n$ le nombre de particules. Il devient donc très vite inenvisageable d'effectuer ce genre de calcul sans d'importantes approximations.
 
-La variable de base du problème est $t$, à chaque pas de temps on calcule la somme des forces, par intégration on obtient la vitesse ce qui nous permet de remonter à la position de nous pas intégration.
+La variable de base du problème est $t$ ; à chaque pas de temps on calcule la somme des forces, ce qui nous donne l'accélération, par intégration on obtient la vitesse puis la position.
 
 ## Modèles cinétique
 
-Les modèles cinétiques s'appliquent à l'échelle mésoscopique, on modélise les particules par une densité de particules, et on a en particulier $f(x,t,v)\mathrm{d}x\mathrm{d}v$ le nombre de particules (où $\mathrm{d}x\mathrm{d}v$ représente un élément de volume dans l'espace des phases).
+Les modèles cinétiques s'appliquent à l'échelle mésoscopique, on ne modélise plus un ensemble de particules mais une densité de particules ; on a en particulier $f(x,t,v)\mathrm{d}x\mathrm{d}v$ le nombre de particules (où $\mathrm{d}x\mathrm{d}v$ représente un élément de volume dans l'espace des phases).
 
 Ces modèles s’appuient sur une équation du type :
 
@@ -37,13 +37,13 @@ $$
 
 où $E_f$ représente le champ électrique, et $Q(f,f)$ un opérateur quadratique de collision.
 
-Les variables de bases du problème sont $t$, $x$ et $v$. Une simulation directe impose donc de travailler en 7 dimensions : une de temps et 6 pour l'espace des phases $(x,v)$. Dans la pratique l'étude théorique du schéma se fait classiquement en dimension $d$, mais pour simplifier l'étude, l'implémentation et la visualisation des résultats on prendra souvent $d=1$.
+Les variables de base du problème sont $t$, $x$ et $v$. Une simulation directe impose donc de travailler en 7 dimensions : une de temps et 6 pour l'espace des phases $(x,v)$. Dans la pratique, l'étude théorique du schéma se fait classiquement en dimension $d$, mais pour simplifier l'étude, l'implémentation et la visualisation des résultats on prendra souvent $d=1$.
 
-> Les modèles microscopiques étant inutilisables dans la pratique pour $n$ grand, les modèles cinétiques sont aussi appelé modèles microscopique, d'où la dénomination du modèle micro-macro que nous allons étudier par la suite.
+> Les modèles microscopiques étant inutilisables dans la pratique pour $n$ grand, les modèles cinétiques sont aussi appelés modèles microscopiques, d'où la dénomination du modèle *micro-macro* que nous allons étudier par la suite.
 
 ## Modèle macroscopique
 
-Les modèles macroscopiques s'apparentent à la mécanique des fluides, le système d'équations dépend alors de peu d'équations qui permettent de résoudre le problème. Ces variables sont souvent condensées en un seul vecteur de variables intensives $U$ :
+Les modèles macroscopiques s'apparentent à la mécanique des fluides ; le système d'équations dépend alors de peu d'équations qui permettent de résoudre le problème. Ces variables sont souvent condensées en un seul vecteur de variables intensives $U$ :
 
 $$
   U = (\rho,u,T,\dots)(t,x)
@@ -57,7 +57,7 @@ $$
 
 Le terme source $S(U)$ non explicité vaut $0$ dans le cadre des équations d'Euler, et un ensemble de perturbations dans le cadre des équations de Navier-Stockes.
 
-Les variables de bases du problème sont $t$ et $x$. La simulation n'impose que 4 dimensions, une de temps et 3 d'espace, donc dans une région se comportement globalement comme un fluide il est privilégié d'utiliser ce type de méthode, moins coûteuse en temps de calcul qu'un modèle cinétique.
+Les variables de bases du problème sont $t$ et $x$. La simulation n'impose que 4 dimensions, une de temps et 3 d'espace, donc dans une région se comportant globalement comme un fluide il est privilégié d'utiliser ce type de méthode, moins coûteuse en temps de calcul qu'un modèle cinétique.
 
 
 # Couplage des modèles
@@ -68,7 +68,7 @@ Nous nous intéresserons à un plasma dans un domaine $\Omega$ dans lequel nous 
 
 > Idéalement $d=3$ mais pour simplifier les notations ainsi que les représentations graphiques nous prendrons $d=1$.
 
-Lorsque les particules de notre plasma ne sont pas chargées, le terme $E_f\cdot \nabla_v f$ du modèle cinétique est nul, de plus nous utiliseront l'opérateur de collisions le plus simple, s'exprimant à partir d'un équilibre qui est une loi de distribution maxwellienne :
+Lorsque les particules de notre plasma ne sont pas chargées, le terme $E_f\cdot \nabla_v f$ du modèle cinétique est nul ; de plus nous utiliserons l'opérateur de collisions le plus simple, s'exprimant à partir d'un équilibre qui est une loi de distribution maxwellienne :
 
 $$
   Q(f,f) = \frac{1}{\varepsilon}(\mathcal{M}_{[f]} - f)
@@ -89,7 +89,7 @@ $$
   \end{cases}
 $$
 
-Formellement, on remarque que si $\varepsilon \rightarrow 0$ alors $f \rightarrow \mathcal{M}_{[f]}$, pour éviter la divergence du terme vers l'infini, on en déduit que la maxwellienne est bien un état d'équilibre et que la solution de notre inconnue $f$ doit être relativement proche de $\mathcal{M}_{[f]}$, on retrouve alors les équations d'Euler :
+Formellement, on remarque que si $\varepsilon \rightarrow 0$ alors $f \rightarrow \mathcal{M}_{[f]}$, pour éviter la divergence du terme vers l'infini ; on en déduit que la maxwellienne est bien un état d'équilibre et que la solution de notre inconnue $f$ doit être relativement proche de $\mathcal{M}_{[f]}$ ; on retrouve alors les équations d'Euler :
 
 $$
   \partial_t f + v\cdot\nabla_x f = 0
@@ -99,7 +99,7 @@ Donc $f$ doit se comporter comme un fluide non visqueux. Cette remarque permettr
 
 ## Approximations et modèle micro-macro
 
-Dans la pratique la fonction inconnue $f$ n'est jamais éloignée de son équilibre maxwellien, nous pouvons donc réécrire $f$ comme une somme :
+Dans la pratique la fonction inconnue $f$ n'est jamais éloignée de son équilibre maxwellien ; nous pouvons donc réécrire $f$ comme une somme :
 
 $$
   f = \mathcal{M}_{[f]} + g
@@ -125,7 +125,7 @@ $${#eq:cine-Mg}
 
 ### Obtention du modèle macro
 
-Notons $U$ le moment de $f$ définit par le vecteur suivant :
+Notons $U$ le moment de $f$ défini par le vecteur suivant :
 
 $$
   U = \int_{\mathbb{R}^d} m(v) f(v)\,\mathrm{d}v = \begin{pmatrix}
@@ -135,7 +135,7 @@ $$
       \end{pmatrix}
 $$
 
-où $m(v) = (1 \, v \, |v|^2)^{\mathsf{T}}$, $\rho_f$ est la densité de particules, $u_f$ la vitesse moyenne, et $T_f$ la température. Le vecteur $U$ est de dimension $d+2$, en effet la deuxième composante $\rho_f u_f$ est un vecteur de dimension $d$ qui s'obtient comme suit :
+où $m(v) = (1 \, v \, |v|^2)^{\mathsf{T}}$, $\rho_f$ est la densité de particules, $u_f$ la vitesse moyenne, et $T_f$ la température. Le vecteur $U$ est de dimension $d+2$ ; en effet la deuxième composante $\rho_f u_f$ est un vecteur de dimension $d$ qui s'obtient comme suit :
 
 $$
   \rho_f u_f = \int_{\mathbb{R}^d} v  f(v)\,\mathrm{d}v
@@ -157,7 +157,7 @@ $$
   \partial_t U + \nabla_x \int_{\mathbb{R}^d} v\, m(v)(\mathcal{M}_{[f]}+g)\,\mathrm{d}v = 0
 $$
 
-Le produit $v\,m(v)$ est une opération triviale en dimension 1 mais se complexifie en dimension $d$, en effet celle-ci fait intervenir un produit tensoriel :
+Le produit $v\,m(v)$ est une opération triviale en dimension 1 mais se complexifie en dimension $d$ ; en effet celle-ci fait intervenir un produit tensoriel :
 
 $$
   v\,m(v) = \begin{pmatrix}v_1 \\ v_2 \\ v_3 \end{pmatrix} \otimes \begin{pmatrix} 1 \\ v_1 \\ v_2 \\ v_3 \\ |v|^2 \end{pmatrix} = \cdots
@@ -655,11 +655,11 @@ $$
 Pour la condition initiale eulérienne on ne se préoccupe d'aucune variation dans la direction $v$ on retire donc l'exponentielle et le terme de normalisation.
 
 <div>
-  ![Densité    ](img/periodic_rho.png)
+  ![Densité    ](img/cinetic_test/periodic/periodic_rho.png)
 
-  ![Vitesse    ](img/periodic_u.png)
+  ![Vitesse    ](img/cinetic_test/periodic/periodic_u.png)
 
-  ![Température](img/periodic_T.png)
+  ![Température](img/cinetic_test/periodic/periodic_T.png)
 
 Grandeurs intensives dans le cas de condition aux bords périodique, *Euler* (en violet) correspond au code de référence de mécanique des fluides, *cinetic* fait référence au code décrit ci-dessus avec un schéma compact, *vlasov-BGK* fait référence à un code cinétique similaire avec un schéma *upwind*.
 </div>
@@ -682,11 +682,11 @@ $$
 Ce qui nous donne pour le code cinétique une condition initiale donnée par la maxwellienne de ces deux vecteurs de variables intensives.
 
 <div>
-![Densité    ](img/neumann_rho.png)
+![Densité    ](img/cinetic_test/neumann/neumann_rho.png)
 
-![Vitesse    ](img/neumann_u.png)
+![Vitesse    ](img/cinetic_test/neumann/neumann_u.png)
 
-![Température](img/neumann_T.png)
+![Température](img/cinetic_test/neumann/neumann_T.png)
 
 Grandeurs intensives dans le cas de condition aux bords de Neumann, *Euler* (en violet) correspond au code de référence de mécanique des fluides, *cintetic* fait référence au code décrit ci-dessus avec un schéma compact, *vlasov-BGK* fait référence à un code cinétique similaire avec un schéma *upwind*.
 </div>
@@ -797,6 +797,195 @@ On suppose donné un maillage de l'espace des phases, on suppose $g_{i,k}^n$ et 
   \end{aligned}
   $$
   Ceci peut se résumer à deux termes de transports projetés selon $(I-\Pi)$. Il n'est sans doute pas nécessaire de monter autant en ordre dans le calcul du transport de $\mathcal{M}_{[U^{n+1}]}$, en effet cette donnée est contrainte par l'ordre de la résolution *macro*, donc un ordre élevé ici n'entrainera pas une augmentation de l'ordre général.
+
+## Cas tests
+
+On considère les mêmes cas tests puisque l'on retrouve encore les équations d'Euler lors que $\varepsilon \rightarrow 0$.
+
+### Test de la patie *macro*
+
+Pour s'assurer de l'absence de bugs du code le premier test s'effectue uniquement sur la partie *macro* uniquement, on doit donc retrouver le résultat du code d'`euler`.
+
+#### Conditions aux bords périodiques
+
+<div>
+  ![Densité                  ](img/mimas_test/periodic/periodic_mimas_macro_rho.png)
+
+  ![Différence de densité    ](img/mimas_test/periodic/periodic_mimas_macro_diff_rho.png)
+
+  ![Vitesse                  ](img/mimas_test/periodic/periodic_mimas_macro_u.png)
+
+  ![Différence de vitesse    ](img/mimas_test/periodic/periodic_mimas_macro_diff_u.png)
+
+  ![Température              ](img/mimas_test/periodic/periodic_mimas_macro_T.png)
+
+  ![Différence de température](img/mimas_test/periodic/periodic_mimas_macro_diff_T.png)
+
+À gauche les résultats des deux simulations ; à droite la différence entre les 2 codes de simulation.
+</div>
+
+La différence dans les zones de forte variation s'explique par la différence du maillage entre les deux codes.
+
+#### Conditions aux bords de Neumann
+
+<div>
+  ![Densité                  ](img/mimas_test/neumann/neumann_mimas_macro_rho.png)
+
+  ![Différence de densité    ](img/mimas_test/neumann/neumann_mimas_macro_diff_rho.png)
+
+  ![Vitesse                  ](img/mimas_test/neumann/neumann_mimas_macro_u.png)
+
+  ![Différence de vitesse    ](img/mimas_test/neumann/neumann_mimas_macro_diff_u.png)
+
+  ![Température              ](img/mimas_test/neumann/neumann_mimas_macro_T.png)
+
+  ![Différence de température](img/mimas_test/neumann/neumann_mimas_macro_diff_T.png)
+
+À gauche les résultats des deux simulations ; à droite la différence entre les 2 codes de simulation.
+</div>
+
+### Conditions aux bords périodiques
+
+<div>
+  ![Densité    ](img/mimas_test/periodic/periodic_mimas_rho.png)
+
+  ![Vitesse    ](img/mimas_test/periodic/periodic_mimas_u.png)
+
+  ![Température](img/mimas_test/periodic/periodic_mimas_T.png)
+
+Grandeurs intensives dans le cas de condition aux bords périodique, on compare ici la simulation de référence, c’est à dire la simulation des équations d’Euler, avec le code *micro-macro* (appelé ici `miMaS` pour *micro-macro simulation*, toute référence à un satellite de Saturne pouvant ressembler à l’Étoile Noire est fortuite).
+</div>
+
+> La simulation avec le modèle *micro-macro* étant plus lente, les paramètres de simulations n'ont pas été poussés au bouts pour épouser au mieux le code `euler`.
+
+### Conditions aux bords de Neumann
+
+<div>
+  ![Densité    ](img/mimas_test/neumann/neumann_mimas_rho.png)
+
+  ![Vitesse    ](img/mimas_test/neumann/neumann_mimas_u.png)
+
+  ![Température](img/mimas_test/neumann/neumann_mimas_T.png)
+
+Grandeurs intensives dans le cas de condition aux bords périodique, on compare ici la simulation de référence, c’est à dire la simulation des équations d’Euler, avec le code *micro-macro*.
+</div>
+
+
+# Approximation du modèle *micro-macro*
+
+> Le principal intérêt du modèle *micro-macro* est qu'il est possible d'effectuer plus simplement des approximation du modèle, en particulier ce que nous allons faire ici est une approximation uniquement de la partie *micro*.
+
+Soit $h$ une fonction indicatrice continument dérivable définit dans $\Omega$ ; elle définit l'espace où le modèle cinétique est le plus probant par rapport au modèle fluide, c'est-à-dire les zones de chocs. Utiliser une fonction indicatrice continument dérivable permet d'éviter une rupture de modèle ; nous obtenons donc une zone de transition des modèles où la solution calculée est une superposition des deux solutions, pondérée par la valeur de $h$. Nous allons pouvoir définir :
+
+$$
+  g = hg + (1-h)g
+$$
+
+Ce que l'on notera aussi :
+
+$$
+  g = g_K + g_F
+$$
+
+où $g_K = hg$ correspond à la perturbation par rapport à l'équilibre maxwellien dans un modèle cinétique, et $g_F = (1-h)g$ correspond à celle dans un modèle fluide. Un modèle fluide est macroscopique et ne propose donc pas de perturbation par rapport à l'équilibre donc la grandeur $g_F$ pourra être négligée.
+
+Reprenons le modèle *micro* donnée par l'équation [!eq:mm-micro], que nous multiplions par $h$ :
+
+$$
+  \underbrace{h\partial_t g}_{\text{(1)}} + \underbrace{h(I-\Pi)(v\cdot\nabla_x\mathcal{M})}_{\text{(2)}} + \underbrace{h(I-\Pi)(v\cdot\nabla_x(g_K + g_F))}_{\text{(3)}} = -\frac{h}{\varepsilon}g
+$$
+
+1. Or $\partial_t g = \partial_t g_K - g\partial_t h$ donc $h\partial_t g = \partial_t g_K - g\partial_t h$, car $h=0$ sur le support de $g_F$.
+2. Le second terme ne dépend par de $g$, on le passe donc dans le membre de droite.
+3. On distingue ce terme en deux parties, entre le projecteur identité et le projecteur $\Pi$, ce second terme ira dans le membre de droite.
+
+D'où :
+
+$$
+  \partial_t g_K + hv\cdot\nabla_x g_K + hv\cdot\nabla_x g_F = -\frac{1}{\varepsilon}g_K + \frac{g_K}{h}\partial_t h - h(I-\Pi)(v\cdot\nabla_x\mathcal{M}) + h\Pi(v\cdot\nabla_x(g_K+g_F))
+$$
+
+> Dans [@dimarco], le terme de droite : $- h(I-\Pi)(v\cdot\nabla_x\mathcal{M}) + h\Pi(v\cdot\nabla_x(g_K+g_F))$ est simplifié par $-h(\partial_t + v\cdot\nabla_x)\mathcal{M}$, or cela fait introduire une dérivée temporelle de la maxwellienne, ce qui n'est pas souhaité pour une implémentation simple, par conséquent on conserve le terme ne faisant intervenir que des termes dont nous possédons déjà les *briques* de base pour l'implémentation. Mais nous retrouvons ainsi le modèle présenté dans l'article :
+>
+> $$
+    \partial_t g_K + hv\cdot\nabla_x g_K + hv\cdot\nabla_x g_F = -\frac{1}{\varepsilon}g_K + \frac{g_K}{h}\partial_t h - h(\partial_t + v\cdot\nabla_x)\mathcal{M}
+  $$
+
+Nous effectuons une approximation par rapport à $g$, en effet la fonction indicatrice $h$ permettant de subdiviser le domaine, nous négligerons $g_F$ par la suite :
+
+$$
+  g_F = 0
+$$
+
+La partie *micro* du modèle *micro-macro*, après cette approximation devient :
+
+$$
+  \partial_t g_K + hv\partial_x g_K = -\frac{1}{\varepsilon}g_K - h(I-\Pi)(v\partial_x \mathcal{M}_{[f]}) + h\Pi(v\partial_x g_K) + \frac{g_K}{h}\partial_t h
+$$
+
+## Schéma de la partie microscopique
+
+Pour simplifier le passage au discrèt, réécrivons le modèle comme suit :
+
+$$
+  \partial_t g_K = -\frac{1}{\varepsilon}g_K - h(I-\Pi)(v\partial_x \mathcal{M}_{[f]}) - h(I-\Pi)(v\partial_x g_K) + \frac{g_K}{h}\partial_t h
+$$
+
+D'où le schéma :
+
+$$
+  \begin{aligned}
+    g_{i,k}^{n+1} \gets \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[\vphantom{\frac{\Delta}{\Delta}} g_{i,k}^n \right. & - h_i(I-\Pi)\left(\frac{\Delta t}{\Delta x}v_k(g_{i+\frac{1}{2},k}^n - g_{i-\frac{1}{2},k}^n)\right) \\
+    & \left. - h_i(I-\Pi)\left( \frac{\Delta t}{\Delta x}v_k( (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k} - (\mathcal{M}_{[U^{n+1}]})_{i-\frac{1}{2},k})\right) \vphantom{\frac{\Delta}{\Delta}} + \frac{g_{i,k}^n}{h_i}\partial_t h_i \right]
+  \end{aligned}
+  $$
+
+où $h_i$ est une approximation de $h(x_i)$. Pour le moment considérons uniquement une fonction $h:x\mapsto h(x)$ indépendante du temps, par conséquent la dérivée temporelle de $h$ s'annule et le schéma est équivalent au précédent sur le support de $h$. En dehors de celui-ci, le problème se résume à la partie *macro* que nous avons validée seule. 
+
+La fonction $h$ présente un intérêt hors du domaine de validité du modèle fluide, donc quand $\varepsilon \not\to 0$, par conséquent le code `euler` ne pourra plus servir de référence, nous allons donc utiliser le code `cinetic` précédemment testé et approuvé pour $\varepsilon \to 0$.
+
+### $h$ une fonction porte
+
+Dans un premier temps nous allons considérer une fonction $h$ continument dérivable mais dont les variations s'effectuent sur un intervalle de longueur inférieure à $\Delta x$, $h_i$ se résume donc à une fonction porte :
+
+$$
+  h_i = \begin{cases}
+    0 &  \textrm{, si}\ x < x_s \\
+    1 &  \textrm{, si}\ x_s \leq x \leq x_e \\
+    0 &  \textrm{, si}\ x > x_e \\
+    \end{cases}
+$$
+
+où $x_s$ et $x_e$ sont les bornes du support de $h$ est sont à définir selon le problème ; le domaine $[x_s,x_e]$ contient le support de $h$ et est le seul domaine de calcul de la partie *micro*. Dans le cas du tube à choc de Sob, c'est-à-dire les tests avec conditions aux bords de Neumann, $[x_s,x_e] = [4,9]$. Le choc se propageant à travers le domaine dans le cas des conditions aux bords périodiques, nous ne pouvons restreindre le domaine de calcul, il est donc nécessaire d'avoir une fonction dépendant du temps.
+
+> L'inconvéniant de cette méthode est qu'il est nécessaire d'avoir une idée du résultat avant de déterminer arbitrrairement les valeurs $x_s$ et $x_e$. Cela est possible soit par une expertise du problème ou une première simulation grossière permettant de déterminer le support de $h$.
+>
+> Une possibilité est d'étudier la troisième composante du flux cinétique de $g$ ; en effet les 2 premières composantes du flux sont nulles puisque l'on calcule : $\langle vm(v)g \rangle$, les deux premières composantes sont les deux dernières de $\langle m(v)g \rangle$ qui est un vecteur nul ; la troisième composante reflète le domaine où la partie cinétique contribue au modèle.
+
+Tout d'abord observons la troisième composante du flux cinétique de $g$ en fin de simulation ; on remarque bien que le support de $h$ englobe bien celui du flux cinétique de $g$.
+
+![Fonction $h$ et flux cinétique de $g$](img/mimas_test/h_gate/h_gate_h.png)
+
+<div>
+  ![Densité                  ](img/mimas_test/h_gate/h_gate_rho.png)
+
+  ![Différence de densité    ](img/mimas_test/h_gate/h_gate_diff_rho.png)
+
+  ![Vitesse                  ](img/mimas_test/h_gate/h_gate_u.png)
+
+  ![Différence de vitesse    ](img/mimas_test/h_gate/h_gate_diff_u.png)
+
+  ![Température              ](img/mimas_test/h_gate/h_gate_T.png)
+
+  ![Différence de température](img/mimas_test/h_gate/h_gate_diff_T.png)
+
+À gauche les résultats des deux simulations ; à droite la différence entre les 2 codes de simulation.
+</div>
+
+Les décrochements au début et à la fin du domaine cinétique sont vraissemblablement dûs à de mauvaises conditions aux bords et de jonction des domaines :
+
+* Le flux cinétique de $g$ est potentiellement non nul en dehors du support de $h$ avant la fin de la simulation. En théorie le choc se propage depuis le milieu du domaine vers les bords donc peu probable.
+* Le flux cinétique de $g$ n'est pas complètement nul ($\sim 10^{-10}$) et une petite perturbation s'amplifie via le schéma compact d'ordre élevé.
 
 
 
