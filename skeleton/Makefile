@@ -12,6 +12,9 @@ FILTERS = ../filters/panviz2.py ../filters/panref.py ../filters/pancode.py ../fi
 #pandoc-citeproc
 EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists+example_lists+pipe_tables+table_captions+smart
 
+# Options
+OPTIONS = --wrap=preserve -s
+
 all :
 	@ echo "Do something"
 
@@ -32,9 +35,9 @@ $(BUILD_dir)/$(1) :
 
 $(BUILD_dir)/$(1)/%.$(2) : $(MD_dir)/%.md $(wildcard $(MD_dir)/_template/$(1)/*.$(2))
 	@ echo "\033[95m$$(notdir $$@)\033[0m"
-	pandoc --wrap=preserve -s \
+	pandoc $(OPTIONS) \
 		--from=$(EXTENSIONS) \
-		$(foreach filter,$(FILTERS),-F $(filter)) -F pandoc-citeproc \
+		$(foreach filter,$(FILTERS),-F $(filter)) -F pandoc-citeproc --csl=source/biblio/3d-research.csl \
 		$(4) \
 		-t $(3) $$< -o $$@
 
@@ -43,8 +46,11 @@ $(BUILD_dir)/$(1)/img/%.png : $(MD_dir)/img/%.png
 	@ mkdir -p "$$(@D)"
 	cp $$< $$(@D)
 
-$(1) : $(BUILD_dir)/$(1) $$(list) $$(imgs) $(5)
+$(1) : | $$(imgs) $(BUILD_dir)/$(1) $$(list) $(5)
 	@ echo "\033[46m $(1) done \033[0m"
+
+$(1)_img : $$(imgs)
+	@ echo "\033[44m $(1) images done \033[0m"
 
 endef
 
@@ -53,7 +59,8 @@ endef
 # list of css files to add in pandoc command line
 #CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(shell find $(MD_dir)/_template/html -type f -name '*.css' | sort -r))
 CSS_template = $(patsubst $(MD_dir)/_template/html/style/%.css, template/style/%.css , $(shell find $(MD_dir)/_template/html/style -type f -name '*.css' | sort -r))
-MATH_render = --katex=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/ 
+#MATH_render = --katex=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/ 
+MATH_render = --katex=https://cdn.jsdelivr.net/npm/katex@0.10.0-beta/dist/
 #MATH_render = --katex
 #MATH_render = --mathml
 #MATH_render = --mathjax
@@ -63,14 +70,17 @@ HTML_opt = $(MATH_render) $(foreach css,$(CSS_template),-c $(css)) -B source/_te
 
 # HTML template data
 HTML_template = $(patsubst $(MD_dir)/_template/html/%.js, $(BUILD_dir)/html/template/%.js, $(wildcard $(MD_dir)/_template/html/*.js))
+$(BUILD_dir)/html/template/style/%.css : $(MD_dir)/_template/html/style/%.css
+	@ echo "\033[36mtransform copy $< to $@\033[0m"
+	@ mkdir -p "$(@D)"
+	gsed -r ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba' $< | sed '/^\s*$$/d' | gsed -r 's/^[[:blank:]]+//' | tr -d '\n' > $@
 $(BUILD_dir)/html/template/% : $(MD_dir)/_template/html/%
 	@ echo "\033[35mcopy $< to $@\033[0m"
 	@ mkdir -p "$(@D)"
 	cp -R $< $(@D)
-$(BUILD_dir)/html/template/style/%.css : $(MD_dir)/_template/html/style/%.css
-	@ echo "\033[36mcopy $< to $@\033[0m"
-	@ mkdir -p "$(@D)"
-	cp $< $(@D)
+
+#sed 's|/\*|\n&|g;s|*/|&\n|g' $< | sed '/\/\*/,/*\//d' | sed '/^\s*$$/d' | sed 's/^ *//' | tr -d '\n' > $@
+#cp $< $(@D)
 
 HTML_template_rules=$(HTML_template) $(patsubst %.css,$(BUILD_dir)/html/%.css,$(CSS_template))
 
@@ -91,18 +101,21 @@ $(BUILD_dir)/pdf/img/%.png : $(MD_dir)/img/%.png
 	@ mkdir -p "$(@D)"
 	cp $< $(@D)
 
+#	pdflatex -output-directory $(@D) $<
 $(BUILD_dir)/pdf/%.pdf : $(BUILD_dir)/latex/%.tex
-	pdflatex -output-directory $(@D) $<
-#	pdflatex -interaction=batchmode -output-directory=./$(@D) $<
+	@ echo "\033[35m$(notdir $@)\033[0m"
+	cd $(dir $<) && pdflatex -interaction=batchmode -output-directory ../pdf  $(notdir $<)
 
-pdf : | $(patsubst $(MD_dir)/img/%.png, $(BUILD_dir)/pdf/img/%.png,$(IMG_list)) $(BUILD_dir)/pdf $(BUILD_dir)/latex $(PDF_list)
+#pdf : | latex_img $(patsubst $(MD_dir)/img/%.png, $(BUILD_dir)/pdf/img/%.png,$(IMG_list)) $(BUILD_dir)/pdf $(BUILD_dir)/latex $(PDF_list)
+pdf : | latex_img  $(BUILD_dir)/pdf $(BUILD_dir)/latex $(PDF_list)
 	@ echo "\033[46m PDF done \033[0m"
 
 # native ##############################################################
 $(eval $(call OUTPUT_format,native,pandoc,native))
 
 # ODT #################################################################
-$(eval $(call OUTPUT_format,odt,odt,odt))
+ODT_opt = --resource-path=$(BUILD_dir)/odt
+$(eval $(call OUTPUT_format,odt,odt,odt,$$(ODT_opt)))
 
 clean :
 	rm -Rf build/*
