@@ -13,6 +13,7 @@ bibliography: source/biblio/biblio.bib
 >
 > Modèle mM rassemble tous ces points
 
+
 # Introduction
 
 
@@ -177,7 +178,6 @@ $${#eq:macro:poisson}
 où $\rho$ représente la densité d'électron, et $1$ la densité ionique. On retrouve bien une définition équivalente à [!eq:cine:poisson] puisque : $\int f(t,x,v)\,\mathrm{d}v = \rho(t,x)$.
 
 > TODO: cette dernière remarque à plus sa place dans la partie suivante puisque c'est là que l'on discute de l'équivalence entre le modèle cinétique et macroscopique (on a pas encore précisé ici que $\int f\,\mathrm{d}v = \rho$)
-
 
 ## Cinétique vers fluide
 
@@ -408,10 +408,39 @@ $$
 D’où\ :
 
 $$
-  \partial_t g_K + hv\cdot\nabla_x g_K + hv\cdot\nabla_x g_F = -\frac{1}{\varepsilon}g_K + \frac{g_K}{h}\partial_t h - h(I-\Pi)(v\cdot\nabla_x\mathcal{M}) + h\Pi(v\cdot\nabla_x(g_K+g_F))
-$$
+  \begin{aligned}
+    \partial_t g_K + hv\cdot\nabla_x g_K + hv\cdot\nabla_x g_F &= \\
+     -\frac{1}{\varepsilon}g_K + \frac{g_K}{h}\partial_t h - h(I-\Pi)&(v\cdot\nabla_x\mathcal{M}) + h\Pi(v\cdot\nabla_x(g_K+g_F))
+  \end{aligned}
+$${#eq:mMh:gF}
 
 > TODO: ajouter le calcul de simplification du terme $- h(I-\Pi)(v\cdot\nabla_x\mathcal{M}) + h\Pi(v\cdot\nabla_x(g_K+g_F))$ faite dans [@dimarco]
+
+P. Degond et G. Dimarco proposent dans [@dimarco] une simplification du terme $- h(I-\Pi)(v\cdot\nabla_x\mathcal{M}) + h\Pi(v\cdot\nabla_x(g_K+g_F))$ pour ne l'exprimer qu'en fonction de la distribution maxwellienne $\mathcal{M}_{[f]}$. Pour cela il est nécessaire de reprendre le modèle *macro*, qui en décomposant $f=\mathcal{M}_{[f]} + g$ permet d'exprimer $\partial_t\mathcal{M}_{[f]}$\ :
+
+$$
+  \partial_t\mathcal{M}_{[f]} = - \partial_t g - \frac{1}{\varepsilon}g - v\cdot\nabla_x(\mathcal{M}_{[f]}+g)
+$$
+
+Le modèle *micro* quant à lui nous donne une expression pour $\partial_t g$\ :
+
+$$
+  -\partial_t g = \frac{1}{\varepsilon}g +(I-\Pi)(v\cdot\nabla_x(\mathcal{M}_{[f]}+g))
+$$
+
+Ainsi $\partial_t\mathcal{M}_{[f]}$ peut s'exprimer comme suit\ :
+
+$$
+  \partial_t\mathcal{M}_{[f]} = -\Pi(v\cdot\nabla_x(\mathcal{M}_{[f]}+g_K+g_F))
+$$
+
+Il devient alors possible de simplifier le dernier terme de [!eq:mMh:gF]\ :
+
+$$ 
+  \partial_t g_K + hv\cdot\nabla_x g_K + hv\cdot\nabla_x g_F = -\frac{1}{\varepsilon}g_K + \frac{g_K}{h}\partial_t h - h(\partial_t+v\cdot\nabla_x)\mathcal{M}_{[f]}
+$$
+
+Cette formulation permet de ne conserver aucune projection de $g_F$ ou $g_K$. Il devient donc plus aisé de travailler sur ces grandeurs que nous souhaitons approximer.
 
 Nous effectuons une approximation par rapport à $g$, en effet la fonction indicatrice $h$ permet de subdiviser le domaine. Nous négligerons $g_F$ par la suite\ :
 
@@ -423,11 +452,10 @@ La partie *micro* du modèle *micro-macro*, après cette approximation devient\ 
 
 $$
   \partial_t g_K + hv\cdot\nabla_x g_K = -\frac{1}{\varepsilon}g_K - h(I-\Pi)(v\cdot\nabla_x \mathcal{M}_{[f]}) + h\Pi(v\cdot\nabla_x g_K) + \frac{g_K}{h}\partial_t h
-$$
+$${#eq:mM:h}
 
 
 > TODO: ajouter la gestion du champ électrique
-
 
 
 # Présentation des schémas
@@ -937,12 +965,7 @@ où $\kappa$ est l'indice du coefficient de Fourrier et $i$ le nombre complexe t
 Ainsi tous les coefficients de Fourrier de $E_f$ sont calculés, il suffit d'effectuer la transformée inverse pour trouver le résultat souhaité.
 
 
-
-
 # Application aux modèles cinétiques et *micro-macro*
-
-> Partie numérique, on présente l'application de la partie 2 sur les modèles de la partie 1. Pas de section pour le modèle Euler car supposé provenant du code de référence. Conclusion de la partie sur un comparatif des performances (temps et erreur) des différents schémas et modèles.
-
 
 ## Cinétique
 
@@ -1035,7 +1058,7 @@ $$
   \sum_k (v_k\sqrt{f_{i,k}^n})^2\Delta v \sum_k (\sqrt{f_{i,k}^n})^2\Delta v \geq \left| \sum_k v_k \sqrt{f_{i,k}^n}\sqrt{f_{i,k}^n} \Delta v \right|^2
 $$
 
-C’est à dire que l’on a bien\ :
+C’est-à-dire que l’on a bien\ :
 
 $$
   \sum_k |v_k|^2 f_{i,k}^n \Delta v \sum_k f_{i,k}^n \Delta v \geq \left( \sum_k v_k f_{i,k}^n \Delta v \right)^2
@@ -1071,13 +1094,6 @@ On constate bien une conservation de ces valeurs. La légère évolution de ces 
 
 > TODO: insérer ici un graph prouvant ces dires
 
-### Cas tests
-
-#### Conditions aux bords périodiques
-
-#### Conditions aux bords de Neumann
-
-> Tube à choc de Sob
 
 ## Micro-macro
 
@@ -1193,43 +1209,146 @@ Ceci permettra d'effectuer une approximation de $\partial_x \langle vm(v)g \rang
   Ceci peut se résumer à deux termes de transports projetés selon $(I-\Pi)$. La discrétisation en temps présenté ici utilise une méthode d'Euler implicite ; numériquement nous n'avons pas observé d'instabilité dans le cadre d'un gaz raréfié. La mécanique des plasmas étudie traditionnellement des comportement en temps long, dans ce cas une discrétisation d'ordre plus élevé en temps fut nécessaire pour accompagner l'ordre élevé en espace. 
 
 
-### Cas tests
+## Approximation $h(t,x)$
 
-#### Conditions aux bords périodiques
+Dans cette partie, nous fixons la dimension du problème à $d=1$, en effet l'approche que nous avons pu avoir sur la fonction $h(t,x)$ ne se généralise pas directement au cas $d=2,3$.
 
-#### Conditions aux bords de Neumann
+La discrétisation directe du modèle *micro* avec l'approximation approtée par la fonction $h$ décrit en [!eq:mM:h] s'écrit comme\ :
 
-#### Milieu non homogène : $\varepsilon = \varepsilon(x)$
+$$
+  \begin{aligned}
+    g_{i,k}^{n+1} \gets \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[\vphantom{\frac{\Delta}{\Delta}} g_{i,k}^n \right. & - h_i^n(I-\Pi)\left(\frac{\Delta t}{\Delta x}v_k(g_{i+\frac{1}{2},k}^n - g_{i-\frac{1}{2},k}^n)\right) \\
+    & \left. - h_i^n(I-\Pi)\left( \frac{\Delta t}{\Delta x}v_k( (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k} - (\mathcal{M}_{[U^{n+1}]})_{i-\frac{1}{2},k})\right) \right. \\
+    & \left. \vphantom{\frac{\Delta}{\Delta}} + \frac{g_{i,k}^n}{h_i^n}\partial_t h_i^n \right]
+  \end{aligned}
+$${#eq:num:mM:h}
+
+où $h_i^n$ est une approximation de $h(t^n,x_i)$
+
+L'approche proposée dans [@dimarco] est de calculer la fonction $h(t,x)$ à partir du moment de la fonction $g$, c'est-à-dire à partir de $\langle m(v_k)g_{i,k}^n\rangle_v$. Cette méthode de calcul de la fonction $h$ nécessite le parcours de l'ensemble du domaine à l'itération $t^n$ ; une approche similaire est utilisée dans [@filbet] avec le calcul des cellules du milieu hydrodynamique ou cinétique en fonction d'un critère évalué à chaque itération. Cette méthode fonctionne très bien en théorie mais ne permet pas de réduire le temps de calcul en ne parcourant, à l'itération $t^n$, que le support de $h(t^n,\cdot)$. Nous avons opté ici pour une technique nécessitant une connaissance en amont des zones de chocs et du parcours de l'onde de choc, c'est-à-dire une connaissance *a priori* de $\Omega_K(t)$.
+
+Dans un premier temps, pour étudier la dynamique et les conséquences d'une fonction indicatrice nous nous sommes restreint à une fonction $h$ constante au cours du temps, et testé différent profiles : fonction porte ou trapézoïdale. Cela à permis de mettre au point la résolution de la partie *micro* uniquement sur le sous-domaine $\Omega_K$. Algorithmiquement cela se traduit par l'introduction de deux variables $x_s$ et $x_e$ telles que\ :
+
+$$
+  \Omega_K \subset [x_s,x_e]
+$$
+
+Nous définissons 2 indices $i_s$ et $i_e$ tels que $x_s = i_s\Delta x$ et $x_e = i_e \Delta x$. Le schéma sur $g$ se définit comme\ :
+
+$$
+  g_{i,k}^n \gets \begin{cases}
+    \hat{g}_{i,k}^n  & \text{si } i\in [\![ i_s , i_e  ]\!] \\
+    0                & \text{sinon}
+  \end{cases}
+$$
+
+où $\hat{g}_{i,k}^n$ est la grandeur calculée par [!eq:num:mM:h]. Une fois cette technique mise au point il a suffit de trouver, de manière empirique, deux fonctions $x_s:t\mapsto x_s(t)$ et $x_e:t\mapsto x_e(t)$ s'adaptant correctement aux conditions initiales simulées.
+
+### $h$ une fonction porte
+
+> TODO: revoir les parties de tests avec $h$
+
+Dans un premier temps nous allons considérer une fonction $h$ continument dérivable mais dont les variations s'effectuent sur un intervalle de longueur inférieure à $\Delta x$, $h$ se résume donc à une fonction porte :
+
+$$
+  h_i = \begin{cases}
+    0 &  \textrm{, si}\ x_i < x_s \\
+    1 &  \textrm{, si}\ x_s \leq x_i \leq x_e \\
+    0 &  \textrm{, si}\ x_i > x_e \\
+    \end{cases}
+$$
+
+> TODO: mettre 2 cas tests, 1 avec $h$ trop petit (apparition d'oscillations parasites à la fonction du domaine), et un autre où tout se passe bien (domaine plus large)
+
+Le risque de la mauvaise anticipation du domaine $\Omega_K$ est que celui-ci déborde du support de $h$. Numériquement ce risque se traduit par l'apparition d'oscillations dû une discontinuité de $g$ aux bords du support de $h$.
+
+
+### $h$ une fonction trapèze
+
+Considérons maintenant une fonction $h$ définit comme suit :
+
+$$
+  h_i = \begin{cases}
+    0                                               & \textrm{, si\ }           x_i < x_s     \\
+     \frac{1}{x_s^*-x_s} x - \frac{x_s}{x_s^*-x_s}  & \textrm{, si\ } x_s     < x_i < x_s^{*} \\ 
+    1                                               & \textrm{, si\ } x_s^{*} < x_i < x_e^{*} \\
+    -\frac{1}{x_e-x_e^*} x + \frac{x_e}{x_e-x_e^* } & \textrm{, si\ } x_e^{*} < x_i < x_e     \\
+    0                                               & \textrm{, si\ } x_e     < x_i           \\
+  \end{cases}
+$$
+
+Pour les différents tests sur une telle fonction on conservera toujours les valeurs de $x_s$ et $x_e$ identique au cas test de la fonction porte, nous allons donc jouer sur les valeurs de $x_s^*$ et $x_e^*$. On choisit généralement $x_s^*$ et $x_e^*$ de façon symétrique c'est-à-dire :
+
+$$
+  x_s^* = x_s + \delta x \qquad x_e^* = x_e - \delta x
+$$
+
+On obtient ainsi dans les cas extrêmes une fonction porte pour $\delta x = 0$ ou une fonction chapeau pour $\delta x = \frac{x_e-x_s}{2}$.
+
+> TODO: cas d'une fonction chapeau et une ou deux fonctions trapézoïdales
+
+### $h(t,x)$
+
+Maintenant essayons de faire évoluer $h$ en fonction du temps. Comme nous l'avons vu précédemment il est possible d'utiliser la troisième composante du flux cinétique de $g$, or ceci implique de calculer $g$ en tout point de l'espace, ce que l'introduction de la fonction $h$ nous permet d'éviter.
+
+En effet, l'introduction de la fonction $h$ permet, dans la partie *micro*, plus coûteuse en temps de calcul que la partie *macro*, de ne parcourir l'espace qu'entre les valeur $x_s$ et $x_e$.
+
+Une méthode utilisée dans [@filbet] est dans chaque cellule déterminée à l'aide de critères le modèle prédominant entre fluide et cinétique. Ainsi le coût total du cinétique est diminuée car juste évalué ponctuellement. L’inconvénient de ce type d'approche est le calcul de dérivées qui se fait systématiquement par l'évaluation de la maxwellienne.
+
+Étudions la troisème composante du flux cinétique de $g$ dans sa globalité sans fonction $h$.
+
+<div>
+  ![Flux numérique de $g$](img/mimas_test/h_t/fluxg.png)
+  
+  ![Logarithme du flux numérique de $g$](img/mimas_test/h_t/fluxg_log.png)
+
+Visualisation de la troisième composante du flux cinétique de $g$ en fin de simulation
+</div>
+
+Contrairement à ce qui était attendue le flux ne diminue pas suffisamment pour le contraindre dans une région. Le seuil que nous allons utilisé est $10^{-15}$, ce qui peut correspondre à la sortie du bruit numérique de la précision du zéro machine ; un seuil plus petit, au alentour de $10^{-17}$ est facilement envisageable et sans doute plus juste, mais cela se fait au détriment du temps de calcul.
+
+![Évolution de $x_s$ et $x_e$ au cours du temps](img/mimas_test/h_t/xsxe.png)
+
+Sur cette courbe, $x_s$ correspond au premier dépassement du seuil, et $x_e$ le dernier ; sont aussi représentés les grandeurs que $x_s$ et $x_e$ précédemment choisis.
+
+Nous souhaitons que $h(t,x)$ enveloppe la zone où $\langle v_km(v_k)g_{i,k}^n\rangle_3 > 10^{-15}$, pour cela nous considérons deux fonctions $x_s^n$ et $x_e^n$ donnant au cours du temps le domaine cinétique. Cette démarche ne fonctionne pas pour un système périodique c'est pour cela que nous sommes restés avec des conditions aux bords de Neumann. L'approche dans [@filbet] ne permet pas de diminuer la taille du domaine à parcourir au cours du temps ; en revanche elle propose, dans le cas d'une solution régulière, d'avoir un libre parcours moyen dépendant de $x$, cela permet d'effectuer une transition plus douce entre un modèle cinétique et fluide.
+
+
+
+## Tests numériques dans le cas de gaz raréfiés
+
+> Temps de calcul des différents modèles, et erreur par rapport au code de référence : Euler, et avantage qualitatif des différents modèles (plasma avec $\varepsilon \not\to 0$ et champ électrique : impossible avec simple approximation Euler)
+
+### Conditions aux bords périodiques
+
+Condition initiale\ :
+
+$$
+  f(t=0,x,v) = (1+\alpha\cos(k_x x))\text{e}^{-\frac{|v|^2}{2}}
+$$
+
+ou un truc du genre
+
+### Condition aux bords de Neumann
+
+> Tube à choc de Sob
+
+### Milieu non homogène : $\varepsilon = \varepsilon(x)$
 
 > Cas test dans [@filbet], comparatif au code cinétique.
 
+### Fonction indicatrice
 
-## Approximation $h(t,x)$
-
-> Différents tests avec $h(x)$ (fonction porte, et trapézoïdale), puis obtention de $h(t,x)$ avec $x_s$ et $x_e$.
-
-> Dans [@dimarco] la fonction $h(t,x)$ est calculée à partir de $\langle m(v_k)g_{i,k}^n\rangle_v$ donc obligé de calculer en tout point à tout instant. Dans [@filbet] il y a aussi un principe multi-échelle mais le critère est calculé sur chaque cellule à chaque instant, donc pas de gain non plus. Utiliser $x_s$ et $x_e$ demande une préparation en amont (avoir une idée de ce que cela va devenir) mais permet de réduire le temps de calcul.
-
-## Comparaison
-
-> Temps de calcul des différents modèles, et erreur par rapport au code de référence : Euler, et avantage qualitatif des différents modèles (plasma avec $\varepsilon \not\to 0$ et champ électrique : impossible avec simple approximation Euler)
+> TODO: mettre ici un cas où $h$ provoque des oscillations (trop petit), et des cas où ça marche bien
 
 
 # Application pour les plasma
 
-> C'est dans cette partie qu'on a vraiment besoin des tests 2D et qu'on introduit dans un champ électrique
+> C'est dans cette partie qu'on a vraiment besoin des tests 2D et qu'on introduit un champ électrique
 
 ## Modèle cinétique
 
 > Programme de référence, présentation un peu plus rapide avec l'ajout du terme de champ électrique. Préciser la nécessité numériquement d'introduire RK3 pour l'ordre élevé en espace, avec recalcule de l'équation de Poisson sur chaque étape du RK3.
-
-### Cas proche de l'équilibre
-
-> Landau
-
-### Cas éloigné de l'équilibre
-
-> Double faisceau
 
 
 ## Modèle *micro-macro*
@@ -1238,6 +1357,11 @@ Ceci permettra d'effectuer une approximation de $\partial_x \langle vm(v)g \rang
 
 > Introduction de $h(t,x)$
 
+## Tests numériques dans le cas de plasmas
+
+### Double beam
+
+### Landau
 
 # Liste des figures à refaire
 
