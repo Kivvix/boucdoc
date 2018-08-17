@@ -15,11 +15,18 @@ document.querySelectorAll(`span.citation`).forEach( (el) => {
   a.id = k+diccite[k];
 
   var cit = document.getElementById("ref-"+k)
-  cit.innerHTML += "<a href=\"#"+a.id+"\" class=\"autoref\" >["+diccite[k]+"]</a>"
+  cit.innerHTML += "<a href=\"#"+a.id+"\" class=\"autoref\" >("+diccite[k]+")</a>"
 
   el.parentNode.replaceChild(a,el);
+});
+
+// remove digit from biblio (add by css)
+document.querySelectorAll(`div.references div p`).forEach( (el) => {
+  'use strict';
+  el.innerHTML = el.innerHTML.replace(/^\d+\./,'');
 });
 
 // add title for bibliography
 bib = document.querySelector(`div#refs.references`)
 bib.innerHTML = "<hr /><h1 id=\"bibliography\" >Bibliographie</h1>" + bib.innerHTML
+
