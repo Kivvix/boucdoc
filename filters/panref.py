@@ -43,7 +43,7 @@ class eqLabel:
     return "#"+self.label()
 
   def toLink(self):
-    return pf.Link(pf.Str(self.label()),url=self.url())
+    return pf.Link(pf.Str(self.label()),url=self.url(),classes=["aeq"])
 
 
 def has_eq (elem) :
