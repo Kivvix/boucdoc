@@ -646,7 +646,7 @@ $$
   u_i^1 = u_i^0 - \frac{\Delta t}{\Delta x}( u^0_{i+\frac{1}{2}} - u^0_{i-\frac{1}{2}}) = \cos(x_i - \Delta t) + \mathcal{O}(\Delta x^m)
 $$
 
-où $m$ est l'ordre recherché. L'erreur se calcule par la norme de la différence de la solution approchée avec la solution exacte. Plus précisement, elle est définie par\ :
+où $m$ est l'ordre recherché. L'erreur se calcule par la norme de la différence de la solution approchée avec la solution exacte. Plus précisément, elle est définie par\ :
 
 $$
   e_1 = \| U^1 - \cos(X_i - \Delta t) \|_1 = \sum_i |u_i^1 - \cos(x_i - \Delta t) |\Delta x
@@ -685,7 +685,7 @@ Dans notre cas nous prendrons $\Delta x = \frac{2\pi}{20} , \frac{2\pi}{40} , \f
 
 ##### Calcul à nombre de CFL constant
 
-Il est intéressant de faire une simulation sur plusieurs pas de temps pour amplifier la visibilité de l'ordre du schéma ; l’inconvénient est que l'erreur du schéma temporel, potentiellement plus élevée, empêche d'observer l'erreur dûe au schéma spatial sans choisir un pas de temps arbitrairement très faible. Pour remédier en partie à ce problème nous allons travailler sur un nombre de CFL constant, c'est-à-dire\ :
+Il est intéressant de faire une simulation sur plusieurs pas de temps pour amplifier la visibilité de l'ordre du schéma ; l’inconvénient est que l'erreur du schéma temporel, potentiellement plus élevée, empêche d'observer l'erreur due au schéma spatial sans choisir un pas de temps arbitrairement très faible. Pour remédier en partie à ce problème nous allons travailler sur un nombre de CFL constant, c'est-à-dire\ :
 
 $$
   \frac{\Delta t}{\Delta x} = c
@@ -831,7 +831,7 @@ $$
   u_i^n = \cos(x_i - t^n)
 $$
 
-Nous avons constater numériquement que l'erreur en espace de ce schéma est beaucoup plus faible que l'erreur en temps du schéma Euler implicite utilisé ici. La méthode d'obtention de l'ordre en espace sur un seul pas de temps demande alors un pas de temps trop petit pour que l'erreur du schéma soit systématiquement distingable de l'erreur machine. Pour ce schéma nous utiliserons uniquement la mesure de l'ordre avec un nombre de CFL constant, ce qui permet de réduire l'erreur en temps à mesure que le maillage se raffine.
+Nous avons constater numériquement que l'erreur en espace de ce schéma est beaucoup plus faible que l'erreur en temps du schéma Euler implicite utilisé ici. La méthode d'obtention de l'ordre en espace sur un seul pas de temps demande alors un pas de temps trop petit pour que l'erreur du schéma soit systématiquement distinguable de l'erreur machine. Pour ce schéma nous utiliserons uniquement la mesure de l'ordre avec un nombre de CFL constant, ce qui permet de réduire l'erreur en temps à mesure que le maillage se raffine.
 
 Les différentes simulations sont effectuées avec un nombre de CFL constant, c'est-à-dire\ :
 
@@ -932,7 +932,7 @@ $$
   f_{j,k}^{n+1} = \mathcal{A} f_{j,k}^n = (\mathcal{A})^{n+1} f_{j,k}^0
 $$
 
-On remarque de suite qu’il est nécessaire pour que le schéma converge d’avoir $|\mathcal{A}| \leq 1$. Pour trouver cette formule de récurrence nous travaillerons sur une version simplifiée du schéma en négiligeant l’impact de la maxwellienne.
+On remarque de suite qu’il est nécessaire pour que le schéma converge d’avoir $|\mathcal{A}| \leq 1$. Pour trouver cette formule de récurrence nous travaillerons sur une version simplifiée du schéma en négligeant l’impact de la maxwellienne.
 
 On part ainsi du schéma simplifié sur $f$\ :
 
@@ -1063,7 +1063,7 @@ Nous avons appliqué les schémas précédents à différents modèles :
 
 * Un modèle cinétique sur $f$ ([!eq:cine]) qui permettra de tester nos schémas cinétiques sans couplage avec des équations de type Euler.
 * Le modèle *micro-macro* ([!eq:mM]) qui couple la discrétisation de la parrtie cinétique *micro* à la partie fluide de type Euler.
-* Le modèle *micro-macro* avec une fonction $h$ qui perrmettra de tester cette nouvelle modélisation.
+* Le modèle *micro-macro* avec une fonction $h$ qui permettra de tester cette nouvelle modélisation.
 
 ## Discrétisation du modèle cinétique
 
@@ -1261,7 +1261,7 @@ $$
   g^{n+1} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ g^n -\Delta t (I-\Pi)(v\cdot\nabla_x(g^n+\mathcal{M}_{[U^{n+1}]}) \right]
 $$
 
-Ne résulte de cette réécriture qu'une seule dérviée en espace à approximer via les flux numériques d'ordre élevé précédemment présentés.
+Ne résulte de cette réécriture qu'une seule dérivée en espace à approximer via les flux numériques d'ordre élevé précédemment présentés.
 
 $$
   g^{n+1}_{i,k} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ g^n_{i,k} - (I-\Pi)\left(\frac{\Delta t}{\Delta x}v_k(\tilde{f}^n_{i+\frac{1}{2},k} - \tilde{f}^n_{i-\frac{1}{2},k})\right)  \right]
@@ -1346,7 +1346,7 @@ $$
 
 Dans cette partie, nous fixons la dimension du problème à $d=1$, en effet l'approche que nous avons pu avoir par la suite sur la fonction $h(t,x)$ ne se généralise pas directement au cas $d=2,3$.
 
-La discrétisation directe du modèle *micro* avec l'approximation approtée par la fonction $h$ décrit en [!eq:mM:h] s'écrit comme\ :
+La discrétisation directe du modèle *micro* avec l'approximation apportée par la fonction $h$ décrit en [!eq:mM:h] s'écrit comme\ :
 
 $$
   \begin{aligned}
@@ -1426,7 +1426,7 @@ Maintenant essayons de faire évoluer $h$ en fonction du temps. Comme nous l'avo
 
 Une autre méthode utilisée dans [@filbet], est de déterminer dans chaque cellule, à chaque itération, le modèle prédominant entre fluide et cinétique. Cela demande de l'évaluation systématique d'un critère, potentiellement coûteux en temps de calcul, pour éventuellement échanger le modèle prédominant dans chaque cellule. L'inconvénient de ce type d'approche est le calcul de dérivées à la jonction entre deux modèles. Le nombre restreint de cellules où le modèle cinétique est effectivement évaluée permet en principe de réduire globalement le temps de simulation.
 
-Á l'inverse des approches présentées dans [@dimarco] et [@filbet], nous avons besoin d'une connaissance amont du problème. Pour ce faire nous allons étudier la troisème composante du flux cinétique de $g$ dans sa globalitéi, sans fonction $h$, seule composante non nulle du flux cinétique en théorie par la définition de $g$ comme étant à moyenne nulle en $v$. Ce flux (respectivement le logarithme de ce flux) est représenté en figure TODO (respectivement en figure TODO).
+À l'inverse des approches présentées dans [@dimarco] et [@filbet], nous avons besoin d'une connaissance amont du problème. Pour ce faire nous allons étudier la troisième composante du flux cinétique de $g$ dans sa globalité, sans fonction $h$, seule composante non nulle du flux cinétique en théorie par la définition de $g$ comme étant à moyenne nulle en $v$. Ce flux (respectivement le logarithme de ce flux) est représenté en figure TODO (respectivement en figure TODO).
 
 <div>
   ![Flux numérique de $g$](img/mimas_test/h_t/fluxg.png)
