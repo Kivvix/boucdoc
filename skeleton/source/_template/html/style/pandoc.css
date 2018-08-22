@@ -157,10 +157,7 @@ ins {
 }
 
 mark {
-  background: #ff0;
-  color: #000;
-  font-style: italic;
-  font-weight: bold;
+  background: rgba(255, 255, 0, 0.3);
 }
 
 sub, sup {
