@@ -14,5 +14,5 @@ headers.forEach( (h) => {
 // same on code blocks
 document.querySelectorAll(`div.sourceCode[id]`).forEach( (el) => {
   'use strict';
-  el.innerHTML += `<a href="#${el.id}" class="code-anchor" title="Permalink to this code block" > </a>`;
+  el.innerHTML += `<a href="#${el.id}" class="code-anchor" title="Permalink to this code block" ></a>`;
 });
