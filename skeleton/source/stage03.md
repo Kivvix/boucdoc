@@ -16,6 +16,16 @@ bibliography: source/biblio/biblio.bib
 
 # Introduction
 
+La simulation numérique fut introduite dès l'émergence de l'informatique pour enrichir les connaissances scientifiques dans des contextes où l'expérimentation est trop contraignante voir impossible. Elle peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d'étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle et reste représentative. **Puis si ça pouvait aller vite (en faisant des approximations sans que ça s'éloigne trop de la réalité) ça serait bien.**
+
+Notre étude s'effectue sur la physique des plasmas chauds, c'est à dire un état fluide de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative) et des ions (charge positive), atome dont sont extraits les électrons. La température, grandeur macroscopique, exprime l'agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif *chaud* indique donc que les plasmas étudiés possèderont des particules à des vitesses élevées. **(parler de la température c'est sans doute que pour parler des perspectives avec un $h(t,v)$...)**
+
+Le fluide étudié peut à la fois être proche de son équilibre thermodynamique et donc nécessiter une description macroscopique simple ; mais aussi être parcouru par une onde de choc, zone hors équilibre, exigeant une description plus fine du fluide via une description cinétique. Nous souhaitons donc développer des modèles hybrides permettant d'allier la description macroscopique, simple mais parfois suffisante, à la description cinétique qui permet de prendre en compte les collisions entre les particules au sein du fluide, avec une description cinétique plus complexe mais parfois nécessaire. La complexité de description se traduit numériquement par un coût en temps de calcul et en utilisation de la mémoire. Une description complexe n'est donc pas souhaitable sur tout le domaine du fluide si celui-ci est proche de son équilibre, des optimisations sont donc envisageable.
+
+> TODO: ajouter une annonce du plan (étude des différents modèles, construction du modèle micro-macro, étude de schéma permettant la simulation du modèle, mise en application et résultats numérique).
+>
+> Je n'ai pas abordé la volonté d'introduire l'ordre élevé
+
 
 # Présentation des modèles
 
@@ -43,9 +53,9 @@ Une approximation de ce modèle est parfois utilisé à l'aide d'une représenta
 
 ## Modèle cinétique
 
-Le principe du modèle cinétique est de proposer une description intermédiaire entre le modèle microscopique et macroscopique. On représente les particules dans l'espace des phases $(x,v)$, où $x \in \Omega \subset \mathbb{R}^d$ désigne la position et $v \in \mathbb{R}^d$ la vitesse, avec $d=1,2,3$ la dimension du problème.
+Le principe du modèle cinétique est de proposer une description intermédiaire entre le modèle microscopique et macroscopique. On représente les particules dans l'espace des phases $(x,v)$, où $x \in \Omega \subset \mathbb{R}^d$ désigne la position et $v \in \mathbb{R}^d$ la vitesse, avec $d=1,2,3$ la dimension du problème. L'étude se restreint au cas de $\Omega$ un fermé borné de $\mathbb{R}^d$ ; la vitesse quant à elle n'est *a priori* pas borné par notre modélisation.
 
-Nous n'étudions pas chaque particule individuellement mais une valeur statistique qu'est la fonction de distribution de particules dans l'espace des phases notée $f$. La grandeur $f(t,x,v)\mathrm{d}x\mathrm{d}v$ représente la densité de particules dans un volume élémentaire de l'espace des phases $\mathrm{d}x\mathrm{d}v$ centré en $(x,v)$ au temps $t \geq 0$.
+Nous n'étudions pas chaque particule individuellement mais, à la manière du modèle macroscopique, une valeur statistique qu'est la fonction de distribution de particules dans l'espace des phases notée $f$. La grandeur $f(t,x,v)\mathrm{d}x\mathrm{d}v$ représente la densité de particules dans un volume élémentaire de l'espace des phases $\mathrm{d}x\mathrm{d}v$ centré en $(x,v)$ au temps $t \geq 0$.
 
 L'inconnue $f(t,x,v)$ est alors solution d'une équation de transport dans l'espace des phases à laquelle on ajoute un terme de collision\ :
 
@@ -57,11 +67,7 @@ où le transport s'effectue à vitesse $v$ dans la direction $x$. $Q(f)$ représ
 
 Les variables de base du problème sont $t$, $x$ et $v$. Une simulation directe du problème complet impose donc de travailler en 7 dimensions : une de temps, et 6 pour l'espace des phases $(x,v)$. Travailler dans un espace de dimension aussi élevée implique des coûts importants en temps de calcul et dans l'utilisation de la mémoire, cela est cependant moins coûteux qu'un modèle microscopique. De plus il est possible de développer des schémas numériques adaptés au problème considéré et réduire le temps de calcul, par exemple via des techniques de décomposition de domaine. En effet un maillage non cartésien permet de ne raffiner que localement le domaine et ainsi réduire le temps de calcul sur certaines régions de l'espace. Mais les contraintes de gestion du maillage nous ont orientés vers une autre alternative.
 
-L'étude théorique se fera en dimension $d /geq 1$ quelconque, mais pour simplifier l'étude, l'implémentation et la visualisation se feront en dimension $d=1$.
-
-> TODO: revoir le paragraphe suivant, redondant avec le reste, mais ajoute quelques détails.
-
-Ce modèle utilise à la manière du modèle macroscopique, une grandeur intégrale ; celle-ci vit dans l'espace des phases ce qui permet d'avoir une description plus précise puisqu'elle prend en compte la répartition des particules en vitesse. La grandeur de travail est une fonction $f$ vivant dans l'espace des phases $(x,v)$. Les variables $(t,x,v)$ vivent dans $[0,T]\times\Omega\times\mathbb{R}^d$, où $\Omega$ est un fermé borné de $\mathbb{R}^d$, la vitesse $v$ n'est *a priori* pas borné par notre modélisation. Ce grand nombre de dimensions implique un nombre important de variables à stocker lors de la simulation numérique du modèle, ainsi qu'un nombre important de boucles pour parcourir toutes les dimensions du problème, le modèle est donc coûteux en temps de calcul ainsi qu'en utilisation de la mémoire.
+L'étude théorique se fera en dimension $d \geq 1$ quelconque, mais pour simplifier l'étude, l'implémentation et la visualisation se feront en dimension $d=1$.
 
 ### Conservation de la masse, de l'impulsion et de l'énergie
 
@@ -719,7 +725,7 @@ Ainsi à chaque raffinement de maillage, le pas de temps est aussi raffiné, l'e
 
 ### Schéma WENO
 
-> TODO: Introduire WENO en citant [@weno] ou [@icase], dire qu'une autre interpolation est possible pour des problèmes particulier comme Vlasov-Poisson : [@banks]
+Les schémas numériques d'ordre élevé ont permi d'approfondir l'étude de problèmes complexes tels qu'en mécanique des fluides. L'introduction de l'ordre élevé se fait généralement au détriment d'oscillations pouvant apparaître au niveau des discontinuités. Une famille de schémas numériques d'ordre élevé a été introduite par C.-W. Shu, exposées dans [@icase] et [@weno], permettant de prévenir l'apparition d'oscillation.
 
 WENO pour *weighted essentially non-oscillatory* est une famille de schémas numériques qui se généralise facilement à l'ordre élevé sans pour autant provoquer d'oscillations. L'idée des schémas WENO est d'effectuer plusieurs interpolations polynomiales lagrangiennes sur des *stencils* incluant le point à évaluer, pondérées pour limiter les oscillations. La méthode que nous allons présenter ici est un schéma WENO d'ordre 5.
 
@@ -801,7 +807,7 @@ $$
 $$
 
 
-et enfin, $\epsilon$ est un paramètre pour prévenir que le dénominateur soit égal à $0$ ; il est généralement pris à $\epsilon = 10^{-6}$ (dans [@weno]) ou $\epsilon = 10^{-5}\times\max_{i,k}( v^0_k f^0_{i,k})$ (dans [@qiu]) ; ce dernier cas présente l'avantage de s'adapter à l'amplitude de la fonction à considérer.
+et enfin, $\epsilon$ est un paramètre pour prévenir que le dénominateur soit égal à $0$ ; il est généralement pris à $\epsilon = 10^{-6}$ (dans [@weno]) ou $\epsilon = 10^{-5}\times\max_{i,k}( a^0_k u^0_{i})$ (dans [@qiu]) ; ce dernier cas présente l'avantage de s'adapter à l'amplitude de la fonction à considérer.
 
 On a ainsi définit l'approximation du terme de transport à l'aide d'un schéma WENO pour toute vitesse $a_k$ :
 
@@ -909,18 +915,26 @@ Le terme raide, apporté par l'opérateur de collision BGK va induire une modifi
 Pour calculer le nombre de CFL nous allons dans un premier temps nous intéresser au modèle cinétique [!eq:cine] avec $Q(f) = \frac{1}{\varepsilon}(\mathcal{M}_{[f]}-f)$, la description microscopique du modèle *micro-macro* est similaire et implique la même condition. Nous utiliserons le schéma d'Euler implicite pour la discrétisation en temps, et pour simplifier les notations nous n'utiliserons qu'un schéma *upwind* en espace, encore une fois le champ électrique est négligé dans cette partie.
 
 $$
-  \frac{f_{i,k}^{n+1}-f_{i,k}^n}{\Delta t} + v\frac{f_{i+\frac{1}{2},k}^n - f_{i-\frac{1}{2},k}^n}{\Delta x} = \frac{1}{\varepsilon}((\mathcal{M}_{[f^{n+1}]})_{i,k} - f_{i,k}^{n+1})
+  \frac{f_{j,k}^{n+1}-f_{j,k}^n}{\Delta t} + v\frac{f_{j+\frac{1}{2},k}^n - f_{j-\frac{1}{2},k}^n}{\Delta x} = \frac{1}{\varepsilon}((\mathcal{M}_{[f^{n+1}]})_{j,k} - f_{j,k}^{n+1})
 $$
 
 Ce qui peut se réécrire, pour une interprétation itérative\ :
 
 $$
-  f_{i,k}^{n+1} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ f_{i,k}^n - v_k\frac{\Delta t}{\Delta x}(f_{i+\frac{1}{2},k}^n - f_{i-\frac{1}{2},k}^n) + \frac{\Delta t}{\varepsilon}(\mathcal{M}_{[f^{n+1}]})_{i,k} \right]
+  f_{j,k}^{n+1} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ f_{j,k}^n - v_k\frac{\Delta t}{\Delta x}(f_{j+\frac{1}{2},k}^n - f_{j-\frac{1}{2},k}^n) + \frac{\Delta t}{\varepsilon}(\mathcal{M}_{[f^{n+1}]})_{j,k} \right]
 $$
 
-> TODO: revoir la notation $A^n$ car ça dépend de $k$, on ne sait pas exactement comment (peut-être juste ajouter en indice $k$)
+> TODO: revoir la notation $A^n$ car ça dépend de $k$, on ne sait pas exactement comment (peut-être juste ajouter en indice $k$). Il y a plusieurs problèmes dans l'introduction du calcul
 
-Il n’est pas possible de calculer directement la CFL du schéma en $f_{i,k}$ nous allons donc utiliser l’analyse de von Neumann pour résoudre ce problème. Pour cela, posons $f_{j,k}^n = e^{i\kappa j\Delta x}A^n$, l’indice d’espace est dorénavant $j$ et $i$ est le nombre imaginaire tel que $i^2 = -1$. Nous pouvons donc facilement exprimer $f_{j-1,k}^n$ directement en fonction de $f_{j,k}^n$\ :
+Il n’est pas possible de calculer directement la CFL du schéma en $f_{j,k}$. Nous allons donc utiliser l’analyse de von Neumann pour résoudre ce problème, méthode décrite dans [@anm1966]. Cette méthode implique le calcul d'une transformée de Fourier, nous nous plaçons donc dans l'intervalle $\Omega = [0,2\pi]$ avec des conditions aux bords périodiques, c'est-à-dire $f(t,x+2\pi,v) = f(t,x,v)\,\forall t,x,v$. Puisque les fonctions formant la base de la transformée de Fourier sont orthogonales, nous pouvons nous intéresser au comportement de chaque mode indépendament, puis majorer l'ensemble des modes pour étudier le comportement global.
+
+Le coefficient de Fourier du mode $\kappa$ de $(f_{j,k}^n)_{i,k}$ est donné par\ :
+
+$$
+  f_{j,k}^n = e^{i\kappa j\Delta x}A^n_{j,k}
+$$
+
+où $i$ est le nombre imaginaire tel que $i^2 = -1$. Nous pouvons donc facilement exprimer $f_{j-1,k}^n$ directement en fonction de $f_{j,k}^n$\ :
 
 $$
   f_{j-1,k}^n = e^{i\kappa (j-1)\Delta x}A^n = f_{j,k}^n e^{-i\kappa\Delta x}
@@ -1319,10 +1333,10 @@ Ceci permettra d'effectuer une approximation de $\partial_x \langle vm(v)g \rang
 Dans le modèle continue, la propriété $\Pi_f(g) = 0$ est assuré par construction de $g$, à tout instant $t$. Dans le schéma numérique il faut s'assurer que cette propriété est conserver si $\Pi_f(g^0) = 0$. Pour cela nous allons étudier $\Pi_f(g^{n+1})$ en supposant $\Pi_f(g^n) = 0$. Le schéma nous donne\ :
 
 $$
-  \Pi_f(g^{n+1}) = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ \Pi g^n - \Pi (I-\Pi)\left( \frac{\Delta t}{\Delta x}v\partial_x \tilde{f}^n  \right)  \right]
+  \Pi_f(g^{n+1}) = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ \Pi_f(g^n) - \Pi_f\left[(I-\Pi)\left( \frac{\Delta t}{\Delta x}v\partial_x \tilde{f}^n  \right)\right]  \right]
 $$
 
-Or $(I-\Pi_f)(v\partial_x \tilde{f}^n)$ appartient au noyau de $\Pi_f$, par propriété du l'opérateur de projection nous obtenons donc\ :
+où, pour rappel, $\tilde{f}^n = \mathcal{M}_{[f^{n+1}]}+g^n$. Or $(I-\Pi_f)(v\partial_x \tilde{f}^n)$ appartient au noyau de $\Pi_f$, par propriété du l'opérateur de projection nous obtenons donc\ :
 
 $$
   \Pi_f(g^{n+1}) = 0
@@ -1378,8 +1392,6 @@ $$
 où $\hat{g}_{i,k}^n$ est la grandeur calculée par [!eq:num:mM:h]. Une fois cette technique mise au point il a suffit de trouver, de manière empirique, deux fonctions $x_s:t\mapsto x_s(t)$ et $x_e:t\mapsto x_e(t)$ s'adaptant correctement aux conditions initiales simulées.
 
 ### $h$ une fonction porte
-
-> TODO: revoir les parties de tests avec $h$
 
 Dans un premier temps nous allons considérer une fonction $h$ continument dérivable mais dont les variations s'effectuent sur un intervalle de longueur inférieure à $\Delta x$, $h$ se résume donc à une fonction porte :
 
@@ -1442,7 +1454,7 @@ Contrairement à ce qui était attendue le flux ne diminue pas suffisamment pour
 
 Sur cette courbe, $x_s$ correspond au premier dépassement du seuil, et $x_e$ au dernier ; sont aussi représentés les grandeurs de $x_s$ et $x_e$ précédemment choisis dans le cas d'une fonction porte.
 
-Nous souhaitons que $h(t,x)$ enveloppe la zone où $\langle v_km(v_k)g_{i,k}^n\rangle_3 > 10^{-15}$, pour cela nous considérons deux fonctions $x_s^n$ et $x_e^n$ donnant au cours du temps le domaine cinétique. Cette démarche ne fonctionne pas pour un système périodique c'est pour cela que nous sommes restés avec des conditions aux bords de Neumann. L'approche dans [@filbet] ne permet pas de diminuer la taille du domaine à parcourir au cours du temps ; en revanche elle propose, dans le cas d'une solution régulière, d'avoir un libre parcours moyen dépendant de $x$, cela permet d'effectuer une transition plus douce entre un modèle cinétique et fluide.
+Nous souhaitons que $h(t,x)$ enveloppe la zone où $\langle v_k^3g_{i,k}^n\rangle_v > 10^{-15}$, pour cela nous considérons deux fonctions $x_s^n$ et $x_e^n$ donnant au cours du temps le domaine cinétique. Cette démarche ne fonctionne pas pour un système périodique c'est pour cela que nous sommes restés avec des conditions aux bords de Neumann. L'approche dans [@filbet] ne permet pas de diminuer la taille du domaine à parcourir au cours du temps ; en revanche elle propose, dans le cas d'une solution régulière, d'avoir un libre parcours moyen dépendant de $x$, cela permet d'effectuer une transition plus douce entre un modèle cinétique et fluide.
 
 
 
