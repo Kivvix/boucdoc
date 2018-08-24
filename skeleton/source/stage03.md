@@ -1460,29 +1460,107 @@ Nous souhaitons que $h(t,x)$ enveloppe la zone où $\langle v_k^3g_{i,k}^n\rangl
 
 ## Tests numériques dans le cas de gaz raréfiés
 
-> Temps de calcul des différents modèles, et erreur par rapport au code de référence : Euler, et avantage qualitatif des différents modèles (plasma avec $\varepsilon \not\to 0$ et champ électrique : impossible avec simple approximation Euler)
+Dans cette section, nous allons présenter différent résultats numériques et comparer les performances du modèle *micro-macro*, dans le contexte d'un gaz raréfiés c'est-à-dire en l'absence de champ électrique $E$ et dans un régime proche d'un fluide $\varepsilon \to 0$. Plusieurs cas tests de la littératures ont été utilisés pour démontrer la versatilité de la modélisation.
 
 ### Conditions aux bords périodiques
 
-Condition initiale\ :
+Le premier cas test que nous considérons est un domaine $\Omega$ périodique avec pour condition intiale la fonction de densité suivante\ :
 
 $$
-  f(t=0,x,v) = (1+\alpha\cos(k_x x))\text{e}^{-\frac{|v|^2}{2}}
+  f(t=0,x,v) = \frac{1}{\sqrt{2\pi}}(1 - \alpha\cos(k_x x))\text{e}^{-\frac{|v|^2}{2}}
+$${#eq:ci:per:f}
+
+avec les paramètres $\alpha$ et $k_x$ représentent respectivement la perturbation initiale et le nombre d'onde. Le domaine $\Omega$ est défini par $\Omega = [0,\frac{2\pi}{k_x}]$ pour assurer une période en $x$ de la condition initiale. La condition périodique se traduit par $f(t,0,v)=f(t,\frac{2\pi}{k_x},v)$ à tout instant $t$ pour tout $v$. Le domaine en $v$ est en théorie infini, numériquement il sera borné et inclu dans l'intervalle $[-v_{\text{max}},v_{\text{max}}]$, avec $v_{\text{max}}$ pris suffisament grand pour que $f(t,x,v_{\text{max}})\approx 0$, avec une dérivée nulle (fin de queue d'une gaussienne). L'héritage des tests en 2D sur le schéma WENO nous a conduit à conserver des conditions aux bords périodiques en $v$. De premiers tests ont été conduit en 1D avec des conditions aux bords de Neumann sans aucune différence numérique notable.
+
+Nous allons comparer les résultats avec un code de simulation des équations d'Euler qui servira de référence. Il est donc nécessaire de traduire la condition ([!eq:ci:per:f]) dans le domaine macroscopique\ :
+
+> TODO: vérifier cette condition initiale (surtout la température)
+
+$$
+  U(t=0,x) = \begin{pmatrix} 1-\alpha\cos(k_x x) \\ 0 \\ \frac{1}{2}(1-\alpha\cos(k_x x)) \end{pmatrix}
 $$
 
-ou un truc du genre
+Les paramètres de simulation sont\ :
+
+* Temps final $T_f = 10$
+* Nombre de points **ça dépend des cas, revoir la valeur de ce paramètre**
+* Perturbation $\alpha = \frac{1}{2}$
+* Nombre d'onde $k_x - \frac{1}{2}$
+* Nombre de Knidsen $\varepsilon = 10^{-3}$
+
+Le domaine périodique est $\Omega = [0,4\pi]$.
+
+> TODO: revoir les valeurs de $\Delta x$ et $\Delta v$ (ou plus exactement le nombre de points et la valeur de $v_{\text{max}}$)
+
+Conformément au calcul de condition CFL effectué en (TODO mettre numéro de section), nous n'avons pas de contrainte numérique sur le pas de temps $\Delta t$, puisque nous nous plaçons en régime fluide.
+
 
 ### Condition aux bords de Neumann
 
-> Tube à choc de Sob
+Le second cas test abondant dans la litérature est le tube à choc de Sob. La condition initiale est une instabilité conduisant à un choc, le temps de simulation est suffisamment cours pour ne pas étudier le contact de l'onde de choc sur les bords. Le tube est modélisé par un domaine $\Omega = [0,1]$. Les conditions aux bords sont modélisées par des conditions de Neumann, c'est-à-dire $\partial_x f(t,0,v) = \partial_x f(t,1,v) = 0$ à tout instant $t$ pour toute vitesse $v$. Comme pour le cas test précédent, le domaine en $v$, théoriquement égal à $\mathbb{R}$, est numériquement restreint à l'intervalle $[-v_{\text{max}},v_{\text{max}}]$, avec $v_{\text{max}}$ pris suffisament grand, et avec des conditions au bords périodiques.
+
+La simulation est initialisée par la condition initiale\ :
+
+$$
+  U(t=0,x) = \begin{cases}
+    U_L = (\rho_L,u_L,T_L) = (1,0,1) \quad & , x \leq \frac{1}{2} \\
+    U_R = (0.125,0,0.8)                    & , x > \frac{1}{2}
+  \end{cases}
+$$
+
+> TODO: mettre une figure de la condition initiale
+
+Pour initialiser la simulation du modèle cinétique ou la partie *micro* du modèle *micro-macro* nous utilisons la maxwellienne de cette condition initiale\ :
+
+$$
+  f(t=0,x,v) = \mathcal{M}_{[U(t=0,x)]}
+$$
+
+> TODO: est-il nécessaire d'écrire explicitement la valeur de la maxwellienne alors que $(\rho,u,T)_{R|L}$ ont déjà été indiqué ?
+
+Les paramètres de simulations sont\ :
+
+* Temps final de simulation $T_f = 0.67$
+* Nombre de points **ça dépend des cas, revoir la valeur de ce paramètre**
+* Nombre de Knidsen $\varepsilon = 10^{-3}$
+
+Le pas de temps $\Delta t$ peut de nouveau être choisi indépendament de $\Delta x$ conformément au calcul de la conditon CFL puisque nous nous plaçons en régime fluide.
+
 
 ### Milieu non homogène : $\varepsilon = \varepsilon(x)$
 
-> Cas test dans [@filbet], comparatif au code cinétique.
+Pour obtenir une description d'un milieu non-homogène, il est possible dans le modèle cinétique de faire évoluer le nombre de Knidsen (paramètre $\varepsilon$) en fonction de la position : $\varepsilon = \varepsilon(x)$. Le modèle macroscopique ne permet pas de décrire ce cas et ne sera donc pas utilisé. Ce cas test est proposé dans [@filbet], nous reprendrons la même condition initiale\ :
 
-### Fonction indicatrice
+$$
+  f(t=0,x,v) = \frac{1}{2}(\mathcal{M}_{[(\rho,u,T)]} + \mathcal{M}_{[\rho,-u,T]})
+$$
+
+avec le vecteur $(\rho,u,T)$ défini par\ :
+
+$$
+  (\rho(x),u(x),T(x)) = \left( 1+\frac{1}{2}\sin(\pi x) , \frac{3}{4} , \frac{5+2\cos(2\pi x)}{20}  \right)
+$$
+
+dans le domaine $\Omega = [-\frac{1}{2},\frac{1}{2}]$ et $v\in[-v_{\text{max}},v_{\text{max}}]$. Le nombre de Knidsen est défini par\ :
+
+$$
+  \varepsilon(x) = 10^{-4} + \frac{1}{2}(\text{arctan}(1+30x) + \text{arctan}(1-30x))
+$$
+
+Il n'est malheureusement pas possible de comparer les résultats de nos simulations avec les résultats de [@filbet]. En effet les auteurs y utilisent une vitesse vivant dans $\mathbb{R}^2$, la définition de la maxwellienne change et avec celle des grandeurs macroscopiques. Par conséquent nous allons comparer les résultats de entre la simulation du modèle cinétique, utilisée alors comme référence, et celle du modèle *micro-macro*.
+
+
+### Fonction indicatrice $h$
 
 > TODO: mettre ici un cas où $h$ provoque des oscillations (trop petit), et des cas où ça marche bien
+
+L'implémentation que nous avons pu faire de la fonction indicatrice $h$, décrite dans la section (TODO rajouter le numéro de la section), ne fonctionne pas dans le cas de conditions aux bords périodiques. Nous reprennons pour ces tests le cas du tube de Sob avec des condtions aux bords de Neumann. Plusieurs gabarits de fonction $h$ ont été testés, décrits dans la section (TODO rajouter le numéro de la section).
+
+#### $h$ une fonction porte
+
+#### $h$ une fonction trapèze
+
+#### $h(t,x)$ une fonction dépendant du temps
 
 
 # Application pour les plasma
