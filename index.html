@@ -50,13 +50,11 @@
 <p>Modèle mM rassemble tous ces points</p>
 </blockquote>
 <h1 id="introduction">Introduction</h1>
-<p>La simulation numérique fut introduite dès l’émergence de l’informatique pour enrichir les connaissances scientifiques dans des contextes où l’expérimentation est trop contraignante voir impossible. Elle peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d’étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle et reste représentative. <strong>Puis si ça pouvait aller vite (en faisant des approximations sans que ça s’éloigne trop de la réalité) ça serait bien.</strong></p>
+<p>La simulation numérique fut introduite dès l’émergence de l’informatique pour enrichir les connaissances scientifiques dans des contextes où l’expérimentation est trop contraignante voir impossible. Elle peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d’étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle et reste représentative. Un enjeu majeu de la modélisation et de la simulation est de maintenir un équilibre entre les approximations permettant d’accéler le temps de traitement et la représentativité des résultats.</p>
 <p>Notre étude s’effectue sur la physique des plasmas chauds, c’est à dire un état fluide de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative) et des ions (charge positive), atome dont sont extraits les électrons. La température, grandeur macroscopique, exprime l’agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif <em>chaud</em> indique donc que les plasmas étudiés possèderont des particules à des vitesses élevées. <strong>(parler de la température c’est sans doute que pour parler des perspectives avec un <span class="math inline">\(h(t,v)\)</span>…)</strong></p>
 <p>Le fluide étudié peut à la fois être proche de son équilibre thermodynamique et donc nécessiter une description macroscopique simple ; mais aussi être parcouru par une onde de choc, zone hors équilibre, exigeant une description plus fine du fluide via une description cinétique. Nous souhaitons donc développer des modèles hybrides permettant d’allier la description macroscopique, simple mais parfois suffisante, à la description cinétique qui permet de prendre en compte les collisions entre les particules au sein du fluide, avec une description cinétique plus complexe mais parfois nécessaire. La complexité de description se traduit numériquement par un coût en temps de calcul et en utilisation de la mémoire. Une description complexe n’est donc pas souhaitable sur tout le domaine du fluide si celui-ci est proche de son équilibre, des optimisations sont donc envisageable.</p>
-<blockquote>
-<p>TODO: ajouter une annonce du plan (étude des différents modèles, construction du modèle micro-macro, étude de schéma permettant la simulation du modèle, mise en application et résultats numérique).</p>
-<p>Je n’ai pas abordé la volonté d’introduire l’ordre élevé</p>
-</blockquote>
+<p>L’objet de l’étude effectué pendant ce stage est d’étudier des modèles avec une description multiéchelle hybride fluide-cinétique, et de développer des schémas d’odre élevé permettant de décrire au mieux des régimes instables. Une seconde étape d’approximation des modèles sera effectuée pour optimiser le temps de simulation.</p>
+<p>Nous présenterons dans un premier les modèles classiques de la littérature, en indiquant leurs avantages et leurs défauts ; puis nous construirons un modèles hybride permettant de lier les forces des différentes descriptions possibles d’un plasma. Nous nous intéresserons par la suite à différents schémas numériques permettant de résoudre notre problème, pour enfin représenter nos résultats.</p>
 <h1 id="présentation-des-modèles">Présentation des modèles</h1>
 <p>Dans cette partie, nous présenterons différents modèles mathématiques utilisés dans la littérature pour décrire un système de particules, potentiellement chargées. Ces modèles vont de la description particulaire, qui est la plus précise, jusqu’à la description hydrodynamique, en passant par la description cinétique.</p>
 <h2 id="modèle-microscopique-particulaire">Modèle microscopique particulaire</h2>
@@ -1281,7 +1279,7 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
     1 &amp;  \textrm{, si}\ x_s \leq x_i \leq x_e \\
     0 &amp;  \textrm{, si}\ x_i &gt; x_e \\
     \end{cases}
-\]</span></p>
+\]</span><a href="#5.4" id="5.4" class="eq"></a></p>
 <blockquote>
 <p>TODO: mettre 2 cas tests, 1 avec <span class="math inline">\(h\)</span> trop petit (apparition d’oscillations parasites à la fonction du domaine), et un autre où tout se passe bien (domaine plus large)</p>
 </blockquote>
@@ -1330,9 +1328,9 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
 <p>Le premier cas test que nous considérons est un domaine <span class="math inline">\(\Omega\)</span> périodique avec pour condition intiale la fonction de densité suivante :</p>
 <p><span class="math display">\[
   f(t=0,x,v) = \frac{1}{\sqrt{2\pi}}(1 - \alpha\cos(k_x x))\text{e}^{-\frac{|v|^2}{2}}
-\]</span><a href="#5.4" id="5.4" class="eq"></a></p>
+\]</span><a href="#5.5" id="5.5" class="eq"></a></p>
 <p>avec les paramètres <span class="math inline">\(\alpha\)</span> et <span class="math inline">\(k_x\)</span> représentent respectivement la perturbation initiale et le nombre d’onde. Le domaine <span class="math inline">\(\Omega\)</span> est défini par <span class="math inline">\(\Omega = [0,\frac{2\pi}{k_x}]\)</span> pour assurer une période en <span class="math inline">\(x\)</span> de la condition initiale. La condition périodique se traduit par <span class="math inline">\(f(t,0,v)=f(t,\frac{2\pi}{k_x},v)\)</span> à tout instant <span class="math inline">\(t\)</span> pour tout <span class="math inline">\(v\)</span>. Le domaine en <span class="math inline">\(v\)</span> est en théorie infini, numériquement il sera borné et inclu dans l’intervalle <span class="math inline">\([-v_{\text{max}},v_{\text{max}}]\)</span>, avec <span class="math inline">\(v_{\text{max}}\)</span> pris suffisament grand pour que <span class="math inline">\(f(t,x,v_{\text{max}})\approx 0\)</span>, avec une dérivée nulle (fin de queue d’une gaussienne). L’héritage des tests en 2D sur le schéma WENO nous a conduit à conserver des conditions aux bords périodiques en <span class="math inline">\(v\)</span>. De premiers tests ont été conduit en 1D avec des conditions aux bords de Neumann sans aucune différence numérique notable.</p>
-<p>Nous allons comparer les résultats avec un code de simulation des équations d’Euler qui servira de référence. Il est donc nécessaire de traduire la condition (<a href="#5.4" class="aeq">5.4</a>) dans le domaine macroscopique :</p>
+<p>Nous allons comparer les résultats avec un code de simulation des équations d’Euler qui servira de référence. Il est donc nécessaire de traduire la condition (<a href="#5.5" class="aeq">5.5</a>) dans le domaine macroscopique :</p>
 <blockquote>
 <p>TODO: vérifier cette condition initiale (surtout la température)</p>
 </blockquote>
@@ -1397,9 +1395,29 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
 <p>TODO: mettre ici un cas où <span class="math inline">\(h\)</span> provoque des oscillations (trop petit), et des cas où ça marche bien</p>
 </blockquote>
 <p>L’implémentation que nous avons pu faire de la fonction indicatrice <span class="math inline">\(h\)</span>, décrite dans la section (TODO rajouter le numéro de la section), ne fonctionne pas dans le cas de conditions aux bords périodiques. Nous reprennons pour ces tests le cas du tube de Sob avec des condtions aux bords de Neumann. Plusieurs gabarits de fonction <span class="math inline">\(h\)</span> ont été testés, décrits dans la section (TODO rajouter le numéro de la section).</p>
+<blockquote>
+<p>TODO: reprécisier ici les paramètres de la simu (même s’il s’agit du même tube de Sob que précédemment),</p>
+</blockquote>
 <h4 id="h-une-fonction-porte-1"><span class="math inline">\(h\)</span> une fonction porte</h4>
+<p>Le premier exemple est une fonction porte définie en (<a href="#5.4" class="aeq">5.4</a>). Il s’agit plus d’un démonstrateur technique qu’un test intéressant numériquement. Il permet aussi d’étudier les limites de la méthode avec l’introduction d’une fonction porte trop <em>étroite</em> pour la simulation, c’est-à-dire, en réutilisant les notation de la section (TODO rajouter ici le numéro de la section) :</p>
+<p><span class="math display">\[
+  [x_s,x_e] \subset \Omega
+\]</span></p>
+<blockquote>
+<p>TODO: indiquer les valeurs de <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> utilisées</p>
+</blockquote>
 <h4 id="h-une-fonction-trapèze-1"><span class="math inline">\(h\)</span> une fonction trapèze</h4>
+<p>L’utilisation d’une fonction trapèze permet d’obtenir une transition plus douce entre les sous-domaines <span class="math inline">\(\Omega_K\)</span> et <span class="math inline">\(\Omega_F\)</span>, bien que rien de l’impose dans le modèle. L’approche locale utilisée dans <span class="citation" data-cites="dimarco">[1]</span> mène à une fonction <span class="math inline">\(h\)</span> en escalier.</p>
+<p>La transition progressive entre <span class="math inline">\(\Omega_K\)</span> et <span class="math inline">\(\Omega_F\)</span> permet de se prémunir d’une part des oscillations dues à une mauvaise étude amont du problème. Cela ne garanti pas la validité des résultats.</p>
+<blockquote>
+<p>TODO: indiquer les valeurs de <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> utilisées, ainsi que <span class="math inline">\(\delta x\)</span></p>
+</blockquote>
 <h4 id="htx-une-fonction-dépendant-du-temps-1"><span class="math inline">\(h(t,x)\)</span> une fonction dépendant du temps</h4>
+<p>Dans le cas du tube à chocs de Sob, l’onde de choc se propage depuis le centre du domaine en s’étendant. Il n’est donc pas nécessaire d’évaluer le modèle cinétique sur tout le domaine <span class="math inline">\(\Omega_K\)</span> précédemment utilisé. Il est aussi possible de construire des cas tests où une fonction indicatrice <span class="math inline">\(h\)</span> indépendante du temps impose de simuler la partie <em>micro</em> sur tout le domaine, c’est le cas par exemple du cas test aux conditions aux bords périodiques.</p>
+<p>La construction de notre fonction <span class="math inline">\(h\)</span> dépendante du temps s’est faite <em>a posteriori</em>. Elle a nécessité une première étude du cas test sur tout le domaine, avec éventuellement un maillage plus grossier. Aucune procédure d’automatisation d’obtention de cette fonction n’a été envisagée, autre que celles que nous avons pu évoquer dans la littérature, qui ne mène à une fonction discontinue.</p>
+<blockquote>
+<p>TODO: indiquer les fonctions <span class="math inline">\(x_s:t\mapsto x_s(t)\)</span> et <span class="math inline">\(x_e:t\mapstox_e(t)\)</span> utilisées, et le choix du <span class="math inline">\(\delta x\)</span> choisi.</p>
+</blockquote>
 <h1 id="application-pour-les-plasma">Application pour les plasma</h1>
 <blockquote>
 <p>C’est dans cette partie qu’on a vraiment besoin des tests 2D et qu’on introduit un champ électrique</p>
