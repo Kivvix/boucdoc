@@ -16,15 +16,15 @@ bibliography: source/biblio/biblio.bib
 
 # Introduction
 
-La simulation numérique fut introduite dès l'émergence de l'informatique pour enrichir les connaissances scientifiques dans des contextes où l'expérimentation est trop contraignante voir impossible. Elle peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d'étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle et reste représentative. **Puis si ça pouvait aller vite (en faisant des approximations sans que ça s'éloigne trop de la réalité) ça serait bien.**
+La simulation numérique fut introduite dès l'émergence de l'informatique pour enrichir les connaissances scientifiques dans des contextes où l'expérimentation est trop contraignante voir impossible. Elle peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d'étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle et reste représentative. Un enjeu majeu de la modélisation et de la simulation est de maintenir un équilibre entre les approximations permettant d'accéler le temps de traitement et la représentativité des résultats.
 
 Notre étude s'effectue sur la physique des plasmas chauds, c'est à dire un état fluide de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative) et des ions (charge positive), atome dont sont extraits les électrons. La température, grandeur macroscopique, exprime l'agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif *chaud* indique donc que les plasmas étudiés possèderont des particules à des vitesses élevées. **(parler de la température c'est sans doute que pour parler des perspectives avec un $h(t,v)$...)**
 
 Le fluide étudié peut à la fois être proche de son équilibre thermodynamique et donc nécessiter une description macroscopique simple ; mais aussi être parcouru par une onde de choc, zone hors équilibre, exigeant une description plus fine du fluide via une description cinétique. Nous souhaitons donc développer des modèles hybrides permettant d'allier la description macroscopique, simple mais parfois suffisante, à la description cinétique qui permet de prendre en compte les collisions entre les particules au sein du fluide, avec une description cinétique plus complexe mais parfois nécessaire. La complexité de description se traduit numériquement par un coût en temps de calcul et en utilisation de la mémoire. Une description complexe n'est donc pas souhaitable sur tout le domaine du fluide si celui-ci est proche de son équilibre, des optimisations sont donc envisageable.
 
-> TODO: ajouter une annonce du plan (étude des différents modèles, construction du modèle micro-macro, étude de schéma permettant la simulation du modèle, mise en application et résultats numérique).
->
-> Je n'ai pas abordé la volonté d'introduire l'ordre élevé
+L'objet de l'étude effectué pendant ce stage est d'étudier des modèles avec une description multiéchelle hybride fluide-cinétique, et de développer des schémas d'odre élevé permettant de décrire au mieux des régimes instables. Une seconde étape d'approximation des modèles sera effectuée pour optimiser le temps de simulation.
+
+Nous présenterons dans un premier les modèles classiques de la littérature, en indiquant leurs avantages et leurs défauts ; puis nous construirons un modèles hybride permettant de lier les forces des différentes descriptions possibles d'un plasma. Nous nous intéresserons par la suite à différents schémas numériques permettant de résoudre notre problème, pour enfin représenter nos résultats.
 
 
 # Présentation des modèles
@@ -1401,7 +1401,7 @@ $$
     1 &  \textrm{, si}\ x_s \leq x_i \leq x_e \\
     0 &  \textrm{, si}\ x_i > x_e \\
     \end{cases}
-$$
+$${#eq:hgate:theo}
 
 > TODO: mettre 2 cas tests, 1 avec $h$ trop petit (apparition d'oscillations parasites à la fonction du domaine), et un autre où tout se passe bien (domaine plus large)
 
@@ -1556,11 +1556,33 @@ Il n'est malheureusement pas possible de comparer les résultats de nos simulati
 
 L'implémentation que nous avons pu faire de la fonction indicatrice $h$, décrite dans la section (TODO rajouter le numéro de la section), ne fonctionne pas dans le cas de conditions aux bords périodiques. Nous reprennons pour ces tests le cas du tube de Sob avec des condtions aux bords de Neumann. Plusieurs gabarits de fonction $h$ ont été testés, décrits dans la section (TODO rajouter le numéro de la section).
 
+> TODO: reprécisier ici les paramètres de la simu (même s'il s'agit du même tube de Sob que précédemment),
+
 #### $h$ une fonction porte
+
+Le premier exemple est une fonction porte définie en ([!eq:hgate:theo]). Il s'agit plus d'un démonstrateur technique qu'un test intéressant numériquement. Il permet aussi d'étudier les limites de la méthode avec l'introduction d'une fonction porte trop *étroite* pour la simulation, c'est-à-dire, en réutilisant les notation de la section (TODO rajouter ici le numéro de la section)\ :
+
+$$
+  [x_s,x_e] \subset \Omega
+$$
+
+> TODO: indiquer les valeurs de $x_s$ et $x_e$ utilisées
 
 #### $h$ une fonction trapèze
 
+L'utilisation d'une fonction trapèze permet d'obtenir une transition plus douce entre les sous-domaines $\Omega_K$ et $\Omega_F$, bien que rien de l'impose dans le modèle. L'approche locale utilisée dans [@dimarco] mène à une fonction $h$ en escalier.
+
+La transition progressive entre $\Omega_K$ et $\Omega_F$ permet de se prémunir d'une part des oscillations dues à une mauvaise étude amont du problème. Cela ne garanti pas la validité des résultats.
+
+> TODO: indiquer les valeurs de $x_s$ et $x_e$ utilisées, ainsi que $\delta x$
+
 #### $h(t,x)$ une fonction dépendant du temps
+
+Dans le cas du tube à chocs de Sob, l'onde de choc se propage depuis le centre du domaine en s'étendant. Il n'est donc pas nécessaire d'évaluer le modèle cinétique sur tout le domaine $\Omega_K$ précédemment utilisé. Il est aussi possible de construire des cas tests où une fonction indicatrice $h$ indépendante du temps impose de simuler la partie *micro* sur tout le domaine, c'est le cas par exemple du cas test aux conditions aux bords périodiques.
+
+La construction de notre fonction $h$ dépendante du temps s'est faite *a posteriori*. Elle a nécessité une première étude du cas test sur tout le domaine, avec éventuellement un maillage plus grossier. Aucune procédure d'automatisation d'obtention de cette fonction n'a été envisagée, autre que celles que nous avons pu évoquer dans la littérature, qui ne mène à une fonction discontinue.
+
+> TODO: indiquer les fonctions $x_s:t\mapsto x_s(t)$ et $x_e:t\mapstox_e(t)$ utilisées, et le choix du $\delta x$ choisi.
 
 
 # Application pour les plasma
