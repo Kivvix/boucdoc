@@ -1,31 +1,25 @@
 ---
 title: Modèles hybrides fluide/cinétique pour les plasmas chauds
-author: Josselin
+author: Josselin Massot
 bibliography: source/biblio/biblio.bib
 ...
 
-> Introduction générale. Motivations, objectifs :
->
-> * Simulation de problèmes hors équilibre
-> * Approche hybride F/K
-> * Schémas multi-échelles
-> * Optimisation, coût numérique
->
-> Modèle mM rassemble tous ces points
-
-
 # Introduction
 
-La simulation numérique fut introduite dès l'émergence de l'informatique pour enrichir les connaissances scientifiques dans des contextes où l'expérimentation est trop contraignante voir impossible. Elle peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d'étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle et reste représentative. Un enjeu majeu de la modélisation et de la simulation est de maintenir un équilibre entre les approximations permettant d'accéler le temps de traitement et la représentativité des résultats.
+La simulation numérique fut introduite dès l'émergence de l'informatique pour enrichir les connaissances scientifiques dans des contextes où la solution exacte du modèle mathématique est souvent hors de portée et que l'expérimentation est trop contraignante voir impossible, il peut donc être difficile de valider les résultats des simulations.  La simulation peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d'étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle (conservation de certaines quantités physiques comme la masse ou l'énergie totale par exemple). Un enjeu majeur de la modélisation et de la simulation est de maintenir un équilibre entre les approximations permettant d'accélérer le temps de traitement et la représentativité des résultats.
 
-Notre étude s'effectue sur la physique des plasmas chauds, c'est à dire un état fluide de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative) et des ions (charge positive), atome dont sont extraits les électrons. La température, grandeur macroscopique, exprime l'agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif *chaud* indique donc que les plasmas étudiés possèderont des particules à des vitesses élevées. **(parler de la température c'est sans doute que pour parler des perspectives avec un $h(t,v)$...)**
+Notre étude s'effectue sur un système de particules type gaz raréfié ou plasma chaud. Un plasma, qualifié de 4e état de la matière en plus de solide liquide et gaz, est un état fluide de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative), particules qui sont extraites des atomes ; et des ions (charge positive), particules qui résultent de l'extraction des électrons. Le plasma est généralement obtenu en chauffant un gaz à très haute température, ce qui permet d'exciter les particules le constituant et d'arracher des électrons aux atomes. La température, grandeur macroscopique, exprime l'agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif *chaud* indique donc que les plasmas étudiés possèderont des particules à des vitesses élevées. L'étude des plasmas possède de nombreuses applications dans le domaine industriel, tels que la propulsion par plasmas (astronautique), la fusion nucléaire (énergie) et la découpe (industrie).
 
-Le fluide étudié peut à la fois être proche de son équilibre thermodynamique et donc nécessiter une description macroscopique simple ; mais aussi être parcouru par une onde de choc, zone hors équilibre, exigeant une description plus fine du fluide via une description cinétique. Nous souhaitons donc développer des modèles hybrides permettant d'allier la description macroscopique, simple mais parfois suffisante, à la description cinétique qui permet de prendre en compte les collisions entre les particules au sein du fluide, avec une description cinétique plus complexe mais parfois nécessaire. La complexité de description se traduit numériquement par un coût en temps de calcul et en utilisation de la mémoire. Une description complexe n'est donc pas souhaitable sur tout le domaine du fluide si celui-ci est proche de son équilibre, des optimisations sont donc envisageable.
+Pour décrire un tel système de particules, plusieurs possibilités existent. La description dite fluide, qui prend en compte les équations de la mécanique des fluides (comme les équations d'Euler ou de Navier-Stokes) peut être utilisée. Les inconnues de ces équations sont des quantités dites macroscopiques (mesurables expérimentalement) comme la densité ou la température qui ne dépendent que du temps et de la position. Cependant cette description suppose que le système étudié est à l'équilibre, c'est-à-dire que la répartition en vitesse des particules est maxwellienne. Or lorsque le système est parcouru par une onde de choc, des phénomènes hors équilibre sont à prendre en compte exigeant une description plus fine : la description cinétique. Celle-ci manipule une fonction de distribution dépendant du temps, de l'espace mais aussi de la vitesse des particules, ce qui permet de prendre en compte ces aspects hors équilibre. La complexité de description apportée par le modèle cinétique se traduit numériquement par un coût en temps de calcul et utilisation de la mémoire, en effet la simulation s'effectue avec les variables $(t,x,v)$ donc $1+3+3=7$ dimensions au lieu de seulement 4 dimensions pour la description fluide. Une description cinétique n'est donc pas souhaitable sur tout le domaine d'étude si le fluide est proche de son équilibre, des optimisations sont donc envisageable.   
+Nous souhaitons développer des modèles hybrides mêlant les avantages des descriptions fluide et cinétique. Notre approche se rapproche des méthodes dites de *décomposition de domaines* pour lesquelles le modèle fluide est utilisé dans les zones où le système est à l'équilibre alors que le modèle cinétique est utilisé uniquement dans les zones où le système est hors équilibre (dans le choc par exemple), approche déjà étudiée dans [@BENNOUNE20083781], [@dimarco] ou [@filbet]. 
 
-L'objet de l'étude effectué pendant ce stage est d'étudier des modèles avec une description multiéchelle hybride fluide-cinétique, et de développer des schémas d'odre élevé permettant de décrire au mieux des régimes instables. Une seconde étape d'approximation des modèles sera effectuée pour optimiser le temps de simulation.
+Une part importante de l'étude de ce stage fut consacré à l'étude des méthodes numériques de type eulériennes, c'est-à-dire utilisant une grille dans l'espace des phases. Ces méthodes sont nécessaires pour la simulation de modèles cinétiques.  
+Il est intéressant, voir crucial, numériquement de développer des méthodes d'ordre élevé pour capturer les forts gradients pouvant être générés par la solution (présence de structures fines dans l'espace des phases ou de choc), cela permet aussi de limiter la diffusion numérique qui dégrade les résultats. L'erreur d'une méthode d'ordre $m$ est divisée par $2^m$ lorsque l'on double le nombre de points du maillage, alors que le temps de calcul évoluera de manière plus linéaire en fonction du nombre de points, ainsi une méthode d'ordre élevé avec peu de points devient préférable à une méthode d'ordre faible avec plus de points.   
+Dans des conditions physiques réalistes, il est nécessaire de prendre en compte des conditions aux bords de type Dirichlet ou Neumann. Ces conditions peuvent être délicates à exprimer pour des méthodes d'ordre élevées. Ainsi la majorité de l'étude s'est consacrée à des conditions aux bords périodiques.
 
-Nous présenterons dans un premier les modèles classiques de la littérature, en indiquant leurs avantages et leurs défauts ; puis nous construirons un modèles hybride permettant de lier les forces des différentes descriptions possibles d'un plasma. Nous nous intéresserons par la suite à différents schémas numériques permettant de résoudre notre problème, pour enfin représenter nos résultats.
+Ce stage s'est essentiellement consacré à l'étude de la construction des modélisations hybrides, l'écriture et l'utilisation de méthodes d'ordre élevé (tel que les schémas compacts ou WENO) en prenant en compte différentes conditions aux bords. Une décomposition de domaine avec l'introduction d'une fonction indicatrice $h(t,x)$ a pu être effectué à l'aide des travaux dans [@dimarco]. Une attention toute particulière a été portée sur la gestion d'un terme raide en $\frac{1}{\varepsilon}$ introduit par le modèle cinétique.
 
+Ainsi nous présenterons dans un premier temps les modèles classiques de la littérature, cinétique et fluide, en indiquant leurs avantages et leurs défauts. Nous construirons ensuite un modèle hybride permettant de lier les forces des différentes descriptions du problème. Nous nous intéresserons par la suite à différents schémas numériques d'ordre élevé permettant de résoudre le système, pour enfin présenter nos résultats numériques sur plusieurs cas tests.
 
 # Présentation des modèles
 
@@ -620,6 +614,17 @@ où $u^n_{i+\frac{1}{2}}$ sont les flux numériques. Le calcul de ces flux est p
 
 C'est ce dernier flux que nous utiliserons par la suite.
 
+L'utilisation d'une vitesse $a$ quelconque s'effectue en suivant le *sens du vent*, c'est-à-dire, en notant\ :
+
+* $a^+ = \max(a,0)$,
+* $a^- = \min(a,0)$,
+
+on obtient alors le schéma pour toute vitesse suivant\ :
+
+$$
+  u^{n+1}_i = u^n_i - a^+\frac{\Delta t}{\Delta x}(u^n_{i+\frac{1}{2}} - u^n_{i-\frac{1}{2}}) - a^-\frac{\Delta t}{\Delta x}(u^n_{i+\frac{3}{2}}-u^n_{i+\frac{1}{2}})
+$$
+
 #### Obtention de l'ordre en espace
 
 La solution exacte d'un problème de transport à vitesse $a$ constante est connue. Nous allons donc partir de ce problème, le résoudre sur un premier maillage et en calculer l'erreur ; puis répéter l'opération sur un maillage plus fin. Les différentes résolutions sur différents maillages s'effectuent toutes jusqu'au même temps final.
@@ -676,18 +681,40 @@ En effectuant cette simulation pour différentes valeurs de $\Delta x$ on peut t
 
 Dans notre cas nous prendrons $\Delta x = \frac{2\pi}{20} , \frac{2\pi}{40} , \frac{2\pi}{60} , \frac{2\pi}{80}$. Pour assurer notre condition CFL nous choisirons $\Delta t < \frac{2\pi}{100}$ fixé.
 
+![Mesure de l'ordre sur un seul pas de temps](img/ordre_compact_onestep.png)
 
-![Mesure de l'ordre sur un seul pas de temps](img/ordre.png)
+La figure (TODO référence de la figure) montre l’évolution de l’erreur en fonction du pas d’espace $\Delta x$ en échelle logarithmique. L'erreur est calculée sur un seul pas de temps $\Delta t = \pi 10^{-6}$. On y mesure, quelque soit la méthode de calcul de l'erreur (erreur en norme 1 : $e_1$ ou erreur en norme infini : $e_\infty$) l'ordre à une valeur environ de $5$ (pente en pointillée). Ceci est confirmé par les valeurs numériques données dans le tableau ci-dessous. L'ordre partiel $p$, calculé par\ :
 
-|   m | $\log(\Delta x)$ | $log(\Delta e_1)$ | $log(\Delta e_{\infty})$ | Ordre partiel |
-|-----|------------------|-------------------|--------------------------|---------------|
-|  20 |                  |                   |                          |               |
-|  40 |                  |                   |                          |               |
-|  60 |                  |                   |                          |               |
-|  80 |                  |                   |                          |               |
-| 100 |                  |                   |                          |               |
+$$
+  p = \frac{\log((e_1^1)_i)-\log((e_1^1)_{i-1})}{\Delta x_i - \Delta x_{i-1}}
+$$
 
-  : Erreur et ordre sur un seul pas de temps $\Delta t = \frac{2\pi}{100}$
+et permet d'estimer avec les points précédent la valeur de l'ordre. L'ordre partiel calculé à partir de l'erreur infini donne le même ordre de grandeur. On trouve aussi par cette méthode une valeur proche de $5$.
+
+|   m | $\log(\Delta x)$          | $\log(\Delta e_1)$      | $\log(\Delta e_{\infty})$ | Ordre partiel    |
+|-----|---------------------------|-------------------------|---------------------------|------------------|
+|  10 |  0.62831853071795862      | 1.8885115323892025E-008 | 4.6439991852054163E-009   |  ---             |
+|  20 |  0.31415926535897931      | 6.3343666063889316E-010 | 1.5632262151399345E-010   | 4.89790541666598 |
+|  30 |  0.20943951023931953      | 8.3633337412339448E-011 | 2.0870083439206155E-011   | 4.99356851573894 |
+|  40 |  0.15707963267948966      | 1.9970045946399870E-011 | 4.9763526632773392E-012   | 4.9784428799281  |
+|  50 |  0.12566370614359174      | 6.5414345863822243E-012 | 1.6342482922482304E-012   | 5.00160970143643 |
+|  60 |  0.10471975511965977      | 2.6340730808331303E-012 | 6.5758509748548022E-013   | 4.98912561409769 |
+|  70 |   8.9759790102565518E-002 | 1.2182339893132100E-012 | 3.0442315335221792E-013   | 5.00243715241308 |
+|  80 |   7.8539816339744828E-002 | 6.2539805846059710E-013 | 1.5620837956475953E-013   | 4.9933516428147  |
+|  90 |   6.9813170079773182E-002 | 3.4700222375271565E-013 | 8.6708418223224726E-014   | 5.00120538432754 |
+| 100 |   6.2831853071795868E-002 | 2.0498639824922264E-013 | 5.1181281435219717E-014   | 4.99606098371577 |
+| 110 |   5.7119866428905326E-002 | 1.2722515599787320E-013 | 3.1863400806741993E-014   | 5.00455700829749 |
+| 120 |   5.2359877559829883E-002 | 8.2310995826784676E-014 | 2.0650148258027912E-014   | 5.00456041835972 |
+| 130 |   4.8332194670612200E-002 | 5.5237440477356868E-014 | 1.3877787807814457E-014   | 4.98313617961912 |
+| 140 |   4.4879895051282759E-002 | 3.8176960539761382E-014 | 9.5479180117763462E-015   | 4.98473748123279 |
+| 150 |   4.1887902047863905E-002 | 2.6943202835700349E-014 | 6.7723604502134549E-015   | 5.05126322851504 |
+| 160 |   3.9269908169872414E-002 | 1.9561511738522877E-014 | 4.9960036108132044E-015   | 4.96086828681551 |
+| 170 |   3.6959913571644624E-002 | 1.4410539036993013E-014 | 3.6637359812630166E-015   | 5.04092435136205 |
+| 180 |   3.4906585039886591E-002 | 1.0858427052693538E-014 | 2.7755575615628914E-015   | 4.95147314350128 |
+| 190 |   3.3069396353576773E-002 | 8.2733617562961384E-015 | 2.1094237467877974E-015   | 5.02893495215468 |
+| 200 |   3.1415926535897934E-002 | 6.3763847861952675E-015 | 1.6653345369377348E-015   | 5.07745975149194 |
+
+  : Erreur et ordre sur un seul pas de temps $\Delta t = \frac{2\pi}{200}$
 
 ##### Calcul à nombre de CFL constant
 
@@ -699,33 +726,40 @@ $$
 
 Ainsi à chaque raffinement de maillage, le pas de temps est aussi raffiné, l'erreur en temps diminue donc de manière similaire.
 
-> TODO: Je pensais rajouter un graphique où l'on voit la saturation de l'ordre dû à l'erreur en temps
+![Mesure de l'ordre sur plusieurs itérations](img/ordre_compact.png)
 
-![Mesure de l'ordre sur plusieurs itérations](img/ordre.png)
+La figure (TODO référence de la figure) montre l'évolution de l'erreur en fonction du pas d'espace $\Delta x$ en échelle logarithmique. L'erreur est indiquée pour 2 temps distincts $t^1= 0.1$ et $t^2 = 1$ pour un nombre de CFL égal à $c = 10^{-4}$. L'erreur infinie, notée $e_\infty^{1|2}$ est systématiquement plus faible que l'erreur en norme 1, notée $e_1^{1|2}$, car cette dernière dénote un caractère plus globale (somme des erreurs locales). L'écart entre les erreurs au temps $t^1$ et au temps $t^2$ illustre l'erreur du schéma en temps, ici un schéma d'Euler implicite. Les points pour un $\Delta x$ faible, donc à droite de la figure ne permettent pas de calculer convenablement l'ordre du schéma puisqu'il s'agit d'une propriété à la limite quand $\Delta x \to 0$. Ainsi l'ordre mesuré sur la figure à l'aide d'une minimisation (valeur de $4.48$) est faussée par la présence des ces points. Le tableau suivant (TODO référence du tableau) permet de se donner une idée de l'ordre partiel et ainsi de la valeur limite pour de faibles valeurs de $\Delta x$. On peut donc affirmer que l'ordre de ce schéma est 5.
 
-|   m | $\log(\Delta x)$ | $log(\Delta e_1)$ | $log(\Delta e_{\infty})$ | Nombre d'itérations | Ordre partiel |
-|-----|------------------|-------------------|--------------------------|---------------------|---------------|
-|  20 |                  |                   |                          |                     |               |
-|  40 |                  |                   |                          |                     |               |
-|  60 |                  |                   |                          |                     |               |
-|  80 |                  |                   |                          |                     |               |
-| 100 |                  |                   |                          |                     |               |
+|  $m$ |   $\Delta x$  |  $n^1$   |      $e_1^1$  |  $e_\infty^1$  |  $n^2$  |      $e_1^2$  |  $e_\infty^2$ | Ordre partiel |
+|------|---------------|----------|---------------|----------------|---------|---------------|---------------|---------------|
+|  10  |  0.12566E+01  |    796   |  0.91045E-01  |   0.25373E-01  |   7958  |  0.23402E+01  |   0.48973E+00 |  ---          |
+|  20  |  0.62832E+00  |   1592   |  0.16296E-01  |   0.75946E-02  |  15916  |  0.24779E+00  |   0.91331E-01 | 2.46          |
+|  30  |  0.41888E+00  |   2388   |  0.30697E-02  |   0.17333E-02  |  23874  |  0.33884E-01  |   0.19089E-01 | 4.11          |
+|  40  |  0.31416E+00  |   3184   |  0.86438E-03  |   0.49418E-03  |  31831  |  0.85959E-02  |   0.49384E-02 | 4.40          |
+|  50  |  0.25133E+00  |   3979   |  0.29500E-03  |   0.17524E-03  |  39789  |  0.29360E-02  |   0.16277E-02 | 4.81          |
+|  60  |  0.20944E+00  |   4775   |  0.12050E-03  |   0.73274E-04  |  47747  |  0.12244E-02  |   0.71686E-03 | 4.91          |
+|  70  |  0.17952E+00  |   5571   |  0.57995E-04  |   0.34643E-04  |  55705  |  0.58089E-03  |   0.34831E-03 | 4.74          |
+|  80  |  0.15708E+00  |   6367   |  0.29736E-04  |   0.17991E-04  |  63662  |  0.29913E-03  |   0.18170E-03 | 5.00          |
+|  90  |  0.13963E+00  |   7162   |  0.16721E-04  |   0.10057E-04  |  71620  |  0.16729E-03  |   0.10091E-03 | 4.88          |
+| 100  |  0.12566E+00  |   7958   |  0.98895E-05  |   0.59647E-05  |  79578  |  0.98436E-04  |   0.59142E-04 | 4.98          |
+| 110  |  0.11424E+00  |   8754   |  0.62158E-05  |   0.37134E-05  |  87536  |  0.62044E-04  |   0.37481E-04 | 4.87          |
+| 120  |  0.10472E+00  |   9550   |  0.40384E-05  |   0.24170E-05  |  95493  |  0.40213E-04  |   0.24571E-04 | 4.95          |
+| 130  |  0.96664E-01  |  10346   |  0.27021E-05  |   0.16371E-05  | 103451  |  0.27136E-04  |   0.16534E-04 | 5.01          |
+| 140  |  0.89760E-01  |  11141   |  0.18766E-05  |   0.11385E-05  | 111409  |  0.18758E-04  |   0.11398E-04 | 4.91          |
+| 150  |  0.83776E-01  |  11937   |  0.13286E-05  |   0.81050E-06  | 119367  |  0.13326E-04  |   0.80321E-05 | 5.00          |
+| 160  |  0.78540E-01  |  12733   |  0.96536E-06  |   0.58905E-06  | 127324  |  0.96469E-05  |   0.58736E-05 | 4.94          |
+| 170  |  0.73920E-01  |  13529   |  0.71124E-06  |   0.43605E-06  | 135282  |  0.71128E-05  |   0.43599E-05 | 5.03          |
+| 180  |  0.69813E-01  |  14324   |  0.53662E-06  |   0.32814E-06  | 143240  |  0.53650E-05  |   0.32804E-05 | 4.92          |
+| 190  |  0.66139E-01  |  15120   |  0.41032E-06  |   0.25064E-06  | 151198  |  0.40978E-05  |   0.24997E-05 | 4.96          |
+| 200  |  0.62832E-01  |  15916   |  0.31724E-06  |   0.19402E-06  | 159155  |  0.32023E-05  |   0.19290E-05 | 5.01          |
   
-  : Erreur et ordre au temps $t_1 = 0.1$
+  : Erreur et ordre au temps $t^1 = 0.1$ et au temps $t^2 = 1$
 
-|   m | $\log(\Delta x)$ | $log(\Delta e_1)$ | $log(\Delta e_{\infty})$ | Nombre d'itérations | Ordre partiel |
-|-----|------------------|-------------------|--------------------------|---------------------|---------------|
-|  20 |                  |                   |                          |                     |               |
-|  40 |                  |                   |                          |                     |               |
-|  60 |                  |                   |                          |                     |               |
-|  80 |                  |                   |                          |                     |               |
-| 100 |                  |                   |                          |                     |               |
-   
-  : Erreur et ordre au temps $t_2 = 1$
+> TODO: il n'est pas nécessaire d'avoir autant de ligne, les colonnes $n^{1|2}$ (nombre d'itérations) ne sont peut-être pas nécessaire non plus. Il s'agit d'un tableau de données brutes qu'il est sans doute nécessaire de retravailler pour la mise en page et la lisibilité des données
 
 ### Schéma WENO
 
-Les schémas numériques d'ordre élevé ont permi d'approfondir l'étude de problèmes complexes tels qu'en mécanique des fluides. L'introduction de l'ordre élevé se fait généralement au détriment d'oscillations pouvant apparaître au niveau des discontinuités. Une famille de schémas numériques d'ordre élevé a été introduite par C.-W. Shu, exposées dans [@icase] et [@weno], permettant de prévenir l'apparition d'oscillation.
+Les schémas numériques d'ordre élevé ont permis d'approfondir l'étude de problèmes complexes tels qu'en mécanique des fluides. L'introduction de l'ordre élevé se fait généralement au détriment d'oscillations pouvant apparaître au niveau des discontinuités. Une famille de schémas numériques d'ordre élevé a été introduite par C.-W. Shu, exposées dans [@icase] et [@weno], permettant de prévenir l'apparition d'oscillation.
 
 WENO pour *weighted essentially non-oscillatory* est une famille de schémas numériques qui se généralise facilement à l'ordre élevé sans pour autant provoquer d'oscillations. L'idée des schémas WENO est d'effectuer plusieurs interpolations polynomiales lagrangiennes sur des *stencils* incluant le point à évaluer, pondérées pour limiter les oscillations. La méthode que nous allons présenter ici est un schéma WENO d'ordre 5.
 
@@ -737,7 +771,7 @@ $$
   \partial_t u + \partial_x(a u) = 0
 $$
 
-Dans notre cas, la discrétisation de la vitesse $a$ dépend du paramètre $k$ (discrétisation de l'espace des phases), nous noterons par conséquent cette discrétisation $a_k$. Cette notation permettra d'écrire directement le schéma en espace de la partie *micro* en substituant $a_k$ par $v_k$ et $u_{i,k}$ par $g_{i,k}$. Pour alléger les notations, nous nous placerons au temps $t^n$. Nous souhaitons approximer $\partial_x(au)_{|x=x_i,y=y_k}$\ :
+Dans notre cas, la discrétisation de la vitesse $a$ dépend du paramètre $k$ indépendant de $i$ (discrétisation de l'espace des phases), nous noterons par conséquent cette discrétisation $a_k$. Cette notation permettra d'écrire directement le schéma en espace de la partie *micro* en substituant $a_k$ par $v_k$ et $u_{i,k}$ par $g_{i,k}$. Pour alléger les notations, nous nous placerons au temps $t^n$. Nous souhaitons approximer $\partial_x(au)_{|x=x_i,y=y_k}$\ :
 
 $$
   \partial(au)_{|x=x_i,y=y_k} \approx \frac{1}{\Delta x}(\hat{u}_{i+\frac{1}{2},k} - \hat{u}_{i-\frac{1}{2},k})
@@ -847,28 +881,36 @@ $$
 
 donc $\Delta t = c\frac{2\pi}{N}$ change à chaque raffinement de maillage.
 
+> TODO: Je pensais rajouter un graphique où l'on voit la saturation de l'ordre dû à l'erreur en temps
 
-![Mesure de l'ordre sur plusieurs itérations](img/ordre.png)
+![Mesure de l'ordre sur plusieurs itérations](img/ordre_wenop.png)
 
-|   m | $\log(\Delta x)$ | $log(\Delta e_1)$ | $log(\Delta e_{\infty})$ | Nombre d'itérations | Ordre partiel |
-|-----|------------------|-------------------|--------------------------|---------------------|---------------|
-|  20 |                  |                   |                          |                     |               |
-|  40 |                  |                   |                          |                     |               |
-|  60 |                  |                   |                          |                     |               |
-|  80 |                  |                   |                          |                     |               |
-| 100 |                  |                   |                          |                     |               |
+La figure (TODO référence de la figure) montre l’évolution de l’erreur en fonction du pas d’espace $\Delta x$ en échelle logarithmique. L’erreur est indiquée pour 2 temps distincts $t^1= 0.1$ et $t^2 = 1$ pour un nombre de CFL égal à $c = 10^{-5}$. En comparant ces résultats par rapport à ceux du schéma compact, l'ordre donné via le graphique est plus élevé (on peut déterminé déjà une valeur de $5$). On remarque aussi que l'erreur systématique du schéma est beaucoup plus faible. Ainsi le plongeon de l'erreur que l'on peut observer sur les valeurs à gauche est plus dû au bruit de l'erreur machine qu'à un véritable schéma d'ordre $7$ (dernière valeur de l'ordre partiel présent dans le tableau suivant).
 
-  : Erreur et ordre au temps $t_1 = 0.1$
+| $m$ | $\Delta x$  | $n^1$  | $e_1^1$     | $e_\infty^1$| $n^2$  | $e_1^2$     | $e_\infty^2$|  Ordre partiel     |
+|-----|-------------|--------|-------------|-------------|--------|-------------|-------------|--------------------|
+| 10  | 0.62832E+00 |   1592 | 0.37995E-05 | 0.13973E-05 |  15916 | 0.37846E-04 | 0.13958E-04 | ---                |
+| 20  | 0.31416E+00 |   3184 | 0.17447E-06 | 0.51436E-07 |  31831 | 0.17442E-05 | 0.51362E-06 |   4.44475868534761 |
+| 30  | 0.20944E+00 |   4775 | 0.21990E-07 | 0.64814E-08 |  47747 | 0.21986E-06 | 0.64666E-07 |   5.10812141688064 |
+| 40  | 0.15708E+00 |   6367 | 0.50685E-08 | 0.15061E-08 |  63662 | 0.50680E-07 | 0.15011E-07 |   5.10126639529244 |
+| 50  | 0.12566E+00 |   7958 | 0.16195E-08 | 0.48771E-09 |  79578 | 0.16194E-07 | 0.48569E-08 |   5.11224599339332 |
+| 60  | 0.10472E+00 |   9550 | 0.64017E-09 | 0.19434E-09 |  95493 | 0.64014E-08 | 0.19335E-08 |   5.09155944269373 |
+| 70  | 0.89760E-01 |  11141 | 0.29164E-09 | 0.89188E-10 | 111409 | 0.29163E-08 | 0.88654E-09 |   5.10029279160139 |
+| 80  | 0.78540E-01 |  12733 | 0.14769E-09 | 0.45325E-10 | 127324 | 0.14768E-08 | 0.45101E-09 |   5.09546608574089 |
+| 90  | 0.69813E-01 |  14324 | 0.80818E-10 | 0.24858E-10 | 143240 | 0.80816E-09 | 0.24901E-09 |   5.11866013879769 |
+|100  | 0.62832E-01 |  15916 | 0.47041E-10 | 0.14550E-10 | 159155 | 0.47040E-09 | 0.14591E-09 |   5.13669351040521 |
+|110  | 0.57120E-01 |  17508 | 0.28707E-10 | 0.89342E-11 | 175071 | 0.28705E-09 | 0.89616E-10 |   5.18180290307426 |
+|120  | 0.52360E-01 |  19099 | 0.18209E-10 | 0.56994E-11 | 190986 | 0.18208E-09 | 0.57143E-10 |   5.23178731178777 |
+|130  | 0.48332E-01 |  20691 | 0.11900E-10 | 0.37434E-11 | 206902 | 0.11899E-09 | 0.37558E-10 |   5.31396000767932 |
+|140  | 0.44880E-01 |  22282 | 0.79686E-11 | 0.25192E-11 | 222817 | 0.79671E-10 | 0.25277E-10 |   5.4118878574993  |
+|150  | 0.41888E-01 |  23874 | 0.54306E-11 | 0.17266E-11 | 238733 | 0.54306E-10 | 0.17326E-10 |   5.55795381912175 |
+|160  | 0.39270E-01 |  25465 | 0.37499E-11 | 0.11992E-11 | 254648 | 0.37501E-10 | 0.12037E-10 |   5.73797548489796 |
+|170  | 0.36960E-01 |  27057 | 0.26084E-11 | 0.84055E-12 | 270564 | 0.26079E-10 | 0.84339E-11 |   5.98753700307258 |
+|180  | 0.34907E-01 |  28648 | 0.18182E-11 | 0.59053E-12 | 286479 | 0.18181E-10 | 0.59238E-11 |   6.31491121102708 |
+|190  | 0.33069E-01 |  30240 | 0.12607E-11 | 0.41400E-12 | 302395 | 0.12602E-10 | 0.41499E-11 |   6.76968883229296 |
+|200  | 0.31416E-01 |  31831 | 0.86049E-12 | 0.28710E-12 | 318310 | 0.86084E-11 | 0.28748E-11 |   7.44789538520894 |
 
-|   m | $\log(\Delta x)$ | $log(\Delta e_1)$ | $log(\Delta e_{\infty})$ | Nombre d'itérations | Ordre partiel |
-|-----|------------------|-------------------|--------------------------|---------------------|---------------|
-|  20 |                  |                   |                          |                     |               |
-|  40 |                  |                   |                          |                     |               |
-|  60 |                  |                   |                          |                     |               |
-|  80 |                  |                   |                          |                     |               |
-| 100 |                  |                   |                          |                     |               |
-
-  : Erreur et ordre au temps $t_2 = 1$
+  : Erreur et ordre au temps $t^1 = 0.1$ et $t^2=1$
 
 La littérature actuelle préconise l'usage de schéma de la famille WENO lors de la résolution par différences finies à l'ordre élevé d'équations aux dérivées partielles. Cela s'explique par une propriété intéressante de ces schémas qu'est l'empilement de dérivées. Le passage aux dimensions supérieures à $1$ s'effectue par addition des différentes approximations des dérivées dans chaque direction. Cette technique est parfois utilisée avec d'autres schémas, ce qui revient à supposer que les différentes dimensions du problème sont indépendantes.
 
@@ -1582,7 +1624,7 @@ Dans le cas du tube à chocs de Sob, l'onde de choc se propage depuis le centre 
 
 La construction de notre fonction $h$ dépendante du temps s'est faite *a posteriori*. Elle a nécessité une première étude du cas test sur tout le domaine, avec éventuellement un maillage plus grossier. Aucune procédure d'automatisation d'obtention de cette fonction n'a été envisagée, autre que celles que nous avons pu évoquer dans la littérature, qui ne mène à une fonction discontinue.
 
-> TODO: indiquer les fonctions $x_s:t\mapsto x_s(t)$ et $x_e:t\mapstox_e(t)$ utilisées, et le choix du $\delta x$ choisi.
+> TODO: indiquer les fonctions $x_s:t\mapsto x_s(t)$ et $x_e:t\mapsto x_e(t)$ utilisées, et le choix du $\delta x$ choisi.
 
 
 # Application pour les plasma
