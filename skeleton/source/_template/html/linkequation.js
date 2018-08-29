@@ -8,7 +8,8 @@ document.querySelectorAll(`a.eq`).forEach( (el) => {
 
 document.querySelectorAll(`a.aeq`).forEach( (el) => {
   'use strict';
-  el.href = el.href.replace(/#/,"#eq:");
+  el.href = "#eq:"+el.href.split("#").pop();
+  //el.href = el.href.replace(/#/,"#eq:");
 });
 
 
