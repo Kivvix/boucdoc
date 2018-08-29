@@ -10,7 +10,7 @@ BUILD_dir = build
 
 FILTERS = ../filters/panviz2.py ../filters/panref.py ../filters/pancode.py ../filters/panabstract.py mermaid-filter pandoc-citeproc
 #pandoc-citeproc
-EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists+example_lists+pipe_tables+table_captions+smart
+EXTENSIONS = markdown+yaml_metadata_block+implicit_figures+definition_lists+example_lists+pipe_tables+table_captions+smart+inline_notes
 CSL = --csl=source/biblio/3d-research.csl
 CSL = --csl=source/biblio/springer-socpsych-brackets.csl
 

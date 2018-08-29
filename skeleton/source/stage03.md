@@ -6,20 +6,24 @@ bibliography: source/biblio/biblio.bib
 
 # Introduction
 
-La simulation numérique fut introduite dès l'émergence de l'informatique pour enrichir les connaissances scientifiques dans des contextes où la solution exacte du modèle mathématique est souvent hors de portée et que l'expérimentation est trop contraignante voir impossible, il peut donc être difficile de valider les résultats des simulations.  La simulation peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d'étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique devant être représentative de la réalité, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle (conservation de certaines quantités physiques comme la masse ou l'énergie totale par exemple). Un enjeu majeur de la modélisation et de la simulation est de maintenir un équilibre entre les approximations permettant d'accélérer le temps de traitement et la représentativité des résultats.
+La simulation numérique fut introduite dès l'émergence de l'informatique pour enrichir les connaissances scientifiques dans des contextes où l'expérimentation est trop contraignante voir impossible, il peut donc être difficile de valider les résultats des simulations. La simulation peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futurs observations (simulation de nébuleuses ou d'étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, sensés représenter des phénomènes physiques. La simulation numérique doit être représentative de la réalité, dans des modèles où la solution exacte est souvent hors de portée, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle (conservation de certaines quantités physiques comme la masse ou l'énergie totale par exemple).
 
-Notre étude s'effectue sur un système de particules type gaz raréfié ou plasma chaud. Un plasma, qualifié de 4e état de la matière en plus de solide liquide et gaz, est un état fluide de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative), particules qui sont extraites des atomes ; et des ions (charge positive), particules qui résultent de l'extraction des électrons. Le plasma est généralement obtenu en chauffant un gaz à très haute température, ce qui permet d'exciter les particules le constituant et d'arracher des électrons aux atomes. La température, grandeur macroscopique, exprime l'agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif *chaud* indique donc que les plasmas étudiés possèderont des particules à des vitesses élevées. L'étude des plasmas possède de nombreuses applications dans le domaine industriel, tels que la propulsion par plasmas (astronautique), la fusion nucléaire (énergie) et la découpe (industrie).
+Un enjeu majeur de la modélisation et de la simulation est de maintenir un équilibre entre les approximations permettant d'accélérer le temps de traitement et la représentativité des résultats.
 
-Pour décrire un tel système de particules, plusieurs possibilités existent. La description dite fluide, qui prend en compte les équations de la mécanique des fluides (comme les équations d'Euler ou de Navier-Stokes) peut être utilisée. Les inconnues de ces équations sont des quantités dites macroscopiques (mesurables expérimentalement) comme la densité ou la température qui ne dépendent que du temps et de la position. Cependant cette description suppose que le système étudié est à l'équilibre, c'est-à-dire que la répartition en vitesse des particules est maxwellienne. Or lorsque le système est parcouru par une onde de choc, des phénomènes hors équilibre sont à prendre en compte exigeant une description plus fine : la description cinétique. Celle-ci manipule une fonction de distribution dépendant du temps, de l'espace mais aussi de la vitesse des particules, ce qui permet de prendre en compte ces aspects hors équilibre. La complexité de description apportée par le modèle cinétique se traduit numériquement par un coût en temps de calcul et utilisation de la mémoire, en effet la simulation s'effectue avec les variables $(t,x,v)$ donc $1+3+3=7$ dimensions au lieu de seulement 4 dimensions pour la description fluide. Une description cinétique n'est donc pas souhaitable sur tout le domaine d'étude si le fluide est proche de son équilibre, des optimisations sont donc envisageable.   
+Notre étude s'effectue sur un système de particules au sein d'un gaz raréfié ou d'un plasma chaud. Un plasma, qualifié de 4e état de la matière (en plus de solide liquide et gaz), est un état de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative), particules qui sont extraites des atomes ; et des ions (charge positive), particules qui résultent de l'extraction des électrons. Le plasma est généralement obtenu en chauffant un gaz à très haute température, ce qui permet d'exciter les particules le constituant et d'arracher des électrons aux atomes. La température, grandeur macroscopique, exprime l'agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif *chaud* indique donc que des particules ont des vitesses élevées au sein du plasma. L'étude des plasmas possède de nombreuses applications dans le domaine industriel, tels que la propulsion par plasmas (astronautique), la fusion nucléaire (énergie) et la découpe (industrie).
+
+Pour décrire un tel système de particules, plusieurs possibilités existent. La description dite fluide, qui prend en compte les équations de la mécanique des fluides (comme les équations d'Euler ou de Navier-Stokes) peut être utilisée. Les inconnues de ces équations sont des quantités dites macroscopiques (mesurables expérimentalement) comme la densité, la vitesse moyenne ou la température qui ne dépendent que du temps et de la position. Cependant cette description suppose que le système étudié est à l'équilibre, c'est-à-dire que la répartition en vitesse des particules est maxwellienne. Or lorsque le système est parcouru par une onde de choc ou lorsque une population de particules chaudes est présente dans le système, des phénomènes hors équilibre sont à prendre en compte exigeant une description plus précise. On utilise alors la description cinétique. Celle-ci manipule une fonction de distribution dépendant du temps, de l'espace mais aussi de la vitesse des particules, ce qui permet de prendre en compte ces aspects hors équilibre. La complexité de description apportée par le modèle cinétique se traduit numériquement par un coût en temps de calcul et utilisation de la mémoire ; en effet la simulation s'effectue avec les variables $(t,x,v)$ donc $7$ dimensions au lieu de seulement 4 dimensions pour la description fluide, où les inconnues ne dépendent que de $(t,x)$. L'espace mémoire nécessaire pour stocker $f(t=0,x,v)$ sur une grille $100^6$ de l'espace des phases peut être estimé à 7.2To, alors que la description fluide ne nécessite que 7.6Mo sur une grille $100^3$ de l'espace. Une description cinétique n'est donc pas souhaitable sur tout le domaine d'étude si le fluide est proche de son équilibre et des optimisations sont donc envisageable.   
 Nous souhaitons développer des modèles hybrides mêlant les avantages des descriptions fluide et cinétique. Notre approche se rapproche des méthodes dites de *décomposition de domaines* pour lesquelles le modèle fluide est utilisé dans les zones où le système est à l'équilibre alors que le modèle cinétique est utilisé uniquement dans les zones où le système est hors équilibre (dans le choc par exemple), approche déjà étudiée dans [@BENNOUNE20083781], [@dimarco] ou [@filbet]. 
 
-Une part importante de l'étude de ce stage fut consacré à l'étude des méthodes numériques de type eulériennes, c'est-à-dire utilisant une grille dans l'espace des phases. Ces méthodes sont nécessaires pour la simulation de modèles cinétiques.  
-Il est intéressant, voir crucial, numériquement de développer des méthodes d'ordre élevé pour capturer les forts gradients pouvant être générés par la solution (présence de structures fines dans l'espace des phases ou de choc), cela permet aussi de limiter la diffusion numérique qui dégrade les résultats. L'erreur d'une méthode d'ordre $m$ est divisée par $2^m$ lorsque l'on double le nombre de points du maillage, alors que le temps de calcul évoluera de manière plus linéaire en fonction du nombre de points, ainsi une méthode d'ordre élevé avec peu de points devient préférable à une méthode d'ordre faible avec plus de points.   
-Dans des conditions physiques réalistes, il est nécessaire de prendre en compte des conditions aux bords de type Dirichlet ou Neumann. Ces conditions peuvent être délicates à exprimer pour des méthodes d'ordre élevées. Ainsi la majorité de l'étude s'est consacrée à des conditions aux bords périodiques.
+Une part importante de l'étude de ce stage fut consacrée à l'étude et l'implémentation des méthodes numériques de type eulériennes, c'est-à-dire utilisant une grille dans l'espace des phases $(x,v)$.   
+Il est intéressant, voir crucial, numériquement de développer des méthodes d'ordre élevé pour capturer les forts gradients pouvant être générés par la solution (présence de structures fines dans l'espace des phases ou de choc), cela permet aussi de limiter la diffusion numérique qui dégrade les résultats sur des temps longs. L'erreur d'une méthode d'ordre $m$ est divisée par $2^m$ lorsque l'on double le nombre de points du maillage, alors que le temps de calcul évoluera de manière plus linéaire en fonction du nombre de points, ainsi une méthode d'ordre élevé avec peu de points devient préférable à une méthode d'ordre faible avec plus de points.   
+Dans des conditions physiques réalistes, il est nécessaire de prendre en compte des conditions aux bords de type Dirichlet ou Neumann. Ces conditions peuvent être délicates à exprimer pour des méthodes d'ordre élevées. Ainsi, même si la majorité de l'étude est consacrée à des conditions aux bords périodiques, un des enjeux de ce stage fut d'implémenter les conditions aux bords de type Neumann.
+
+Ce stage a été consacré à l'étude, la dérivation et la validation numérique de modèles hybrides fluide-cinétique en les comparant de façon systématique aux modèles d'Euler (fluide) et cinétique. L'objectif est de construire un modèle et d'écrire un code pour résoudre efficacement des problèmes dans lesquels des régions où le système est hors équilibre. Ainsi on se propose d'obtenir d'obtenir un modèle couplé fluide-cinétique où le modèle cinétique, plus coûteux, n'est utilisé que pour la région dite *hors équilibre*, alors que le modèle fluide sera utilisé pour le reste du domaine qui lui, est à l'équilibre thermodynamique. Ce type d'approche en décomposition de domaine nécessite habituellement des conditions pour coupler le modèle cinétique et fluide, ce qui peut s'avérer difficile au niveau mathématique et numérique. Dans ce travail, la transition fluide-cinétique est assurée par une fonction de transition $h(t,x)$ qui dégénère automatiquement et qui permet de s'affranchir du traitement délicat des conditions de bords couplant les modèles fluide et cinétique. À partir d'un modèle *micro-macro* équivalent au problème cinétique contenant une raideur en $\frac{1}{\varepsilon}$, $\varepsilon\in ]0,1]$^[$\varepsilon=\frac{\ell}{L}$ avec $\ell$ le libre parcours moyen, c'est-à-dire la distance moyenne parcourue par une particule avant interaction entre particules, et $L$ une longueur caractéristique du problème. $\varepsilon$ permet de passer du régime fluide ($\varepsilon =1$) au régime fluide ($\varepsilon\to 0$).], la fonction de transition $h$ est introduite ; la partie *micro* corespondante à la zone à l'équilibre est alors négligée. Ce modèle hybride fluide-cinétique est alors approché numériquement à l'aide de méthodes d'ordre élevé en $(x,v)$ (schéma compact ou WENO) alors qu'une discrétisation particulière en temps a dû être utilisée pour garantir une stabilité uniforme par rapport à $\varepsilon$.
 
 Ce stage s'est essentiellement consacré à l'étude de la construction des modélisations hybrides, l'écriture et l'utilisation de méthodes d'ordre élevé (tel que les schémas compacts ou WENO) en prenant en compte différentes conditions aux bords. Une décomposition de domaine avec l'introduction d'une fonction indicatrice $h(t,x)$ a pu être effectué à l'aide des travaux dans [@dimarco]. Une attention toute particulière a été portée sur la gestion d'un terme raide en $\frac{1}{\varepsilon}$ introduit par le modèle cinétique.
 
-Ainsi nous présenterons dans un premier temps les modèles classiques de la littérature, cinétique et fluide, en indiquant leurs avantages et leurs défauts. Nous construirons ensuite un modèle hybride permettant de lier les forces des différentes descriptions du problème. Nous nous intéresserons par la suite à différents schémas numériques d'ordre élevé permettant de résoudre le système, pour enfin présenter nos résultats numériques sur plusieurs cas tests.
+Ainsi nous présenterons dans un premier temps les modèles classiques de la littérature, cinétique et fluide, en indiquant leurs avantages et leurs défauts. Nous construirons ensuite un modèle hybride permettant de lier les forces des différentes descriptions du problème. Nous nous intéresserons par la suite à différents schémas numériques d'ordre élevé permettant de résoudre le système, pour enfin présenter nos résultats numériques sur plusieurs cas tests issus de la dynamique des gaz et des plasmas.
 
 # Présentation des modèles
 
@@ -43,83 +47,6 @@ La variable de base dans le modèle est le temps $t$ ; à chaque pas de temps on
 Ce modèle est très coûteux en temps de calcul puisqu'il possède une complexité algorithmique en $\mathcal{O}(2^n)$. L'utilisation de ce type de modèle est inenvisageable dès que le nombre de particules $n$ atteint la centaine. Dans le cadre de l'étude des plasmas, le nombre $n$ de particules en interaction est voisin du nombre d'Avogadro $\mathcal{N}_A \approx 6,02\cdot 10^{23}$.
 
 Une approximation de ce modèle est parfois utilisé à l'aide d'une représentation arborescente de l'espace via un *quadtree*, ou *$kd$-tree* par exemple ; cela permet de négliger les interactions à plus longue distance. C'est ce qui est par exemple utilisé dans des simulations de galaxies, ou dans des moteurs de collision comme celui du jeu vidéo *Doom*.
-
-
-## Modèle cinétique
-
-Le principe du modèle cinétique est de proposer une description intermédiaire entre le modèle microscopique et macroscopique. On représente les particules dans l'espace des phases $(x,v)$, où $x \in \Omega \subset \mathbb{R}^d$ désigne la position et $v \in \mathbb{R}^d$ la vitesse, avec $d=1,2,3$ la dimension du problème. L'étude se restreint au cas de $\Omega$ un fermé borné de $\mathbb{R}^d$ ; la vitesse quant à elle n'est *a priori* pas bornée.
-
-Nous n'étudions pas chaque particule individuellement mais, à la manière du modèle macroscopique, une valeur statistique qu'est la fonction de distribution de particules dans l'espace des phases notée $f$. La grandeur $f(t,x,v)\mathrm{d}x\mathrm{d}v$ représente la densité de particules dans un volume élémentaire de l'espace des phases $\mathrm{d}x\mathrm{d}v$ centré en $(x,v)$ au temps $t \geq 0$.
-
-L'inconnue $f(t,x,v)$ est alors solution d'une équation de transport dans l'espace des phases à laquelle on ajoute un terme de collision\ :
-
-$$
-  \partial_t f + v\cdot\nabla_x f = Q(f)
-$${#eq:cine}
-
-où le transport s'effectue à vitesse $v$ dans la direction $x$. $Q(f)$ représente un opérateur quadratique de collision, il modélise les interactions binaires entre particules ; plusieurs expressions sont possibles comme l'opérateur de Boltzmann pour les gaz raréfiés, ou les opérateurs Landau ou BGK par exemple pour le cas des particules chargées.
-
-Les variables de base du problème sont $t$, $x$ et $v$. Une simulation directe du problème complet impose donc de travailler en 7 dimensions : une de temps, et 6 pour l'espace des phases $(x,v)$. Travailler dans un espace de dimension aussi élevée implique des coûts importants en temps de calcul et dans l'utilisation de la mémoire, cela est cependant moins coûteux qu'un modèle microscopique. De plus il est possible de développer des schémas numériques adaptés au problème considéré et réduire le temps de calcul, par exemple via des techniques de décomposition de domaine. En effet un maillage non cartésien permet de ne raffiner que localement le domaine et ainsi réduire le temps de calcul sur certaines régions de l'espace. Mais les contraintes de gestion du maillage nous ont orientés vers une autre alternative.
-
-L'équation cinétique ([!eq:cine]) possède quelques propriétés qu'il sera utile de vérifier au niveau numérique. Nous les présentons dans la proprosition suivante.
-
-> **Proposition :** L'équation ([!eq:cine]) préserve la masse, l'impulsion et l'énergie, c'est-à-dire\ :
->
-> $$
-    \iint_{\Omega\times\mathbb{R}^d} \begin{pmatrix} 1 \\ v \\ |v|^2 \end{pmatrix} f(t,x,v)\,\mathrm{d}x\mathrm{d}v = 0
-   $$
->
-
-L'étude théorique se fera en dimension $d \geq 1$ quelconque, mais pour simplifier l'étude, l'implémentation et la visualisation se feront en dimension $d=1$.
-
-### Conservation de la masse, de l'impulsion et de l'énergie
-
-> TODO: Revoir ce paragrphe sous forme de théorème + preuve
-
-Les propriétés de l'opérateur de collision $Q(f)$ de l'équation ([!eq:cine]) impliquent la conservation de la masse, de l'impulsion et de l'énergie lors des collisions\ :
-
-$$
-  \int_{\mathbb{R}^d} m(v)Q(f)\,\mathrm{d}v = 0
-$$
-
-où $m(v) = ( 1, v , |v|^2 )$. En multipliant ([!eq:cine]) par $m(v)$, puis en intégrant selon les directions $x$ et $v$ on obtient\ :
-
-$$
-  \iint_{\Omega\times\mathbb{R}^d} m(v)(\partial_t f + v\cdot\nabla_x f)\,\mathrm{d}x\mathrm{d}v = \iint_{\Omega\times\mathbb{R}^d}m(v)Q(f)\,\mathrm{d}x\mathrm{d}v
-$$
-
-Or les moments de $Q(f)$ sont nuls, et l'intégrale sur tout l'espace de la dérivée en $x$ vaut zéro. On obtient finalement\ :
-
-$$
-  \frac{\mathrm{d}}{\mathrm{d}t}\iint_{\Omega\times\mathbb{R}^d} m(v)f(t,x,v)\,\mathrm{d}x\mathrm{d}v = 0
-$${#eq:cine:conservation}
-
-La grandeur $f$ représente la densité de particules chargées dans l'espace des phases, donc la grandeur $\iint f(t,x,v)\,\mathrm{d}x\mathrm{d}v$ correspond à la masse totale du système. Les composantes suivantes, calculées dans ([!eq:cine:conservation]), représentent l'impulsion et l'énergie totale du système. Cette équation garantit la conservation de la masse, de la quantité de mouvement et de l'énergie dans le modèle.
-
-### Équation de Poisson
-
-Dans le contexte de la physique des plasmas, nous étudions le mouvement de particules chargées formant le plasma, c'est-à-dire des électrons et des ions. L'équation de Poisson est un modèle physique de l'évolution du champ électrique moyen $E$ créé par les particules chargées\ :
-
-$$
-  \nabla_x \cdot E = \sum_s q_s \rho_s
-$$
-
-avec $q_s$ la charge électrique d'une espèce $s$ de particule, $\rho_s$ la densité de cette même espèce $s$. Dans le cadre du modèle cinétique présenté précédemment, $f$ représente la densité d'électrons, seule espèce chargée considérée comme mouvante ; en effet les ions, beaucoup plus lourds, peuvent être considérés comme statique. Le rapport de masse entre la masse du proton et celle de l'électron est d'environ $\mu = \frac{m_p}{m_e} \approx 1\,836$, or les ions considérés ne sont pas nécessairement des ions hydrogènes, composés d'un unique proton. En normalisant les charges électriques, l'équation de Poisson peut se réécrire\ :
-
-$$
-  \nabla_x \cdot E = \int_{\mathrm{R}^d} f\,\mathrm{d}v - 1
-$${#eq:cine:poisson}
-
-où $f$ est la distribution d'électrons et le terme $1$ représente la densité ionique normalisée. En rajoutant le terme de force induit par le champ électrique $E$, l'équation du modèle cinétique ([!eq:cine]) mène à l'équation dite de Vlasov\ :
-
-$$
-  \begin{cases}
-    \partial_t f + v\cdot\nabla_x f + E\cdot\nabla_v f = Q(f) \\
-    \nabla_x\cdot E = \int f\,\mathrm{d}v -1
-  \end{cases}
-$${#eq:cine:vp}
-
-Ce modèle est une équation de transport dans l'espace des phases à vitesse $v$ dans la direction $x$ et $E$ dans la direction $v$ avec un terme de collision $Q(f)$.
 
 ## Modèle macroscopique
 
@@ -149,7 +76,7 @@ $$
   \end{pmatrix}
 $$
 
-où $e$ est l’énergie interne. Le vecteur $U$ vit dans $\mathbb{R}^{d+2}$ car $\rho \in \mathbb{R}$, $e\in\mathbb{R}$ et $u\in\mathbb{R}^d$. Le flux $\mathcal{F}$ est alors défini en dimension $d$ par\ :
+où $e$ est l’énergie interne et est relié à la température via $e = \frac{\rho T}{2}+ \frac{\rho u^2}{2}$. Le vecteur $U$ vit dans $\mathbb{R}^{d+2}$ car $\rho \in \mathbb{R}$, $e\in\mathbb{R}$ et $u\in\mathbb{R}^d$. Le flux $\mathcal{F}$ est alors défini en dimension $d$ par\ :
 
 $$
   \mathcal{F}(U) = \begin{pmatrix}
@@ -167,10 +94,21 @@ $$
 
 En dimension $d \ne 1$ le flux $\mathcal{F}(U)$ n'est plus un vecteur mais une matrice. En prenant la divergence du flux : $\nabla_x\cdot\mathcal{F}(U)$, on retrouve bien un vecteur à $d+2$ dimensions. En effet la première et dernière composante sont de simples scalaires, donc leur dérivée est aussi un scalaire ; la seconde composante est une matrice carrée de taille $d$, dont la divergence donne bien un vecteur de taille $d$.
 
+### Équation de Poisson
 
-### Prise en compte du champ électrique
+Dans le contexte de la physique des plasmas, nous étudions le mouvement de particules chargées formant le plasma, c'est-à-dire des électrons et des ions. L'équation de Poisson est un modèle physique de l'évolution du champ électrique moyen $E$ créé par les particules chargées\ :
 
-De manière analogue au modèle cinétique, le contexte de l'étude des plasmas nécessite l'ajout d'un second membre à ([!eq:euler]) :
+$$
+  \nabla_x\cdot E = \sum_s q_s \rho_s
+$$
+
+avec $q_s$ la charge électrique d'une espèce $s$ de particule, $\rho_s$ la densité de cette même espèce $s$. Dans le cadre du modèle macroscopique présenté précédemment, $\rho$ représente la densité d'électrons, seule espèce chargée considérée comme mouvante ; en effet les ions, beaucoup plus lourds, peuvent être considérés comme statique. Le rapport de masse entre la masse du proton et celle de l'électron est d'environ $\mu=\frac{m_p}{m_e}\approx 1\,836$, or les ions considérés ne sont pas nécessairement des ions hydrogènes, composés d'un unique proton. En normalisant les charges électriques, l'équation de Poisson peut se réécrire\ :
+
+$$
+  \nabla_x \cdot E = \rho -1
+$${#eq:macro:poisson}
+
+où $\rho$ est la densité d'électrons et le terme $1$ représente la densité ionique normalisée. En rajoutant le terme de force induit par le champ électrique $E$, l'équation ([!eq:euler]) devient\ :
 
 $$
   \partial_t U + \nabla_x\cdot\mathcal{F}(U) = S(U)
@@ -182,13 +120,80 @@ $$
   S(U) = \begin{pmatrix} 0 \\ \rho E \\ 2\rho uE \end{pmatrix}
 $$
 
-Le champ électrique $E$ est calculé avec l'équation de Poisson\ :
+
+## Modèle cinétique
+
+Le principe du modèle cinétique est de proposer une description intermédiaire entre le modèle microscopique et macroscopique. On représente les particules dans l'espace des phases $(x,v)$, où $x \in \Omega \subset \mathbb{R}^d$ désigne la position et $v \in \mathbb{R}^d$ la vitesse, avec $d=1,2,3$ la dimension du problème. L'étude se restreint au cas de $\Omega$ un fermé borné de $\mathbb{R}^d$ ; la vitesse quant à elle n'est *a priori* pas bornée.
+
+Nous n'étudions pas chaque particule individuellement mais, à la manière du modèle macroscopique, une valeur statistique qu'est la fonction de distribution de particules dans l'espace des phases notée $f$. La grandeur $f(t,x,v)\mathrm{d}x\mathrm{d}v$ représente la densité de particules dans un volume élémentaire de l'espace des phases $\mathrm{d}x\mathrm{d}v$ centré en $(x,v)$ au temps $t \geq 0$.
+
+L'inconnue $f(t,x,v)$ est alors solution d'une équation de transport dans l'espace des phases à laquelle on ajoute un terme de collision\ :
 
 $$
-  \nabla_x \cdot E = \rho -1
-$${#eq:macro:poisson}
+  \partial_t f + v\cdot\nabla_x f = Q(f)
+$${#eq:cine}
 
-où $\rho$ représente la densité d'électron, et $1$ la densité ionique. On retrouve bien une définition équivalente à ([!eq:cine:poisson]) puisque : $\int_{\mathbb{R}^d} f(t,x,v)\,\mathrm{d}v = \rho(t,x)$.
+où le transport s'effectue à vitesse $v$ dans la direction $x$. $Q(f)$ représente un opérateur quadratique de collision, il modélise les interactions binaires entre particules ; plusieurs expressions sont possibles comme l'opérateur de Boltzmann pour les gaz raréfiés, ou les opérateurs Landau ou BGK par exemple pour le cas des particules chargées.
+
+Les variables de base du problème sont $t$, $x$ et $v$. Une simulation directe du problème complet impose donc de travailler en 7 dimensions : une de temps, et 6 pour l'espace des phases $(x,v)$. Travailler dans un espace de dimension aussi élevée implique des coûts importants en temps de calcul et dans l'utilisation de la mémoire, cela est cependant moins coûteux qu'un modèle microscopique. De plus il est possible de développer des schémas numériques adaptés au problème considéré et réduire le temps de calcul, par exemple via des techniques de décomposition de domaine. En effet un maillage non cartésien permet de ne raffiner que localement le domaine et ainsi réduire le temps de calcul sur certaines régions de l'espace. Mais les contraintes de gestion du maillage nous ont orientés vers une autre alternative.
+
+
+L'équation cinétique ([!eq:cine]) possède quelques propriétés qu'il sera utile de vérifier au niveau numérique. Nous les présentons dans la proprosition suivante.
+
+Nous considèrerons un opérateur de collision $Q(f)$ dans l'équation ([!eq:cine]) qui conserve la masse, de l'impulsion et de l'énergie lors des collisions\ :
+
+$$
+  \int_{\mathbb{R}^d} m(v)Q(f)\,\mathrm{d}v = 0
+$$
+
+où $m(v) = ( 1, v , |v|^2 )$.
+
+La grandeur $f$ représente la densité de particules chargées dans l'espace des phases, donc la grandeur $\iint m(v)f(t,x,v)\,\mathrm{d}x\mathrm{d}v$ est un vecteur dont les composantes correspondent respectivement à la masse totale du système, l'impulsion et l'énergie totale du système.
+
+> **Proposition :** L'équation ([!eq:cine]) préserve la masse, l'impulsion et l'énergie, c'est-à-dire\ :
+>
+> $$
+    \iint_{\Omega\times\mathbb{R}^d} \begin{pmatrix} 1 \\ v \\ |v|^2 \end{pmatrix} f(t,x,v)\,\mathrm{d}x\mathrm{d}v = 0
+   $$
+>
+
+*Preuve :*
+
+En multipliant ([!eq:cine]) par $m(v)$, puis en intégrant selon les directions $x$ et $v$ on obtient\ :
+
+$$
+  \iint_{\Omega\times\mathbb{R}^d} m(v)(\partial_t f + v\cdot\nabla_x f)\,\mathrm{d}x\mathrm{d}v = \iint_{\Omega\times\mathbb{R}^d}m(v)Q(f)\,\mathrm{d}x\mathrm{d}v
+$$
+
+Or les moments de $Q(f)$ sont nuls, et l'intégrale sur tout l'espace de la dérivée en $x$ vaut zéro. On obtient finalement\ :
+
+$$
+  \frac{\mathrm{d}}{\mathrm{d}t}\iint_{\Omega\times\mathbb{R}^d} m(v)f(t,x,v)\,\mathrm{d}x\mathrm{d}v = 0
+$${#eq:cine:conservation}
+
+
+### Prise en compte du champ électrique
+
+De manière analogue au modèle macroscopique, le contexte de l'étude des plasmas nécessite l'ajout des forces induites par le champ électrique moyen $E$, champ électrique calculé via l'équation de Poisson.
+
+L'équation de Poisson s'écrit dans le modèle cinétique comme\ :
+
+$$
+  \nabla_x \cdot E = \int_{\mathrm{R}^d} f\,\mathrm{d}v - 1
+$${#eq:cine:poisson}
+
+où $f$ est la distribution d'électrons et le terme $1$ représente la densité ionique normalisée. En rajoutant le terme de force induit par le champ électrique $E$, l'équation du modèle cinétique ([!eq:cine]) mène à l'équation dite de Vlasov\ :
+
+$$
+  \begin{cases}
+    \partial_t f + v\cdot\nabla_x f + E\cdot\nabla_v f = Q(f) \\
+    \nabla_x\cdot E = \int_{\mathbb{R}^d} f\,\mathrm{d}v -1
+  \end{cases}
+$${#eq:cine:vp}
+
+Ce modèle est une équation de transport dans l'espace des phases à vitesse $v$ dans la direction $x$ et $E$ dans la direction $v$ avec un terme de collision $Q(f)$.
+
+On retrouve bien une définition du champ électrique équivalente à ([!eq:macro:poisson]) puisque\ : $\int_{\mathbb{R}^d}f(t,x,v)\,\mathrm{d}v = \rho(t,x)$.
 
 
 ## Cinétique vers fluide
@@ -536,11 +541,12 @@ $$
 $$
 
 ce qui est inconditionnellement stable quelle que soit la valeur de $\Delta t$ et de $\varepsilon$. En outre, lorsque $\varepsilon\to 0$ et $\Delta t\to 0$ fixé\ :
+
 $$
   u^n \overset{\varepsilon\to 0}{\to} 0
 $$
 
-comme la solution exacte $u(t) = u_0 exp\left(-frac{t}{\varepsilon})$. On dit alors que le schéma est *asymptotic preserving*. Par conséquent nous utiliserons un schéma d'Euler implicite en temps pour tester et valider nos différents schémas sur le terme de transport.
+comme la solution exacte $u(t) = u_0 \exp\left(-\frac{t}{\varepsilon}\right)$. On dit alors que le schéma est *asymptotic preserving*. Par conséquent nous utiliserons un schéma d'Euler implicite en temps pour tester et valider nos différents schémas sur le terme de transport.
 
 
 ### Schéma Runge-Kutta d'ordre 3

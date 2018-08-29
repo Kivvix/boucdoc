@@ -1,6 +1,7 @@
 /* boucdoc.css */
 
 body { counter-reset: section; }
+p { text-align: justify; }
 
 .author { display: inline-block; }
 .author:after { content: ", "; }
@@ -63,7 +64,7 @@ h1.title::before { counter-increment: none; content: ""; }
 h1:target, h2:target, h3:target,
 h4:target, h5:target, h6:target,
 div:target , a.eq:target , a.citation:target,
-p:target
+p:target, li:target
 { animation: highlight 2.5s ease; }
 
 @keyframes highlight {
