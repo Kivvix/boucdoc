@@ -58,7 +58,7 @@ endef
 
 
 # HTML ################################################################
-# list of css files to add in pandoc command line
+# list of css files to add in pandoc command line    
 #CSS_template = $(patsubst $(MD_dir)/_template/html/%, template/% , $(shell find $(MD_dir)/_template/html -type f -name '*.css' | sort -r))
 CSS_template = $(patsubst $(MD_dir)/_template/html/style/%.css, template/style/%.css , $(shell find $(MD_dir)/_template/html/style -type f -name '*.css' | sort -r))
 #MATH_render = --katex=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/ 

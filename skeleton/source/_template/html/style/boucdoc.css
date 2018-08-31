@@ -117,9 +117,9 @@ div figure {
 div figure:hover {
   transform: scale(1.75);
   background: rgba(255,255,255,0.8);
-  font-size: 0.75em;
+  /*font-size: 0.75em;*/
   box-shadow: 0px 1px 3px 1px rgba(42, 42, 42, 0.7);
-  padding: 0.5rem;
+  /*padding: 0.5rem;*/
 }
 
 figcaption::before , div p::before {
