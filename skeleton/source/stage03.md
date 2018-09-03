@@ -774,7 +774,7 @@ Ainsi à chaque raffinement de maillage, le pas de temps est aussi raffiné, l'e
 
 La figure (TODO référence de la figure) montre l'évolution de l'erreur en fonction du pas d'espace $\Delta x$ en échelle logarithmique. L'erreur est indiquée pour 2 temps distincts $t_1= 0.1$ et $t_2 = 1$ pour un nombre de CFL égal à $c = 10^{-4}$. L'erreur infinie, au temps $t_i$, notée $e_\infty^{i}$ est systématiquement plus faible que l'erreur en norme 1, notée $e_1^{i}$, car cette dernière dénote un caractère plus global (somme des erreurs locales). L'écart entre les erreurs au temps $t_1$ et au temps $t_2$ illustre l'erreur du schéma en temps, ici un schéma d'Euler explicite. Les points pour un $\Delta x$ faible, donc à droite de la figure ne permettent pas de calculer convenablement l'ordre du schéma puisqu'il s'agit d'une propriété à la limite quand $\Delta x \to 0$. Ainsi l'ordre mesuré sur la figure à l'aide d'une minimisation (valeur de $4.48$) est faussée par la présence des ces points. Le tableau suivant (TODO référence du tableau) permet de se donner une idée de l'ordre partiel et ainsi de la valeur limite pour de faibles valeurs de $\Delta x$. On peut donc affirmer que l'ordre de ce schéma est 5, ce qui est en accord avec le résultat obtenu dans [@siam2013].
 
-|  $N$ |   $\Delta x$  |  $n^1$   |      $e_1^1$  |  $e_\infty^1$  |  $n^2$  |      $e_1^2$  |  $e_\infty^2$ | Ordre partiel |
+|  $N$ |   $\Delta x$  |  $n_1$   |      $e_1^1$  |  $e_\infty^1$  |  $n_2$  |      $e_1^2$  |  $e_\infty^2$ | Ordre partiel |
 |------|---------------|----------|---------------|----------------|---------|---------------|---------------|---------------|
 |  10  |  0.12566E+01  |    796   |  0.91045E-01  |   0.25373E-01  |   7958  |  0.23402E+01  |   0.48973E+00 |  ---          |
 |  20  |  0.62832E+00  |   1592   |  0.16296E-01  |   0.75946E-02  |  15916  |  0.24779E+00  |   0.91331E-01 | 2.46          |
@@ -797,17 +797,14 @@ La figure (TODO référence de la figure) montre l'évolution de l'erreur en fon
 | 190  |  0.66139E-01  |  15120   |  0.41032E-06  |   0.25064E-06  | 151198  |  0.40978E-05  |   0.24997E-05 | 4.96          |
 | 200  |  0.62832E-01  |  15916   |  0.31724E-06  |   0.19402E-06  | 159155  |  0.32023E-05  |   0.19290E-05 | 5.01          |
   
-  : Erreur et ordre au temps $t_1 = 0.1$ et au temps $t_2 = 1$
+  : Erreur et ordre au temps $t_1 = 0.1$ et au temps $t_2 = 1$. La colonne $N$ permet de calculer $\Delta x = \frac{2\pi}{N}$, $n_1$ et $n_2$ sont le nombre d'itérations jusqu'au temps $t_1$ respectivement $t_2$. Les erreurs sont données au temps $t_1$ ($e_1^1$ et $e_\infty^1$) ainsi qu'au temps $t_2$ ($e_1^2$ et $e_\infty^2$) en norme 1 et infinie.
 
-> TODO: il n'est pas nécessaire d'avoir autant de ligne, les colonnes $n^{1|2}$ (nombre d'itérations) ne sont peut-être pas nécessaire non plus. Il s'agit d'un tableau de données brutes qu'il est sans doute nécessaire de retravailler pour la mise en page et la lisibilité des données
 
 ### Schéma WENO
 
 Les schémas numériques d'ordre élevé ont permis d'approfondir l'étude de problèmes complexes comme ceux intervenant en mécanique des fluides. L'introduction de l'ordre élevé se fait généralement au détriment d'oscillations pouvant apparaître au niveau des discontinuités. Une famille de schémas numériques d'ordre élevé a été introduite par C.-W. Shu, exposée dans [@icase] et [@weno], permettant de prévenir l'apparition d'oscillation.
 
 WENO pour *weighted essentially non-oscillatory* est une famille de schémas numériques qui se généralise facilement à l'ordre élevé sans pour autant provoquer d'oscillations. L'idée des schémas WENO est d'effectuer plusieurs interpolations polynomiales lagrangiennes sur des *stencils* incluant le point à évaluer, pondérées pour limiter les oscillations. La méthode que nous allons présenter ici est un schéma WENO d'ordre 5.
-
-> TODO: Faire un schéma où on remonte une courbe caractéristique et dire que le problème se "limite" à un problème d'interpolation, et que pour limiter les oscillations d'une interpolation polynomiale d'ordre élevé on en fait 3 d'ordre moins élevé, que l'on pondère pour réduire encore plus le risque oscillant.
 
 Nous présenterons ce schéma toujours à partir de l'équation ([!eq:trp:base]). Le schéma WENO de base s'écrit à partir d'une vitesse $a$ pouvant dépendre de $x$, l'équation de transport s'écrit alors\ :
 
@@ -929,7 +926,7 @@ donc $\Delta t = c\frac{2\pi}{N}$ change à chaque raffinement de maillage.
 
 La figure (TODO référence de la figure) montre l’évolution de l’erreur en fonction du pas d’espace $\Delta x$ en échelle logarithmique. L’erreur est indiquée pour 2 temps distincts $t_1= 0.1$ et $t_2 = 1$ pour un nombre de CFL égal à $c = 10^{-5}$. En comparant ces résultats par rapport à ceux du schéma compact, l'ordre donné via le graphique est plus élevé (on peut déterminer déjà une valeur de $5$). On remarque aussi que l'erreur systématique du schéma est beaucoup plus faible. Ainsi le *plongeon* de l'erreur que l'on peut observer sur les valeurs à gauche est plus dû au bruit de l'erreur machine qu'à un véritable schéma d'ordre $7$ (dernière valeur de l'ordre partiel présent dans le tableau suivant).
 
-| $m$ | $\Delta x$  | $n^1$  | $e_1^1$     | $e_\infty^1$| $n^2$  | $e_1^2$     | $e_\infty^2$|  Ordre partiel     |
+| $m$ | $\Delta x$  | $n_1$  | $e_1^1$     | $e_\infty^1$| $n_2$  | $e_1^2$     | $e_\infty^2$|  Ordre partiel     |
 |-----|-------------|--------|-------------|-------------|--------|-------------|-------------|--------------------|
 | 10  | 0.62832E+00 |   1592 | 0.37995E-05 | 0.13973E-05 |  15916 | 0.37846E-04 | 0.13958E-04 | ---                |
 | 20  | 0.31416E+00 |   3184 | 0.17447E-06 | 0.51436E-07 |  31831 | 0.17442E-05 | 0.51362E-06 |   4.44475868534761 |
@@ -952,7 +949,8 @@ La figure (TODO référence de la figure) montre l’évolution de l’erreur en
 |190  | 0.33069E-01 |  30240 | 0.12607E-11 | 0.41400E-12 | 302395 | 0.12602E-10 | 0.41499E-11 |   6.76968883229296 |
 |200  | 0.31416E-01 |  31831 | 0.86049E-12 | 0.28710E-12 | 318310 | 0.86084E-11 | 0.28748E-11 |   7.44789538520894 |
 
-  : Erreur et ordre au temps $t_1 = 0.1$ et $t_2=1$
+
+  : Erreur et ordre au temps $t_1 = 0.1$ et au temps $t_2 = 1$. La colonne $N$ permet de calculer $\Delta x = \frac{2\pi}{N}$, $n_1$ et $n_2$ sont le nombre d'itérations jusqu'au temps $t_1$ respectivement $t_2$. Les erreurs sont données au temps $t_1$ ($e_1^1$ et $e_\infty^1$) ainsi qu'au temps $t_2$ ($e_1^2$ et $e_\infty^2$) en norme 1 et infinie.
 
 Un des intérêts des schémas WENO est qu'ils se généralisent facilement au cas multi-dimensionnel. En effet, le passage aux dimensions supérieures à $1$ s'effectue par addition des différentes approximations des dérivées dans chaque direction.
 
@@ -984,11 +982,19 @@ $$
 |---------|------------|---------|------------|
 | 0.1     | 0.05       | 0       | 0.025      |
 
-La simulation se fait sur le domaine $\Omega = [-1,1]\times [-1,1]$, jusqu'au temps $T_f = \cdots$ TODO: refaire la simu
+La simulation se fait sur le domaine périodique $\Omega = [-1,1]\times [-1,1]$, jusqu'au temps $T_f = 15$. La grille est de dimension $70\times 70$ et nous choisissons $\Delta t = 0.3\Delta x$.
 
-> TODO: cas où l'on fait tourner une gaussienne, comparer entre Euler et RK3 (apparition d'une *vague de traine* dans le cas Euler)
+<div>
+  ![Résultat de simulation avec le schéma en temps d'Euler explicite](img/rotation_euler.png)
 
-> TODO: mettre cette même rotation de gaussienne avec *upwind* et schéma compact ? *upwind* est très visqueux et on ne voit plus rien en temps long
+  ![Résultat de simulation avec le schéma en temps RK3](img/rotation_rk3.png)
+
+  Comparaison du schéma en temps sur la stabilité des résultats.
+</div>
+
+On remarque sur la figure 4.4 que le schéma d'Euler explicite provoque des instabilités lors de simulations en temps long, instabilités non présentes avec le schéa de Runge-Kutta d'ordre 3 (RK3). Dans les deux cas, on observe une gaussienne aux bonnes coordonnées.
+
+L'instabilité du couplage WENO-Euler explicite peut être contrôlé à l'aide d'un pas de temps $\Delta t$ plus faible. Ce comportement n'est pas contrôlable dans le cas de simulations en temps long (qui demandent alors un pas de temps beaucoup trop faible).
 
 #### Test de viscosité
 
@@ -1002,7 +1008,13 @@ il est possible de mettre à l'épreuve la viscosité numérique du schéma. C'e
 
 Ce test se base sur une condition initiale discontinue, présentant aussi des irrégularités à l'aide d'un cylindre tronqué et d'un cône (voir figure (TODO num de fig)), que l'on fait tourner 6 fois sur lui même (temps final de la simulation $T_f = 12\pi$). La solution exacte est donc la condition initiale. Il s'agit ici de vérifier le comportement du schéma en espace face à des discontinuités et d'observer la viscosité numérique. Le schéma en temps est celui de Runge-Kutta d'ordre 3.
 
-> TODO: mettre le résultat de la simu
+<div>
+  ![Condition initiale du test de viscosité](img/ci_pacman.png)
+  
+  ![Résultat de la simulation du schéma WENO en espace RK3 en temps](img/cf_pacman.png)
+
+  Test de viscolsité sur une condition initiale irrégulière
+</div>
 
 ## Couplage de l'équation de transport et du terme de raideur
 
@@ -1027,39 +1039,45 @@ $$
 
 Nous allons utiliser l’analyse de von Neumann pour déterminer la condition CFL, méthode décrite dans [@anm1966]. Cette méthode implique le calcul d'une transformée de Fourier discrète, nous nous plaçons donc dans l'intervalle $\Omega = [0,2\pi]$ avec des conditions aux bords périodiques, c'est-à-dire $f(t,x+2\pi,v) = f(t,x,v)\,\forall t,x,v$. Puisque les fonctions formant la base de la transformée de Fourier sont orthogonales, nous pouvons nous intéresser au comportement de chaque mode $\kappa\in\mathbb{Z}$ indépendamment, puis majorer l'ensemble des modes pour étudier le comportement global.
 
-Le coefficient de Fourier du mode $\kappa$ de $(f_{j,k}^n)_{i,k}$ est donné par\ :
+Le coefficient de Fourier du mode $\kappa$ de $f_{j,k}^n$ est donné par\ :
 
 $$
-  f_{j,k}^n = e^{i\kappa j\Delta x}A^n_{k}
+  \mathfrak{f}_{j,k}^n(\kappa) = e^{i\kappa j\Delta x}A^n_k(\kappa)
 $$
 
-où $i$ est le nombre imaginaire tel que $i^2 = -1$. Nous pouvons donc facilement exprimer $f_{j-1,k}^n$ directement en fonction de $f_{j,k}^n$\ :
+où les $\mathfrak{f}_{j,k}(\kappa)$ vérifient\ :
 
 $$
-  f_{j-1,k}^n = e^{i\kappa (j-1)\Delta x}A^n_k = f_{j,k}^n e^{-i\kappa\Delta x}
+  f_{j,k}^n = \sum_{\kappa\in\mathbb{Z}} \mathfrak{f}_{j,k}^n(\kappa)
 $$
 
-Cela permet donc d’exprimer $f_{j,k}^{n+1}$ en fonction uniquement de $f_{j,k}^n$, et donc d’obtenir une formule de récurrence du type\ :
+où $i$ est le nombre imaginaire tel que $i^2 = -1$. Nous pouvons donc facilement exprimer $\mathfrak{f}_{j-1,k}^n(\kappa)$ directement en fonction de $\mathfrak{f}_{j,k}^n(\kappa)$\ :
 
 $$
-  f_{j,k}^{n+1} = \mathcal{A} f_{j,k}^n = (\mathcal{A})^{n+1} f_{j,k}^0
+  \mathfrak{f}_{j-1,k}^n(\kappa) = e^{i\kappa (j-1)\Delta x}A^n_k(\kappa) = \mathfrak{f}_{j,k}^n(\kappa) e^{-i\kappa\Delta x}
+$$
+
+Cela permet donc d’exprimer $\mathfrak{f}_{j,k}^{n+1}(\kappa)$ en fonction uniquement de $\mathfrak{f}_{j,k}^n(\kappa)$, et donc d’obtenir une formule de récurrence du type\ :
+
+$$
+  \mathfrak{f}_{j,k}^{n+1}(\kappa) = \mathcal{A} \mathfrak{f}_{j,k}^n(\kappa) = (\mathcal{A})^{n+1} \mathfrak{f}_{j,k}^0(\kappa)
 $$
 
 où $\mathcal{A}$ est appelé coefficient d'amplification. On remarque qu’il est nécessaire pour que le schéma soit stable dans $L^2$ d’avoir $|\mathcal{A}| \leq 1$. Pour trouver cette formule de récurrence nous travaillerons sur une version simplifiée du schéma en négligeant l’impact de la maxwellienne.
 
-On part ainsi du schéma simplifié sur $f$\ :
+On part ainsi du schéma simplifié sur chaque mode $\kappa$ de $f$\ :
 
 $$
-  f_{j,k}^{n+1} = \frac{\varepsilon}{\varepsilon + \Delta t}\left[ f_{j,k}^n - \frac{\Delta t}{\Delta x}v_k(f_{j,k}^n - f_{j,k}^ne^{-i\kappa\Delta x} )  \right]
+  \mathfrak{f}_{j,k}^{n+1}(\kappa) = \frac{\varepsilon}{\varepsilon + \Delta t}\left[ \mathfrak{f}_{j,k}^n(\kappa) - \frac{\Delta t}{\Delta x}v_k(\mathfrak{f}_{j,k}^n(\kappa) - \mathfrak{f}_{j,k}^n(\kappa)e^{-i\kappa\Delta x} )  \right]
 $$
 
 Ce que l’on peut écrire sous la forme\ :
 
 $$
-  f_{j,k}^{n+1} = f_{j,k}^n\frac{\varepsilon}{\varepsilon + \Delta t}\left[ 1-\frac{\Delta t}{\Delta x}v_k(1-e^{-i\kappa\Delta x}) \right]
+  \mathfrak{f}_{j,k}^{n+1}(\kappa) = \mathfrak{f}_{j,k}^n(\kappa)\frac{\varepsilon}{\varepsilon + \Delta t}\left[ 1-\frac{\Delta t}{\Delta x}v_k(1-e^{-i\kappa\Delta x}) \right]
 $$
 
-On obtient bien la forme désirée $f_{j,k}^{n+1} = \mathcal{A} f_{j,k}$. Pour simplifier l’étude de $\mathcal{A}$ écrivons ce terme sous la forme\ :
+On obtient bien la forme désirée $\mathfrak{f}_{j,k}^{n+1}(\kappa) = \mathcal{A} \mathfrak{f}_{j,k}(\kappa)$. Pour simplifier l’étude de $\mathcal{A}$ écrivons ce terme sous la forme\ :
 
 $$
   \mathcal{A} = \frac{\varepsilon}{\varepsilon + \Delta t} \mathcal{B}
@@ -1085,42 +1103,48 @@ $$
   |\mathcal{B}|^2 \leq \left(\frac{\varepsilon + \Delta t}{\varepsilon}\right)^2
 $$
 
+soit\ :
+
+$$
+  1 + 2(1-\cos(\kappa\Delta x))\Delta t \left[ \frac{\Delta t}{\Delta x^2}v_k^2 - \frac{v_k}{\Delta x} \right] \leq 1 + \Delta t \frac{(2\varepsilon + \Delta t)}{\varepsilon^2}
+$$
+
 Ce que l’on peut reformuler comme suit, pour majorer $\Delta t$\ :
 
 $$
     \Delta t \left[(1-\cos(\kappa\Delta x))\frac{v_k^2}{\Delta x^2} - \frac{1}{2\varepsilon^2}\right] \leq \frac{1}{\varepsilon} + (1-\cos(\kappa\Delta x))\frac{v_k}{\Delta x}
 $$
 
-Cette inégalité doit être vérifiée pour toute vitesse $v_k$, nous allons donc majorer par $v_{\textrm{max}}$, de même quel que soit le nombre d’onde $\kappa$ nous allons donc majorer $1-\cos(\kappa\Delta x)=2\sin^2(\frac{\kappa\Delta x}{2})$ par 2. Ce qui nous donne après simplification\ :
+Cette inégalité doit être vérifiée pour toute vitesse $v_k$, nous allons donc majorer par $v_{\text{max}}$, de même quel que soit le nombre d’onde $\kappa$ nous allons donc majorer $1-\cos(\kappa\Delta x)=2\sin^2(\frac{\kappa\Delta x}{2})$ par 2. Ce qui nous donne après simplification\ :
 
 $$
-  \Delta t (2v\varepsilon - \Delta x) \leq 2\Delta x \varepsilon
+  \Delta t (2v_{\text{max}}\varepsilon - \Delta x) \leq 2\Delta x \varepsilon
 $$
 
-Il est nécessaire d’étudier le signe de $2v\varepsilon - \Delta x$\ :
+Il est nécessaire d’étudier le signe de $2v_{\text{max}}\varepsilon - \Delta x$\ :
 
-* $2v\varepsilon - \Delta x < 0$ alors $\Delta t >0$ ce qui est toujours vérifié. Cette condition est vérifiée si\ :
+* $2v_{\text{max}}\varepsilon - \Delta x < 0$ alors $\Delta t >0$ ce qui est toujours vérifié. Cette condition est vérifiée si\ :
   
   $$
-    \varepsilon < \frac{\Delta x}{2v}
+    \varepsilon < \frac{\Delta x}{2v_{\text{max}}}
   $$
 
-  Avec classiquement $\Delta x \sim 10^{-2}$ et $v\sim 18$ ce qui nous donne $\varepsilon \sim 10^{-3}$.
-* $2v\varepsilon - \Delta x > 0$ alors\ :
+  Avec classiquement $\Delta x \sim 10^{-2}$ et $v_{\text{max}}\sim 18$ ce qui nous donne $\varepsilon \sim 10^{-3}$.
+* $2v_{\text{max}}\varepsilon - \Delta x > 0$ alors le schéma sera stable pour\ :
 
   $$
-    \Delta t \leq \frac{2\Delta x \varepsilon}{2v\varepsilon - \Delta x}
+    \Delta t \leq \frac{2\Delta x \varepsilon}{2v_{\text{max}}\varepsilon - \Delta x}
   $$
 
 En étudiant la fonction\ :
 
 $$
-  \mathscr{C}:\varepsilon\mapsto\frac{ \frac{\Delta x}{v} \varepsilon}{\varepsilon - \frac{1}{2}\frac{\Delta x}{v}}
+  \mathscr{C}:\varepsilon\mapsto\frac{ \frac{\Delta x}{v_{\text{max}}} \varepsilon}{\varepsilon - \frac{1}{2}\frac{\Delta x}{v_{\text{max}}}}
 $$
 
-> TODO: tracer cette fonction
+![Représentation de la fonction $\mathscr{C}$ avec ses limites.](img/c_epsidt.png)
 
-on trouve que cette fonction est décroissante et a pour limite $\frac{\Delta x}{v}$, nous utiliserons donc une fraction de cette limite comme base de temps. On retrouve aussi le pôle $\frac{\Delta x}{2v}$ qui correspond au changement de condition pour obtenir $\Delta t$.
+on trouve que cette fonction est décroissante et a pour limite $\frac{\Delta x}{v_{\text{max}}}$, nous utiliserons donc une fraction de cette limite comme base de temps. On retrouve aussi le pôle $\frac{\Delta x}{2v_{\text{max}}}$ qui correspond au changement de condition pour obtenir $\Delta t$.
 
 ### Reformulation exponentielle du modèle *micro*
 
@@ -1843,8 +1867,6 @@ Dans ce cas, le résultat épouse parfaitement le résultat de référence. La f
 $$
   \Omega_K(t) \subset [x_s(t),x_e(t)]
 $$
-
-> TODO: tracer $x_s(t)$ et $x_e(t)$
 
 Notre implémentation permet en plus de diminuer le temps de simulation.
 
