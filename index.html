@@ -702,7 +702,7 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 </figure>
 <p>La figure (TODO référence de la figure) montre l’évolution de l’erreur en fonction du pas d’espace <span class="math inline">\(\Delta x\)</span> en échelle logarithmique. L’erreur est indiquée pour 2 temps distincts <span class="math inline">\(t_1= 0.1\)</span> et <span class="math inline">\(t_2 = 1\)</span> pour un nombre de CFL égal à <span class="math inline">\(c = 10^{-4}\)</span>. L’erreur infinie, au temps <span class="math inline">\(t_i\)</span>, notée <span class="math inline">\(e_\infty^{i}\)</span> est systématiquement plus faible que l’erreur en norme 1, notée <span class="math inline">\(e_1^{i}\)</span>, car cette dernière dénote un caractère plus global (somme des erreurs locales). L’écart entre les erreurs au temps <span class="math inline">\(t_1\)</span> et au temps <span class="math inline">\(t_2\)</span> illustre l’erreur du schéma en temps, ici un schéma d’Euler explicite. Les points pour un <span class="math inline">\(\Delta x\)</span> faible, donc à droite de la figure ne permettent pas de calculer convenablement l’ordre du schéma puisqu’il s’agit d’une propriété à la limite quand <span class="math inline">\(\Delta x \to 0\)</span>. Ainsi l’ordre mesuré sur la figure à l’aide d’une minimisation (valeur de <span class="math inline">\(4.48\)</span>) est faussée par la présence des ces points. Le tableau suivant (TODO référence du tableau) permet de se donner une idée de l’ordre partiel et ainsi de la valeur limite pour de faibles valeurs de <span class="math inline">\(\Delta x\)</span>. On peut donc affirmer que l’ordre de ce schéma est 5, ce qui est en accord avec le résultat obtenu dans <span class="citation" data-cites="siam2013">[9]</span>.</p>
 <table>
-<caption>Erreur et ordre au temps <span class="math inline">\(t_1 = 0.1\)</span> et au temps <span class="math inline">\(t_2 = 1\)</span></caption>
+<caption>Erreur et ordre au temps <span class="math inline">\(t_1 = 0.1\)</span> et au temps <span class="math inline">\(t_2 = 1\)</span>. La colonne <span class="math inline">\(N\)</span> permet de calculer <span class="math inline">\(\Delta x = \frac{2\pi}{N}\)</span>, <span class="math inline">\(n_1\)</span> et <span class="math inline">\(n_2\)</span> sont le nombre d’itérations jusqu’au temps <span class="math inline">\(t_1\)</span> respectivement <span class="math inline">\(t_2\)</span>. Les erreurs sont données au temps <span class="math inline">\(t_1\)</span> (<span class="math inline">\(e_1^1\)</span> et <span class="math inline">\(e_\infty^1\)</span>) ainsi qu’au temps <span class="math inline">\(t_2\)</span> (<span class="math inline">\(e_1^2\)</span> et <span class="math inline">\(e_\infty^2\)</span>) en norme 1 et infinie.</caption>
 <colgroup>
 <col style="width: 5%" />
 <col style="width: 12%" />
@@ -718,10 +718,10 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <tr class="header">
 <th><span class="math inline">\(N\)</span></th>
 <th><span class="math inline">\(\Delta x\)</span></th>
-<th><span class="math inline">\(n^1\)</span></th>
+<th><span class="math inline">\(n_1\)</span></th>
 <th><span class="math inline">\(e_1^1\)</span></th>
 <th><span class="math inline">\(e_\infty^1\)</span></th>
-<th><span class="math inline">\(n^2\)</span></th>
+<th><span class="math inline">\(n_2\)</span></th>
 <th><span class="math inline">\(e_1^2\)</span></th>
 <th><span class="math inline">\(e_\infty^2\)</span></th>
 <th>Ordre partiel</th>
@@ -950,15 +950,9 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>TODO: il n’est pas nécessaire d’avoir autant de ligne, les colonnes <span class="math inline">\(n^{1|2}\)</span> (nombre d’itérations) ne sont peut-être pas nécessaire non plus. Il s’agit d’un tableau de données brutes qu’il est sans doute nécessaire de retravailler pour la mise en page et la lisibilité des données</p>
-</blockquote>
 <h3 id="schéma-weno">Schéma WENO</h3>
 <p>Les schémas numériques d’ordre élevé ont permis d’approfondir l’étude de problèmes complexes comme ceux intervenant en mécanique des fluides. L’introduction de l’ordre élevé se fait généralement au détriment d’oscillations pouvant apparaître au niveau des discontinuités. Une famille de schémas numériques d’ordre élevé a été introduite par C.-W. Shu, exposée dans <span class="citation" data-cites="icase">[10]</span> et <span class="citation" data-cites="weno">[11]</span>, permettant de prévenir l’apparition d’oscillation.</p>
 <p>WENO pour <em>weighted essentially non-oscillatory</em> est une famille de schémas numériques qui se généralise facilement à l’ordre élevé sans pour autant provoquer d’oscillations. L’idée des schémas WENO est d’effectuer plusieurs interpolations polynomiales lagrangiennes sur des <em>stencils</em> incluant le point à évaluer, pondérées pour limiter les oscillations. La méthode que nous allons présenter ici est un schéma WENO d’ordre 5.</p>
-<blockquote>
-<p>TODO: Faire un schéma où on remonte une courbe caractéristique et dire que le problème se “limite” à un problème d’interpolation, et que pour limiter les oscillations d’une interpolation polynomiale d’ordre élevé on en fait 3 d’ordre moins élevé, que l’on pondère pour réduire encore plus le risque oscillant.</p>
-</blockquote>
 <p>Nous présenterons ce schéma toujours à partir de l’équation (<a href="#4.4" class="aeq">4.4</a>). Le schéma WENO de base s’écrit à partir d’une vitesse <span class="math inline">\(a\)</span> pouvant dépendre de <span class="math inline">\(x\)</span>, l’équation de transport s’écrit alors :</p>
 <p><span class="math display">\[
   \partial_t u + \partial_x(a u) = 0
@@ -1046,7 +1040,7 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 </figure>
 <p>La figure (TODO référence de la figure) montre l’évolution de l’erreur en fonction du pas d’espace <span class="math inline">\(\Delta x\)</span> en échelle logarithmique. L’erreur est indiquée pour 2 temps distincts <span class="math inline">\(t_1= 0.1\)</span> et <span class="math inline">\(t_2 = 1\)</span> pour un nombre de CFL égal à <span class="math inline">\(c = 10^{-5}\)</span>. En comparant ces résultats par rapport à ceux du schéma compact, l’ordre donné via le graphique est plus élevé (on peut déterminer déjà une valeur de <span class="math inline">\(5\)</span>). On remarque aussi que l’erreur systématique du schéma est beaucoup plus faible. Ainsi le <em>plongeon</em> de l’erreur que l’on peut observer sur les valeurs à gauche est plus dû au bruit de l’erreur machine qu’à un véritable schéma d’ordre <span class="math inline">\(7\)</span> (dernière valeur de l’ordre partiel présent dans le tableau suivant).</p>
 <table>
-<caption>Erreur et ordre au temps <span class="math inline">\(t_1 = 0.1\)</span> et <span class="math inline">\(t_2=1\)</span></caption>
+<caption>Erreur et ordre au temps <span class="math inline">\(t_1 = 0.1\)</span> et au temps <span class="math inline">\(t_2 = 1\)</span>. La colonne <span class="math inline">\(N\)</span> permet de calculer <span class="math inline">\(\Delta x = \frac{2\pi}{N}\)</span>, <span class="math inline">\(n_1\)</span> et <span class="math inline">\(n_2\)</span> sont le nombre d’itérations jusqu’au temps <span class="math inline">\(t_1\)</span> respectivement <span class="math inline">\(t_2\)</span>. Les erreurs sont données au temps <span class="math inline">\(t_1\)</span> (<span class="math inline">\(e_1^1\)</span> et <span class="math inline">\(e_\infty^1\)</span>) ainsi qu’au temps <span class="math inline">\(t_2\)</span> (<span class="math inline">\(e_1^2\)</span> et <span class="math inline">\(e_\infty^2\)</span>) en norme 1 et infinie.</caption>
 <colgroup>
 <col style="width: 4%" />
 <col style="width: 12%" />
@@ -1062,10 +1056,10 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <tr class="header">
 <th><span class="math inline">\(m\)</span></th>
 <th><span class="math inline">\(\Delta x\)</span></th>
-<th><span class="math inline">\(n^1\)</span></th>
+<th><span class="math inline">\(n_1\)</span></th>
 <th><span class="math inline">\(e_1^1\)</span></th>
 <th><span class="math inline">\(e_\infty^1\)</span></th>
-<th><span class="math inline">\(n^2\)</span></th>
+<th><span class="math inline">\(n_2\)</span></th>
 <th><span class="math inline">\(e_1^2\)</span></th>
 <th><span class="math inline">\(e_\infty^2\)</span></th>
 <th>Ordre partiel</th>
@@ -1328,13 +1322,18 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 </tr>
 </tbody>
 </table>
-<p>La simulation se fait sur le domaine <span class="math inline">\(\Omega = [-1,1]\times [-1,1]\)</span>, jusqu’au temps <span class="math inline">\(T_f = \cdots\)</span> TODO: refaire la simu</p>
-<blockquote>
-<p>TODO: cas où l’on fait tourner une gaussienne, comparer entre Euler et RK3 (apparition d’une <em>vague de traine</em> dans le cas Euler)</p>
-</blockquote>
-<blockquote>
-<p>TODO: mettre cette même rotation de gaussienne avec <em>upwind</em> et schéma compact ? <em>upwind</em> est très visqueux et on ne voit plus rien en temps long</p>
-</blockquote>
+<p>La simulation se fait sur le domaine périodique <span class="math inline">\(\Omega = [-1,1]\times [-1,1]\)</span>, jusqu’au temps <span class="math inline">\(T_f = 15\)</span>. La grille est de dimension <span class="math inline">\(70\times 70\)</span> et nous choisissons <span class="math inline">\(\Delta t = 0.3\Delta x\)</span>.</p>
+<div>
+<figure>
+<img src="img/rotation_euler.png" alt="Résultat de simulation avec le schéma en temps d’Euler explicite" /><figcaption>Résultat de simulation avec le schéma en temps d’Euler explicite</figcaption>
+</figure>
+<figure>
+<img src="img/rotation_rk3.png" alt="Résultat de simulation avec le schéma en temps RK3" /><figcaption>Résultat de simulation avec le schéma en temps RK3</figcaption>
+</figure>
+<p>Comparaison du schéma en temps sur la stabilité des résultats.</p>
+</div>
+<p>On remarque sur la figure 4.4 que le schéma d’Euler explicite provoque des instabilités lors de simulations en temps long, instabilités non présentes avec le schéa de Runge-Kutta d’ordre 3 (RK3). Dans les deux cas, on observe une gaussienne aux bonnes coordonnées.</p>
+<p>L’instabilité du couplage WENO-Euler explicite peut être contrôlé à l’aide d’un pas de temps <span class="math inline">\(\Delta t\)</span> plus faible. Ce comportement n’est pas contrôlable dans le cas de simulations en temps long (qui demandent alors un pas de temps beaucoup trop faible).</p>
 <h4 id="test-de-viscosité">Test de viscosité</h4>
 <p>À partir du cas test de la rotation avec des conditions aux bords périodiques :</p>
 <p><span class="math display">\[
@@ -1342,9 +1341,15 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 \]</span></p>
 <p>il est possible de mettre à l’épreuve la viscosité numérique du schéma. C’est ce qui est effectué dans <span class="citation" data-cites="qiu2011">[14]</span>, avec 12 rotations d’une condition initiale discontinue.</p>
 <p>Ce test se base sur une condition initiale discontinue, présentant aussi des irrégularités à l’aide d’un cylindre tronqué et d’un cône (voir figure (TODO num de fig)), que l’on fait tourner 6 fois sur lui même (temps final de la simulation <span class="math inline">\(T_f = 12\pi\)</span>). La solution exacte est donc la condition initiale. Il s’agit ici de vérifier le comportement du schéma en espace face à des discontinuités et d’observer la viscosité numérique. Le schéma en temps est celui de Runge-Kutta d’ordre 3.</p>
-<blockquote>
-<p>TODO: mettre le résultat de la simu</p>
-</blockquote>
+<div>
+<figure>
+<img src="img/ci_pacman.png" alt="Condition initiale du test de viscosité" /><figcaption>Condition initiale du test de viscosité</figcaption>
+</figure>
+<figure>
+<img src="img/cf_pacman.png" alt="Résultat de la simulation du schéma WENO en espace RK3 en temps" /><figcaption>Résultat de la simulation du schéma WENO en espace RK3 en temps</figcaption>
+</figure>
+<p>Test de viscolsité sur une condition initiale irrégulière</p>
+</div>
 <h2 id="couplage-de-léquation-de-transport-et-du-terme-de-raideur">Couplage de l’équation de transport et du terme de raideur</h2>
 <p>Dans cette section, on applique les schémas précédents au modèle <em>micro-macro</em>, ce qui va amener à des études supplémentaires comme le calcul de la condition de CFL, ou la reformulation exponentielle du modèle.</p>
 <h3 id="calcul-de-la-condition-cfl">Calcul de la condition CFL</h3>
@@ -1358,28 +1363,32 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
   f_{j,k}^{n+1} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ f_{j,k}^n - v_k\frac{\Delta t}{\Delta x}(f_{j+\frac{1}{2},k}^n - f_{j-\frac{1}{2},k}^n) + \frac{\Delta t}{\varepsilon}(\mathcal{M}_{[U^{n+1}]})_{j,k} \right]
 \]</span></p>
 <p>Nous allons utiliser l’analyse de von Neumann pour déterminer la condition CFL, méthode décrite dans <span class="citation" data-cites="anm1966">[15]</span>. Cette méthode implique le calcul d’une transformée de Fourier discrète, nous nous plaçons donc dans l’intervalle <span class="math inline">\(\Omega = [0,2\pi]\)</span> avec des conditions aux bords périodiques, c’est-à-dire <span class="math inline">\(f(t,x+2\pi,v) = f(t,x,v)\,\forall t,x,v\)</span>. Puisque les fonctions formant la base de la transformée de Fourier sont orthogonales, nous pouvons nous intéresser au comportement de chaque mode <span class="math inline">\(\kappa\in\mathbb{Z}\)</span> indépendamment, puis majorer l’ensemble des modes pour étudier le comportement global.</p>
-<p>Le coefficient de Fourier du mode <span class="math inline">\(\kappa\)</span> de <span class="math inline">\((f_{j,k}^n)_{i,k}\)</span> est donné par :</p>
+<p>Le coefficient de Fourier du mode <span class="math inline">\(\kappa\)</span> de <span class="math inline">\(f_{j,k}^n\)</span> est donné par :</p>
 <p><span class="math display">\[
-  f_{j,k}^n = e^{i\kappa j\Delta x}A^n_{k}
+  \mathfrak{f}_{j,k}^n(\kappa) = e^{i\kappa j\Delta x}A^n_k(\kappa)
 \]</span></p>
-<p>où <span class="math inline">\(i\)</span> est le nombre imaginaire tel que <span class="math inline">\(i^2 = -1\)</span>. Nous pouvons donc facilement exprimer <span class="math inline">\(f_{j-1,k}^n\)</span> directement en fonction de <span class="math inline">\(f_{j,k}^n\)</span> :</p>
+<p>où les <span class="math inline">\(\mathfrak{f}_{j,k}(\kappa)\)</span> vérifient :</p>
 <p><span class="math display">\[
-  f_{j-1,k}^n = e^{i\kappa (j-1)\Delta x}A^n_k = f_{j,k}^n e^{-i\kappa\Delta x}
+  f_{j,k}^n = \sum_{\kappa\in\mathbb{Z}} \mathfrak{f}_{j,k}^n(\kappa)
 \]</span></p>
-<p>Cela permet donc d’exprimer <span class="math inline">\(f_{j,k}^{n+1}\)</span> en fonction uniquement de <span class="math inline">\(f_{j,k}^n\)</span>, et donc d’obtenir une formule de récurrence du type :</p>
+<p>où <span class="math inline">\(i\)</span> est le nombre imaginaire tel que <span class="math inline">\(i^2 = -1\)</span>. Nous pouvons donc facilement exprimer <span class="math inline">\(\mathfrak{f}_{j-1,k}^n(\kappa)\)</span> directement en fonction de <span class="math inline">\(\mathfrak{f}_{j,k}^n(\kappa)\)</span> :</p>
 <p><span class="math display">\[
-  f_{j,k}^{n+1} = \mathcal{A} f_{j,k}^n = (\mathcal{A})^{n+1} f_{j,k}^0
+  \mathfrak{f}_{j-1,k}^n(\kappa) = e^{i\kappa (j-1)\Delta x}A^n_k(\kappa) = \mathfrak{f}_{j,k}^n(\kappa) e^{-i\kappa\Delta x}
+\]</span></p>
+<p>Cela permet donc d’exprimer <span class="math inline">\(\mathfrak{f}_{j,k}^{n+1}(\kappa)\)</span> en fonction uniquement de <span class="math inline">\(\mathfrak{f}_{j,k}^n(\kappa)\)</span>, et donc d’obtenir une formule de récurrence du type :</p>
+<p><span class="math display">\[
+  \mathfrak{f}_{j,k}^{n+1}(\kappa) = \mathcal{A} \mathfrak{f}_{j,k}^n(\kappa) = (\mathcal{A})^{n+1} \mathfrak{f}_{j,k}^0(\kappa)
 \]</span></p>
 <p>où <span class="math inline">\(\mathcal{A}\)</span> est appelé coefficient d’amplification. On remarque qu’il est nécessaire pour que le schéma soit stable dans <span class="math inline">\(L^2\)</span> d’avoir <span class="math inline">\(|\mathcal{A}| \leq 1\)</span>. Pour trouver cette formule de récurrence nous travaillerons sur une version simplifiée du schéma en négligeant l’impact de la maxwellienne.</p>
-<p>On part ainsi du schéma simplifié sur <span class="math inline">\(f\)</span> :</p>
+<p>On part ainsi du schéma simplifié sur chaque mode <span class="math inline">\(\kappa\)</span> de <span class="math inline">\(f\)</span> :</p>
 <p><span class="math display">\[
-  f_{j,k}^{n+1} = \frac{\varepsilon}{\varepsilon + \Delta t}\left[ f_{j,k}^n - \frac{\Delta t}{\Delta x}v_k(f_{j,k}^n - f_{j,k}^ne^{-i\kappa\Delta x} )  \right]
+  \mathfrak{f}_{j,k}^{n+1}(\kappa) = \frac{\varepsilon}{\varepsilon + \Delta t}\left[ \mathfrak{f}_{j,k}^n(\kappa) - \frac{\Delta t}{\Delta x}v_k(\mathfrak{f}_{j,k}^n(\kappa) - \mathfrak{f}_{j,k}^n(\kappa)e^{-i\kappa\Delta x} )  \right]
 \]</span></p>
 <p>Ce que l’on peut écrire sous la forme :</p>
 <p><span class="math display">\[
-  f_{j,k}^{n+1} = f_{j,k}^n\frac{\varepsilon}{\varepsilon + \Delta t}\left[ 1-\frac{\Delta t}{\Delta x}v_k(1-e^{-i\kappa\Delta x}) \right]
+  \mathfrak{f}_{j,k}^{n+1}(\kappa) = \mathfrak{f}_{j,k}^n(\kappa)\frac{\varepsilon}{\varepsilon + \Delta t}\left[ 1-\frac{\Delta t}{\Delta x}v_k(1-e^{-i\kappa\Delta x}) \right]
 \]</span></p>
-<p>On obtient bien la forme désirée <span class="math inline">\(f_{j,k}^{n+1} = \mathcal{A} f_{j,k}\)</span>. Pour simplifier l’étude de <span class="math inline">\(\mathcal{A}\)</span> écrivons ce terme sous la forme :</p>
+<p>On obtient bien la forme désirée <span class="math inline">\(\mathfrak{f}_{j,k}^{n+1}(\kappa) = \mathcal{A} \mathfrak{f}_{j,k}(\kappa)\)</span>. Pour simplifier l’étude de <span class="math inline">\(\mathcal{A}\)</span> écrivons ce terme sous la forme :</p>
 <p><span class="math display">\[
   \mathcal{A} = \frac{\varepsilon}{\varepsilon + \Delta t} \mathcal{B}
 \]</span></p>
@@ -1399,34 +1408,38 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <p><span class="math display">\[
   |\mathcal{B}|^2 \leq \left(\frac{\varepsilon + \Delta t}{\varepsilon}\right)^2
 \]</span></p>
+<p>soit :</p>
+<p><span class="math display">\[
+  1 + 2(1-\cos(\kappa\Delta x))\Delta t \left[ \frac{\Delta t}{\Delta x^2}v_k^2 - \frac{v_k}{\Delta x} \right] \leq 1 + \Delta t \frac{(2\varepsilon + \Delta t)}{\varepsilon^2}
+\]</span></p>
 <p>Ce que l’on peut reformuler comme suit, pour majorer <span class="math inline">\(\Delta t\)</span> :</p>
 <p><span class="math display">\[
     \Delta t \left[(1-\cos(\kappa\Delta x))\frac{v_k^2}{\Delta x^2} - \frac{1}{2\varepsilon^2}\right] \leq \frac{1}{\varepsilon} + (1-\cos(\kappa\Delta x))\frac{v_k}{\Delta x}
 \]</span></p>
-<p>Cette inégalité doit être vérifiée pour toute vitesse <span class="math inline">\(v_k\)</span>, nous allons donc majorer par <span class="math inline">\(v_{\textrm{max}}\)</span>, de même quel que soit le nombre d’onde <span class="math inline">\(\kappa\)</span> nous allons donc majorer <span class="math inline">\(1-\cos(\kappa\Delta x)=2\sin^2(\frac{\kappa\Delta x}{2})\)</span> par 2. Ce qui nous donne après simplification :</p>
+<p>Cette inégalité doit être vérifiée pour toute vitesse <span class="math inline">\(v_k\)</span>, nous allons donc majorer par <span class="math inline">\(v_{\text{max}}\)</span>, de même quel que soit le nombre d’onde <span class="math inline">\(\kappa\)</span> nous allons donc majorer <span class="math inline">\(1-\cos(\kappa\Delta x)=2\sin^2(\frac{\kappa\Delta x}{2})\)</span> par 2. Ce qui nous donne après simplification :</p>
 <p><span class="math display">\[
-  \Delta t (2v\varepsilon - \Delta x) \leq 2\Delta x \varepsilon
+  \Delta t (2v_{\text{max}}\varepsilon - \Delta x) \leq 2\Delta x \varepsilon
 \]</span></p>
-<p>Il est nécessaire d’étudier le signe de <span class="math inline">\(2v\varepsilon - \Delta x\)</span> :</p>
+<p>Il est nécessaire d’étudier le signe de <span class="math inline">\(2v_{\text{max}}\varepsilon - \Delta x\)</span> :</p>
 <ul>
-<li><p><span class="math inline">\(2v\varepsilon - \Delta x &lt; 0\)</span> alors <span class="math inline">\(\Delta t &gt;0\)</span> ce qui est toujours vérifié. Cette condition est vérifiée si :</p>
+<li><p><span class="math inline">\(2v_{\text{max}}\varepsilon - \Delta x &lt; 0\)</span> alors <span class="math inline">\(\Delta t &gt;0\)</span> ce qui est toujours vérifié. Cette condition est vérifiée si :</p>
 <p><span class="math display">\[
-  \varepsilon &lt; \frac{\Delta x}{2v}
+  \varepsilon &lt; \frac{\Delta x}{2v_{\text{max}}}
 \]</span></p>
-Avec classiquement <span class="math inline">\(\Delta x \sim 10^{-2}\)</span> et <span class="math inline">\(v\sim 18\)</span> ce qui nous donne <span class="math inline">\(\varepsilon \sim 10^{-3}\)</span>.</li>
-<li><p><span class="math inline">\(2v\varepsilon - \Delta x &gt; 0\)</span> alors :</p>
+Avec classiquement <span class="math inline">\(\Delta x \sim 10^{-2}\)</span> et <span class="math inline">\(v_{\text{max}}\sim 18\)</span> ce qui nous donne <span class="math inline">\(\varepsilon \sim 10^{-3}\)</span>.</li>
+<li><p><span class="math inline">\(2v_{\text{max}}\varepsilon - \Delta x &gt; 0\)</span> alors le schéma sera stable pour :</p>
 <p><span class="math display">\[
-  \Delta t \leq \frac{2\Delta x \varepsilon}{2v\varepsilon - \Delta x}
+  \Delta t \leq \frac{2\Delta x \varepsilon}{2v_{\text{max}}\varepsilon - \Delta x}
 \]</span></p></li>
 </ul>
 <p>En étudiant la fonction :</p>
 <p><span class="math display">\[
-  \mathscr{C}:\varepsilon\mapsto\frac{ \frac{\Delta x}{v} \varepsilon}{\varepsilon - \frac{1}{2}\frac{\Delta x}{v}}
+  \mathscr{C}:\varepsilon\mapsto\frac{ \frac{\Delta x}{v_{\text{max}}} \varepsilon}{\varepsilon - \frac{1}{2}\frac{\Delta x}{v_{\text{max}}}}
 \]</span></p>
-<blockquote>
-<p>TODO: tracer cette fonction</p>
-</blockquote>
-<p>on trouve que cette fonction est décroissante et a pour limite <span class="math inline">\(\frac{\Delta x}{v}\)</span>, nous utiliserons donc une fraction de cette limite comme base de temps. On retrouve aussi le pôle <span class="math inline">\(\frac{\Delta x}{2v}\)</span> qui correspond au changement de condition pour obtenir <span class="math inline">\(\Delta t\)</span>.</p>
+<figure>
+<img src="img/c_epsidt.png" alt="Représentation de la fonction \mathscr{C} avec ses limites." /><figcaption>Représentation de la fonction <span class="math inline">\(\mathscr{C}\)</span> avec ses limites.</figcaption>
+</figure>
+<p>on trouve que cette fonction est décroissante et a pour limite <span class="math inline">\(\frac{\Delta x}{v_{\text{max}}}\)</span>, nous utiliserons donc une fraction de cette limite comme base de temps. On retrouve aussi le pôle <span class="math inline">\(\frac{\Delta x}{2v_{\text{max}}}\)</span> qui correspond au changement de condition pour obtenir <span class="math inline">\(\Delta t\)</span>.</p>
 <h3 id="reformulation-exponentielle-du-modèle-micro">Reformulation exponentielle du modèle <em>micro</em></h3>
 <p>Au sein du modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>), la partie <em>micro</em> fait intervenir un terme de collision : <span class="math inline">\(\frac{1}{\varepsilon}g\)</span>, ce terme empêche d’utiliser directement une autre discrétisation en temps que le schéma Euler implicite ou explicite. Or en proposant de l’ordre élevé en espace il devient intéressant, voire indispensable, de monter l’ordre en temps. En effet R. Wang et R. Spiteri démontrent dans <span class="citation" data-cites="weno_time">[13]</span> qu’il est impossible de satisfaire la condition CFL d’un schéma composé d’une partie spatiale résolue par un schéma WENO d’ordre 5, et d’une partie temporelle résolue par un schéma d’Euler explicite. Le terme raide en <span class="math inline">\(\frac{1}{\varepsilon}\)</span> ne permet pas de revenir à un cas stable. Il est nécessaire de modifier la formulation du modèle <em>micro</em> pour faire intervenir une discrétisation du schéma de Runge-Kutta d’ordre au moins 3 (RK3).</p>
 <p>Nous rappelons le modèle <em>micro</em> :</p>
@@ -1974,9 +1987,6 @@ D’où la propriété suivante :</p>
 <p><span class="math display">\[
   \Omega_K(t) \subset [x_s(t),x_e(t)]
 \]</span></p>
-<blockquote>
-<p>TODO: tracer <span class="math inline">\(x_s(t)\)</span> et <span class="math inline">\(x_e(t)\)</span></p>
-</blockquote>
 <p>Notre implémentation permet en plus de diminuer le temps de simulation.</p>
 <p>L’introduction d’une fonction <span class="math inline">\(h(t,x)\)</span> est indispensable si l’onde de choc à le temps de parcourir une portion trop importante du domaine, ce qui est notre cas ici.</p>
 <div id="refs" class="references">
