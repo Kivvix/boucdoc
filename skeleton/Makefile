@@ -15,7 +15,8 @@ CSL = --csl=source/biblio/3d-research.csl
 CSL = --csl=source/biblio/springer-socpsych-brackets.csl
 
 # Options
-OPTIONS = --wrap=preserve -s
+OPTIONS = --wrap=preserve 
+#-s
 
 all :
 	@ echo "Do something"
@@ -89,7 +90,7 @@ HTML_template_rules=$(HTML_template) $(patsubst %.css,$(BUILD_dir)/html/%.css,$(
 $(eval $(call OUTPUT_format,html,html,html5,$$(HTML_opt),$$(HTML_template_rules)))
 
 # LaTeX ###############################################################
-LATEX_opt = -B source/_template/latex/before.tex -A source/_template/latex/after.tex --highlight-style tango
+#LATEX_opt = -B source/_template/latex/before.tex -A source/_template/latex/after.tex --highlight-style tango
 $(eval $(call OUTPUT_format,latex,tex,latex,$$(LATEX_opt)))
 
 # PDF #################################################################

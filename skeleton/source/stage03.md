@@ -240,7 +240,7 @@ $$
   \int_{\mathbb{R}^d} m(v)\mathcal{M}_{[U]}\,\mathrm{d}v = \int_{\mathbb{R}^d} m(v)f(v)\,\mathrm{d}v = U(t,x)
 $$
 
-Pour d'obtenir les équations de la mécanique des fluides à partir de l'équation cinétique, on multiplie l'équation ([!eq:cine:bgk]) par $m(v)$ puis on intègre par rapport à $v\in\mathbb{R}^d$ pour obtenir\ :
+Pour obtenir les équations de la mécanique des fluides à partir de l'équation cinétique, on multiplie l'équation ([!eq:cine:bgk]) par $m(v)$ puis on intègre par rapport à $v\in\mathbb{R}^d$\ :
 
 $$
   \partial_t U + \nabla_x\cdot\int_{\mathbb{R}^d}vm(v)f\,\mathrm{d}v = 0
@@ -960,7 +960,7 @@ où $x$ et $y$ sont les deux directions de l'espace, dans lequel nous effectuons
 
 R. Wang et R. Spiteri démontrent dans [@weno_time] que l'utilisation conjointe du schéma WENO d'ordre 5 avec un schéma temporel de type d'Euler explicite est instable. Nous confirmons ce résultat numériquement avec la rotation d'une gaussienne en temps long. On remarque qu'une discrétisation en temps de Runge-Kutta d'ordre 3 stabilise le schéma. C'est cette instabilité qui nous a conduit à utiliser un nombre de CFL arbitrairement très petit $c=10^{-5}$ dans le test 1D.
 
-Nous illustrons ce résultat à l'aide d'un test effectuée en 2D sur un domaine périodiques. Il s'agit d'étudier le comportement d'une gaussienne en rotation autour du centre du domaine.
+Nous illustrons ce résultat à l'aide d'un test effectué en 2D sur un domaine périodique. Il s'agit d'étudier le comportement d'une gaussienne en rotation autour du centre du domaine.
 
 $$
   \partial_t u + y\partial_x u -x\partial_y u = 0
@@ -969,7 +969,7 @@ $$
 avec comme condition initiale\ :
 
 $$
-  u(t=0,x) = e^{ -\frac{(x-\mu_x)^2}{2\sigma_x} - \frac{(y-\mu_y)^2}{2\sigma_y} } 
+  u(t=0,x) = \exp\left( -\frac{(x-\mu_x)^2}{2\sigma_x} - \frac{(y-\mu_y)^2}{2\sigma_y} \right)
 $$
 
 | $\mu_x$ | $\sigma_x$ | $\mu_y$ | $\sigma_y$ |
@@ -1187,7 +1187,7 @@ $${#eq:euler:flux}
 
 où\ :
 
-* $\mathcal{F}$ est la fonction du modèle d’Euler est donné par\ :
+* $\mathcal{F}$ est la fonction du modèle d’Euler et est donné par\ :
 
   $$
     \mathcal{F}:U=\begin{pmatrix}\rho \\ \rho u \\ e\end{pmatrix} \mapsto \mathcal{F}(U) = \begin{pmatrix} \rho u \\ \rho u^2 + p \\ eu + pu \end{pmatrix}
