@@ -40,15 +40,15 @@
 <p class="author">Josselin Massot</p>
 </header>
 <h1 id="introduction">Introduction</h1>
-<p>La simulation numérique fut introduite dès l’émergence de l’informatique pour enrichir les connaissances scientifiques dans des contextes où l’expérimentation est trop contraignante voire impossible. La simulation peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futures observations (simulation de nébuleuses ou d’étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, censés représenter des phénomènes physiques. La simulation numérique doit être représentative de la réalité, dans des modèles où la solution exacte est souvent hors de portée, il est nécessaire de vérifier que la transcription numérique conserve les propriétés mathématiques du modèle (conservation de certaines quantités physiques comme la masse ou l’énergie totale par exemple).</p>
-<p>Un enjeu majeur de la modélisation et de la simulation est de maintenir un équilibre entre les approximations permettant d’accélérer le temps de traitement et la représentativité des résultats.</p>
-<p>Notre étude s’effectue sur un système de particules au sein d’un gaz raréfié ou d’un plasma chaud. Un plasma, qualifié de 4e état de la matière (en plus de solide, liquide et gaz), est un état de la matière dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative), particules qui sont extraites des atomes ; et des ions (charge positive), particules qui résultent de l’extraction des électrons. Le plasma est généralement obtenu en chauffant un gaz à très haute température, ce qui permet d’exciter les particules le constituant et d’arracher des électrons aux atomes. La température, grandeur macroscopique, exprime l’agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif <em>chaud</em> indique donc que des particules ont des vitesses élevées au sein du plasma. L’étude des plasmas possède de nombreuses applications dans le domaine industriel, telles que la propulsion par plasmas (astronautique), la fusion nucléaire (énergie) et la découpe (industrie).</p>
-<p>Pour décrire un tel système de particules, plusieurs possibilités existent. La description dite fluide, qui prend en compte les équations de la mécanique des fluides (comme les équations d’Euler ou de Navier-Stokes) peut être utilisée. Les inconnues de ces équations sont des quantités dites macroscopiques (mesurables expérimentalement) comme la densité, la vitesse moyenne ou la température qui ne dépendent que du temps et de la position. Cependant cette description suppose que le système étudié est à l’équilibre, c’est-à-dire que la répartition en vitesse des particules est maxwellienne. Or lorsque le système est parcouru par une onde de choc ou lorsqu’une population de particules chaudes est présente dans le système, des phénomènes hors équilibre sont à prendre en compte exigeant une description plus précise. On utilise alors la description cinétique. Celle-ci manipule une fonction de distribution dépendant du temps, de l’espace mais aussi de la vitesse des particules, ce qui permet de prendre en compte ces aspects hors équilibre. La complexité de description apportée par le modèle cinétique se traduit numériquement par un coût en temps de calcul et utilisation de la mémoire ; en effet la simulation s’effectue avec les variables <span class="math inline">\((t,x,v)\)</span> donc <span class="math inline">\(7\)</span> dimensions au lieu de seulement 4 dimensions pour la description fluide, où les inconnues ne dépendent que de <span class="math inline">\((t,x)\)</span>. L’espace mémoire nécessaire pour stocker <span class="math inline">\(f(t=0,x,v)\)</span> sur une grille <span class="math inline">\(100^6\)</span> de l’espace des phases peut être estimé à 7.2To, alors que la description fluide ne nécessite que 7.6Mo sur une grille <span class="math inline">\(100^3\)</span> de l’espace. Une description cinétique n’est donc pas souhaitable sur tout le domaine d’étude si le fluide est proche de son équilibre et des optimisations sont donc envisageables.<br />
+<p>La simulation numérique fut introduite dès l’émergence de l’informatique pour enrichir les connaissances scientifiques dans des contextes où l’expérimentation est trop contraignante voire impossible. La simulation peut aussi avoir un intérêt prédictif pour dimensionner un problème physique (simulation de tokamak avant leur construction dans le projet ITER) ou pour tester un modèle et le confronter aux futures observations (simulation de nébuleuses ou d’étoiles). La simulation peut être vue comme une retranscription informatique de modèles mathématiques, censés représenter des phénomènes physiques. La simulation numérique doit être représentative de la réalité. Ainsi, dans des modèles où la solution exacte est souvent hors de portée, il est nécessaire de vérifier que la transcription numérique conserve certaines propriétés mathématiques du modèle (conservation de certaines quantités physiques comme la masse ou l’énergie totale par exemple).</p>
+<p>Un enjeu majeur de la modélisation et de la simulation est de maintenir un équilibre entre les approximations au niveau du modèle, qui permettent d’accélérer le temps de traitement et la précision des résultats.</p>
+<p>Le cadre de ce stage est l’étude d’un système de particules au sein d’un gaz raréfié ou d’un plasma chaud. Un plasma, qualifié de 4e état de la matière (en plus de solide, liquide et gaz), est un système dans lequel différentes charges électriques circulent. Ces charges sont des électrons (charge négative), particules qui sont extraites des atomes, et des ions (charge positive), particules qui résultent de l’extraction des électrons. Le plasma est généralement obtenu en chauffant un gaz à très haute température, ce qui permet d’exciter les particules le constituant et d’arracher des électrons aux atomes. La température, grandeur macroscopique, exprime l’agitation des particules et donc leur vitesse propre (grandeur microscopique) ; le qualificatif <em>chaud</em> indique donc que des particules ont des vitesses élevées au sein du plasma. L’étude des plasmas possède de nombreuses applications dans le domaine industriel, telles que la propulsion par plasmas (astronautique), la fusion nucléaire (énergie) et la découpe (industrie).</p>
+<p>Pour décrire un tel système de particules, plusieurs possibilités existent. La description dite fluide, qui prend en compte les équations de la mécanique des fluides (comme les équations d’Euler ou de Navier-Stokes) peut être utilisée. Les inconnues de ces équations sont des quantités dites macroscopiques (mesurables expérimentalement) comme la densité, la vitesse moyenne ou la température qui ne dépendent que du temps et de la position. Cependant cette description suppose que le système étudié est à l’équilibre, c’est-à-dire que la répartition en vitesse des particules est maxwellienne. Or lorsque le système est parcouru par une onde de choc ou lorsqu’une population de particules chaudes est présente dans le système, des phénomènes hors équilibre sont à prendre en compte exigeant une description plus précise. On utilise alors la description cinétique. Celle-ci manipule une fonction de distribution dépendant du temps, de l’espace mais aussi de la vitesse des particules, ce qui permet de prendre en compte ces aspects hors équilibre. La complexité de description apportée par le modèle cinétique se traduit numériquement par un coût en temps de calcul et utilisation de la mémoire ; en effet la simulation s’effectue avec les variables <span class="math inline">\((t,x,v)\)</span> donc <span class="math inline">\(7\)</span> dimensions au lieu de seulement 4 dimensions pour la description fluide, où les inconnues ne dépendent que de <span class="math inline">\((t,x)\)</span>. L’espace mémoire nécessaire pour stocker <span class="math inline">\(f(t=0,x,v)\)</span> sur une grille <span class="math inline">\(100^6\)</span> de l’espace des phases peut être estimé à 7.2To, alors que la description fluide ne nécessite que 7.6Mo sur une grille <span class="math inline">\(100^3\)</span> de l’espace. Une description cinétique n’est donc pas souhaitable sur tout le domaine d’étude si le fluide est proche de son équilibre et des optimisations sont donc envisageables dans ce type de configuration.<br />
 Nous souhaitons développer des modèles hybrides mêlant les avantages des descriptions fluide et cinétique. Notre approche se rapproche des méthodes dites de <em>décomposition de domaines</em> pour lesquelles le modèle fluide est utilisé dans les zones où le système est à l’équilibre alors que le modèle cinétique est utilisé uniquement dans les zones où le système est hors équilibre (dans le choc par exemple), approche déjà étudiée dans <span class="citation" data-cites="BENNOUNE20083781">[1]</span>, <span class="citation" data-cites="dimarco">[2]</span> ou <span class="citation" data-cites="filbet">[3]</span>.</p>
-<p>Une part importante de l’étude de ce stage fut consacrée à l’étude et l’implémentation des méthodes numériques de type eulériennes, c’est-à-dire utilisant une grille dans l’espace des phases <span class="math inline">\((x,v)\)</span>.<br />
+<p>L’objectif de ce stage est l’implémentation des méthodes numériques de modèles hybrides fluide-cinétique. Il est alors crucial de développer des méthodes d’ordre élevé de type eulériennes, c’est-à-dire utilisant une grille dans l’espace des phases <span class="math inline">\((x,v)\)</span>.<br />
 Il est intéressant, voire crucial, numériquement de développer des méthodes d’ordre élevé pour capturer les forts gradients pouvant être générés par la solution (présence de structures fines dans l’espace des phases ou de choc), cela permet aussi de limiter la diffusion numérique qui dégrade les résultats sur des temps longs. L’erreur d’une méthode d’ordre <span class="math inline">\(m\)</span> est divisée par <span class="math inline">\(2^m\)</span> lorsque l’on double le nombre de points du maillage, alors que le temps de calcul évoluera de manière plus linéaire en fonction du nombre de points, ainsi une méthode d’ordre élevé avec peu de points devient préférable à une méthode d’ordre faible avec plus de points.<br />
 Dans des conditions physiques réalistes, il est nécessaire de prendre en compte des conditions aux bords de type Dirichlet ou Neumann. Ces conditions peuvent être délicates à exprimer pour des méthodes d’ordre élevé. Ainsi, même si la majorité de l’étude est consacrée à des conditions aux bords périodiques, un des enjeux de ce stage fut d’implémenter les conditions aux bords de type Neumann.</p>
-<p>Ce stage a été consacré à l’étude, la dérivation et la validation numérique de modèles hybrides fluide-cinétique en les comparant de façon systématique aux modèles d’Euler (fluide) et cinétique. L’objectif est de construire un modèle et d’écrire un code pour résoudre efficacement des problèmes dans lesquels il existe des régions où le système est hors équilibre. Ainsi on se propose d’obtenir un modèle couplé fluide-cinétique où le modèle cinétique, plus coûteux, n’est utilisé que pour la région dite <em>hors équilibre</em>, alors que le modèle fluide sera utilisé pour le reste du domaine qui lui, est à l’équilibre thermodynamique. Ce type d’approche en décomposition de domaine nécessite habituellement des conditions pour coupler les modèles cinétique et fluide, ce qui peut s’avérer difficile aux niveaux mathématique et numérique. Dans ce travail, la transition fluide-cinétique est assurée par une fonction de transition <span class="math inline">\(h(t,x)\)</span> qui dégénère automatiquement et qui permet de s’affranchir du traitement délicat des conditions de bords couplant les modèles fluide et cinétique. À partir d’un modèle <em>micro-macro</em> équivalent au problème cinétique contenant une raideur en <span class="math inline">\(\frac{1}{\varepsilon}\)</span>, <span class="math inline">\(\varepsilon\in ]0,1]\)</span><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, la fonction de transition <span class="math inline">\(h\)</span> est introduite ; la partie <em>micro</em> correspondant à la zone à l’équilibre est alors négligée. Ce modèle hybride fluide-cinétique est alors approché numériquement à l’aide de méthodes d’ordre élevé en <span class="math inline">\((x,v)\)</span> (schéma compact ou WENO) alors qu’une discrétisation particulière en temps a dû être utilisée pour garantir une stabilité uniforme par rapport à <span class="math inline">\(\varepsilon\)</span>.</p>
+<p>Ce stage a été consacré à l’étude, la dérivation et la validation numérique de modèles hybrides fluide-cinétique en les comparant de façon systématique aux modèles d’Euler (fluide) et cinétique. L’objectif est de construire un modèle et d’écrire un code pour résoudre efficacement des problèmes dans lesquels il existe des régions où le système est hors équilibre. Ainsi on se propose d’obtenir un modèle couplé fluide-cinétique où le modèle cinétique, plus coûteux, n’est utilisé que pour la région dite <em>hors équilibre</em>, alors que le modèle fluide sera utilisé pour le reste du domaine qui lui, est à l’équilibre thermodynamique. Ce type d’approche en décomposition de domaine nécessite habituellement des conditions pour coupler les modèles cinétique et fluide, ce qui peut s’avérer difficile aux niveaux mathématique et numérique. Dans ce travail, la transition fluide-cinétique est assurée par une fonction de transition <span class="math inline">\(h(t,x)\)</span> qui dégénère automatiquement et qui permet de s’affranchir du traitement délicat des conditions de bords couplant les modèles fluide et cinétique. À partir d’un modèle <em>micro-macro</em> équivalent au problème cinétique contenant une raideur en <span class="math inline">\(\frac{1}{\varepsilon}\)</span>, <span class="math inline">\(\varepsilon\in ]0,1]\)</span><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, la fonction de transition <span class="math inline">\(h\)</span> est introduite ; la partie <em>micro</em> correspondant à la zone à l’équilibre est alors négligée. Ce modèle hybride fluide-cinétique est alors approché numériquement à l’aide de méthodes d’ordre élevé en <span class="math inline">\((x,v)\)</span> (schéma compact ou WENO) alors qu’une discrétisation adaptée en temps a dû être utilisée pour garantir une stabilité uniforme par rapport à <span class="math inline">\(\varepsilon\)</span>.</p>
 <p>Ainsi nous présenterons dans un premier temps les modèles classiques de la littérature, cinétique et fluide, en indiquant leurs avantages et leurs défauts. Nous construirons ensuite un modèle hybride permettant de lier les forces des différentes descriptions du problème. Nous nous intéresserons par la suite à différents schémas numériques d’ordre élevé permettant de résoudre le système, pour enfin présenter nos résultats numériques sur plusieurs cas tests issus de la dynamique des gaz et des plasmas.</p>
 <h1 id="présentation-des-modèles">Présentation des modèles</h1>
 <p>Dans cette partie, nous présenterons différents modèles mathématiques utilisés dans la littérature pour décrire un système de particules, potentiellement chargées. Ces modèles vont de la description particulaire, qui est la plus précise, jusqu’à la description hydrodynamique, en passant par la description cinétique.</p>
@@ -108,7 +108,7 @@ Dans des conditions physiques réalistes, il est nécessaire de prendre en compt
 <p>où <span class="math inline">\(\rho\)</span> est la densité d’électrons et le terme <span class="math inline">\(1\)</span> représente la densité ionique normalisée. En rajoutant le terme de force induit par le champ électrique <span class="math inline">\(E\)</span>, l’équation (<a href="#2.1" class="aeq">2.1</a>) devient :</p>
 <p><span class="math display">\[
   \partial_t U + \nabla_x\cdot\mathcal{F}(U) = S(U)
-\]</span></p>
+\]</span><a href="#2.3" id="2.3" class="eq"></a></p>
 <p>Le terme source <span class="math inline">\(S(U)\)</span> est nul dans le cadre des équations d’Euler en l’absence d’un champ électrique <span class="math inline">\(E\)</span> en présence de celui-ci le terme s’explicite sous la forme suivante :</p>
 <p><span class="math display">\[
   S(U) = \begin{pmatrix} 0 \\ \rho E \\ 2\rho uE \end{pmatrix}
@@ -119,49 +119,49 @@ Dans des conditions physiques réalistes, il est nécessaire de prendre en compt
 <p>L’inconnue <span class="math inline">\(f(t,x,v)\)</span> est alors solution d’une équation de transport dans l’espace des phases à laquelle on ajoute un terme de collision :</p>
 <p><span class="math display">\[
   \partial_t f + v\cdot\nabla_x f = Q(f)
-\]</span><a href="#2.3" id="2.3" class="eq"></a></p>
+\]</span><a href="#2.4" id="2.4" class="eq"></a></p>
 <p>où le transport s’effectue à vitesse <span class="math inline">\(v\)</span> dans la direction <span class="math inline">\(x\)</span>. <span class="math inline">\(Q(f)\)</span> représente un opérateur quadratique de collision, il modélise les interactions binaires entre particules ; plusieurs expressions sont possibles comme l’opérateur de Boltzmann pour les gaz raréfiés, ou les opérateurs Landau ou BGK par exemple pour le cas des particules chargées.</p>
-<p>Les variables de base du problème sont <span class="math inline">\(t\)</span>, <span class="math inline">\(x\)</span> et <span class="math inline">\(v\)</span>. Une simulation directe du problème complet impose donc de travailler en 7 dimensions : une de temps, et 6 pour l’espace des phases <span class="math inline">\((x,v)\)</span>. Travailler dans un espace de dimension aussi élevée implique des coûts importants en temps de calcul et dans l’utilisation de la mémoire, cela est cependant moins coûteux qu’un modèle microscopique. De plus il est possible de développer des schémas numériques adaptés au problème considéré et réduire le temps de calcul, par exemple via des techniques de décomposition de domaine. En effet un maillage non cartésien permet de ne raffiner que localement le domaine et ainsi réduire le temps de calcul sur certaines régions de l’espace. Mais les contraintes de gestion du maillage nous ont orientés vers une autre alternative.</p>
-<p>L’équation cinétique (<a href="#2.3" class="aeq">2.3</a>) possède quelques propriétés qu’il sera utile de vérifier au niveau numérique. Nous les présentons dans la proposition suivante.</p>
-<p>Nous considèrerons un opérateur de collision <span class="math inline">\(Q(f)\)</span> dans l’équation (<a href="#2.3" class="aeq">2.3</a>) qui conserve la masse, l’impulsion et l’énergie lors des collisions :</p>
+<p>Les variables de base du problème sont <span class="math inline">\(t\)</span>, <span class="math inline">\(x\)</span> et <span class="math inline">\(v\)</span>. Une simulation directe du problème complet impose donc de travailler en 7 dimensions : une de temps, et 6 pour l’espace des phases <span class="math inline">\((x,v)\)</span>. Travailler dans un espace de dimension aussi élevé implique des coûts importants en temps de calcul et dans l’utilisation de la mémoire, cela est cependant moins coûteux qu’un modèle microscopique. De plus il est possible de développer des schémas numériques adaptés au problème considéré et réduire le temps de calcul, par exemple via des techniques de décomposition de domaine. En effet un maillage non cartésien permet de ne raffiner que localement le domaine et ainsi réduire le temps de calcul sur certaines régions de l’espace. Mais les contraintes de gestion du maillage nous ont orientés vers une autre alternative.</p>
+<p>L’équation cinétique (<a href="#2.4" class="aeq">2.4</a>) possède quelques propriétés qu’il sera utile de vérifier au niveau numérique. Nous les présentons dans la proposition suivante.</p>
+<p>Nous considèrerons un opérateur de collision <span class="math inline">\(Q(f)\)</span> dans l’équation (<a href="#2.4" class="aeq">2.4</a>) qui conserve la masse, l’impulsion et l’énergie lors des collisions :</p>
 <p><span class="math display">\[
   \int_{\mathbb{R}^d} m(v)Q(f)\,\mathrm{d}v = 0
 \]</span></p>
 <p>où <span class="math inline">\(m(v) = ( 1, v , |v|^2 )\)</span>.</p>
 <p>La grandeur <span class="math inline">\(f\)</span> représente la densité de particules chargées dans l’espace des phases, donc la grandeur <span class="math inline">\(\iint m(v)f(t,x,v)\,\mathrm{d}x\mathrm{d}v\)</span> est un vecteur dont les composantes correspondent respectivement à la masse totale du système, l’impulsion et l’énergie totale du système.</p>
 <blockquote>
-<p><strong>Proposition :</strong> L’équation (<a href="#2.3" class="aeq">2.3</a>) préserve la masse, l’impulsion et l’énergie, c’est-à-dire :</p>
+<p><strong>Proposition :</strong> L’équation (<a href="#2.4" class="aeq">2.4</a>) préserve la masse, l’impulsion et l’énergie, c’est-à-dire :</p>
 <p><span class="math display">\[
 \iint_{\Omega\times\mathbb{R}^d} \begin{pmatrix} 1 \\ v \\ |v|^2 \end{pmatrix} f(t,x,v)\,\mathrm{d}x\mathrm{d}v = 0
 \]</span></p>
 </blockquote>
 <p><em>Preuve :</em></p>
-<p>En multipliant (<a href="#2.3" class="aeq">2.3</a>) par <span class="math inline">\(m(v)\)</span>, puis en intégrant selon les directions <span class="math inline">\(x\)</span> et <span class="math inline">\(v\)</span> on obtient :</p>
+<p>En multipliant (<a href="#2.4" class="aeq">2.4</a>) par <span class="math inline">\(m(v)\)</span>, puis en intégrant selon les directions <span class="math inline">\(x\)</span> et <span class="math inline">\(v\)</span> on obtient :</p>
 <p><span class="math display">\[
   \iint_{\Omega\times\mathbb{R}^d} m(v)(\partial_t f + v\cdot\nabla_x f)\,\mathrm{d}x\mathrm{d}v = \iint_{\Omega\times\mathbb{R}^d}m(v)Q(f)\,\mathrm{d}x\mathrm{d}v
 \]</span></p>
-<p>Or les moments de <span class="math inline">\(Q(f)\)</span> sont nuls, et l’intégrale sur tout l’espace de la dérivée en <span class="math inline">\(x\)</span> vaut zéro. On obtient finalement :</p>
+<p>Or les moments de <span class="math inline">\(Q(f)\)</span> sont nuls, et l’intégrale sur tout l’espace de la dérivée en <span class="math inline">\(x\)</span> vaut zéro avec de bonnes conditions aux bords. On obtient finalement :</p>
 <p><span class="math display">\[
   \frac{\mathrm{d}}{\mathrm{d}t}\iint_{\Omega\times\mathbb{R}^d} m(v)f(t,x,v)\,\mathrm{d}x\mathrm{d}v = 0
-\]</span><a href="#2.4" id="2.4" class="eq"></a></p>
+\]</span><a href="#2.5" id="2.5" class="eq"></a></p>
 <h3 id="prise-en-compte-du-champ-électrique">Prise en compte du champ électrique</h3>
 <p>De manière analogue au modèle macroscopique, le contexte de l’étude des plasmas nécessite l’ajout des forces induites par le champ électrique moyen <span class="math inline">\(E\)</span>, champ électrique calculé via l’équation de Poisson.</p>
 <p>L’équation de Poisson s’écrit dans le modèle cinétique comme :</p>
 <p><span class="math display">\[
   \nabla_x \cdot E = \int_{\mathrm{R}^d} f\,\mathrm{d}v - 1
-\]</span><a href="#2.5" id="2.5" class="eq"></a></p>
-<p>où <span class="math inline">\(f\)</span> est la distribution d’électrons et le terme <span class="math inline">\(1\)</span> représente la densité ionique normalisée. En rajoutant le terme de force induit par le champ électrique <span class="math inline">\(E\)</span>, l’équation du modèle cinétique (<a href="#2.3" class="aeq">2.3</a>) mène à l’équation dite de Vlasov :</p>
+\]</span><a href="#2.6" id="2.6" class="eq"></a></p>
+<p>où <span class="math inline">\(f\)</span> est la distribution d’électrons et le terme <span class="math inline">\(1\)</span> représente la densité ionique normalisée. En rajoutant le terme de force induit par le champ électrique <span class="math inline">\(E\)</span>, l’équation du modèle cinétique (<a href="#2.4" class="aeq">2.4</a>) mène à l’équation dite de Vlasov :</p>
 <p><span class="math display">\[
   \begin{cases}
     \partial_t f + v\cdot\nabla_x f + E\cdot\nabla_v f = Q(f) \\
     \nabla_x\cdot E = \int_{\mathbb{R}^d} f\,\mathrm{d}v -1
   \end{cases}
-\]</span><a href="#2.6" id="2.6" class="eq"></a></p>
+\]</span><a href="#2.7" id="2.7" class="eq"></a></p>
 <p>Ce modèle est une équation de transport dans l’espace des phases à vitesse <span class="math inline">\(v\)</span> dans la direction <span class="math inline">\(x\)</span> et <span class="math inline">\(E\)</span> dans la direction <span class="math inline">\(v\)</span> avec un terme de collision <span class="math inline">\(Q(f)\)</span>.</p>
 <p>On retrouve bien une définition du champ électrique équivalente à (<a href="#2.2" class="aeq">2.2</a>) puisque : <span class="math inline">\(\int_{\mathbb{R}^d}f(t,x,v)\,\mathrm{d}v = \rho(t,x)\)</span>.</p>
 <h2 id="cinétique-vers-fluide">Cinétique vers fluide</h2>
 <p>Il est possible d’interpréter la description fluide à partir de la description cinétique. Cela permet d’assurer une continuité des modèles entre la description macroscopique et cinétique.</p>
-<p>Dans le modèle cinétique (<a href="#2.3" class="aeq">2.3</a>), il est possible de lier la fonction de densité dans l’espace des phases au vecteur de variables extensives <span class="math inline">\(U\)</span> utilisé dans les équations d’Euler via :</p>
+<p>Dans le modèle cinétique (<a href="#2.4" class="aeq">2.4</a>), il est possible de lier la fonction de densité dans l’espace des phases au vecteur de variables extensives <span class="math inline">\(U\)</span> utilisé dans les équations d’Euler via :</p>
 <p><span class="math display">\[
   U(t,x) = \int_{\mathbb{R}^d} m(v)f(t,x,v)\,\mathrm{d}v = \begin{pmatrix}\rho \\ \rho u \\ \rho|u|^2 + \frac{d}{2}\rho T\end{pmatrix}(t,x)
 \]</span></p>
@@ -169,18 +169,18 @@ Dans des conditions physiques réalistes, il est nécessaire de prendre en compt
 <p><span class="math display">\[
   \rho u = \int_{\mathbb{R}^d} v  f(v)\,\mathrm{d}v
 \]</span></p>
-<p>Par la suite nous choisirons pour opérateur de collision <span class="math inline">\(Q(f)\)</span>, l’opérateur simplifié de BGK dans l’équation (<a href="#2.3" class="aeq">2.3</a>) ; celui-ci est défini par :</p>
+<p>Par la suite nous choisirons pour opérateur de collision <span class="math inline">\(Q(f)\)</span>, l’opérateur simplifié de BGK dans l’équation (<a href="#2.4" class="aeq">2.4</a>) ; celui-ci est défini par :</p>
 <p><span class="math display">\[
   Q(f)(t,x,v) = (\mathcal{M}_{[U]} - f)(t,x,v)
 \]</span></p>
 <p>En introduisant le paramètre <span class="math inline">\(\varepsilon \in ]0,1]\)</span> où <span class="math inline">\(\varepsilon = \frac{\ell}{L}\)</span> avec <span class="math inline">\(\ell\)</span> le libre parcours moyen des particules et <span class="math inline">\(L\)</span> la taille du domaine, on obtient</p>
 <p><span class="math display">\[
   \partial_t f + v\cdot\nabla_x f = \frac{1}{\varepsilon}(\mathcal{M}_{[U]} - f)
-\]</span><a href="#2.7" id="2.7" class="eq"></a></p>
+\]</span><a href="#2.8" id="2.8" class="eq"></a></p>
 <p>où <span class="math inline">\(\mathcal{M}_{[U]}\)</span> est la distribution de vitesse maxwellienne définie par :</p>
 <p><span class="math display">\[
-  \mathcal{M}_{[U]} = \frac{\rho}{(2\pi T)^{\frac{d}{2}}}\exp\left(-\frac{|v-u|^2}{2T}\right)
-\]</span><a href="#2.8" id="2.8" class="eq"></a></p>
+  \mathcal{M}_{[U]}(t,x,v) = \frac{\rho}{(2\pi T)^{\frac{d}{2}}}\exp\left(-\frac{|v-u|^2}{2T}\right)
+\]</span><a href="#2.9" id="2.9" class="eq"></a></p>
 <p>Nous considérons des opérateurs de collisions qui préservent la masse, l’impulsion et l’énergie, cela se traduit par l’équation :</p>
 <p><span class="math display">\[
   \int_{\mathbb{R}^d} m(v)Q(f)\,\mathrm{d}v = 0
@@ -189,29 +189,29 @@ Dans des conditions physiques réalistes, il est nécessaire de prendre en compt
 <p><span class="math display">\[
   \int_{\mathbb{R}^d} m(v)\mathcal{M}_{[U]}\,\mathrm{d}v = \int_{\mathbb{R}^d} m(v)f(v)\,\mathrm{d}v = U(t,x)
 \]</span></p>
-<p>Pour d’obtenir les équations de la mécanique des fluides à partir de l’équation cinétique, on multiplie l’équation (<a href="#2.7" class="aeq">2.7</a>) par <span class="math inline">\(m(v)\)</span> puis on intègre par rapport à <span class="math inline">\(v\in\mathbb{R}^d\)</span> pour obtenir :</p>
+<p>Pour obtenir les équations de la mécanique des fluides à partir de l’équation cinétique, on multiplie l’équation (<a href="#2.8" class="aeq">2.8</a>) par <span class="math inline">\(m(v)\)</span> puis on intègre par rapport à <span class="math inline">\(v\in\mathbb{R}^d\)</span> :</p>
 <p><span class="math display">\[
   \partial_t U + \nabla_x\cdot\int_{\mathbb{R}^d}vm(v)f\,\mathrm{d}v = 0
-\]</span><a href="#2.9" id="2.9" class="eq"></a></p>
-<p>Composante par composante l’équation (<a href="#2.9" class="aeq">2.9</a>) s’écrit avec <span class="math inline">\(d=1\)</span> :</p>
+\]</span><a href="#2.10" id="2.10" class="eq"></a></p>
+<p>Composante par composante l’équation (<a href="#2.10" class="aeq">2.10</a>) s’écrit avec <span class="math inline">\(d=1\)</span> :</p>
 <p><span class="math display">\[
   \partial_t\begin{pmatrix}U_1 \\ U_2 \\ U_3 \end{pmatrix} + \partial_x\begin{pmatrix}U_2\\ U_3 \\ \int_{\mathbb{R}} v^3f\,\mathrm{d}v \end{pmatrix} = 0
-\]</span><a href="#2.10" id="2.10" class="eq"></a></p>
-<p>où on a noté le vecteur <span class="math inline">\(U\)</span> par composante : <span class="math inline">\(U = (U_1,U_2,U_3)^{\mathsf{T}} = (\rho,\rho u,e)^{\mathsf{T}}\)</span>. Pour obtenir un modèle fermé en <span class="math inline">\(U\)</span>, il faut faire une hypothèse sur la forme de <span class="math inline">\(f\)</span> par rapport à <span class="math inline">\(v\)</span> afin de pouvoir exprimer <span class="math inline">\(\int_{\mathbb{R}}v^3f\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(U\)</span>. C’est le problème de fermeture. Une possibilité est d’utiliser le fait que lorsque <span class="math inline">\(\varepsilon \to 0\)</span> on obtient formellement grâce à (<a href="#2.7" class="aeq">2.7</a>) que <span class="math inline">\(f \to \mathcal{M}_{[U]}\)</span> ; on peut donc écrire <span class="math inline">\(f\)</span> comme un développement en <span class="math inline">\(\varepsilon\)</span> comme :</p>
+\]</span><a href="#2.11" id="2.11" class="eq"></a></p>
+<p>où on a noté le vecteur <span class="math inline">\(U\)</span> par composante : <span class="math inline">\(U = (U_1,U_2,U_3)^{\mathsf{T}} = (\rho,\rho u,e)^{\mathsf{T}}\)</span>. Pour obtenir un modèle fermé en <span class="math inline">\(U\)</span>, il faut faire une hypothèse sur la forme de <span class="math inline">\(f\)</span> par rapport à <span class="math inline">\(v\)</span> afin de pouvoir exprimer <span class="math inline">\(\int_{\mathbb{R}}v^3f\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(U\)</span>. C’est le problème de fermeture. Une possibilité est d’utiliser le fait que lorsque <span class="math inline">\(\varepsilon \to 0\)</span> on obtient formellement grâce à (<a href="#2.8" class="aeq">2.8</a>) que <span class="math inline">\(f \to \mathcal{M}_{[U]}\)</span> ; on peut donc écrire <span class="math inline">\(f\)</span> comme un développement en <span class="math inline">\(\varepsilon\)</span> comme :</p>
 <p><span class="math display">\[
   f(t,x,v) = \mathcal{M}_{[U]}(t,x,v) + \mathcal{O}(\varepsilon)
 \]</span></p>
-<p>Ainsi on peut fermer le problème (<a href="#2.10" class="aeq">2.10</a>) en approchant <span class="math inline">\(f\)</span> par <span class="math inline">\(\mathcal{M}_{[U]}\)</span>, ce qui permet d’exprimer <span class="math inline">\(\int v^3f\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(U\)</span> (ou <span class="math inline">\((\rho,u,T)^\mathsf{T}\)</span>). En effet on a <span class="math inline">\(\int v^3\mathcal{M}_{[U]}(v)\,\mathrm{d}v = \rho u^3 + 3\rho Tu\)</span>. On retrouve alors les équations d’Euler.</p>
-<p>En prenant en compte les termes d’odre <span class="math inline">\(\varepsilon\)</span> dans le développement de <span class="math inline">\(f\)</span>, on obtient de manière similaire les équations de Navier-Stokes.</p>
+<p>Ainsi on peut fermer le problème (<a href="#2.11" class="aeq">2.11</a>) en approchant <span class="math inline">\(f\)</span> par <span class="math inline">\(\mathcal{M}_{[U]}\)</span>, ce qui permet d’exprimer <span class="math inline">\(\int v^3f\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(U\)</span> (ou <span class="math inline">\((\rho,u,T)^\mathsf{T}\)</span>). En effet on a <span class="math inline">\(\int v^3\mathcal{M}_{[U]}(v)\,\mathrm{d}v = \rho u^3 + 3\rho Tu\)</span>. On retrouve alors les équations d’Euler.</p>
+<p>En prenant en compte les termes d’ordre <span class="math inline">\(\varepsilon\)</span> dans le développement de <span class="math inline">\(f\)</span>, on obtient de manière similaire les équations de Navier-Stokes.</p>
 <p>Nous obtenons donc un lien entre les modèles cinétique et fluide à la limite <span class="math inline">\(\varepsilon \to 0\)</span>. Ceci permet de valider nos schémas et d’en vérifier les résultats en les comparant à un simulateur de fluide eulérien en fonction des valeurs de <span class="math inline">\(\varepsilon \in ]0,1]\)</span>.</p>
-<h1 id="modèles-hybrides-fluides-cinétiques">Modèles hybrides fluides-cinétiques</h1>
+<h1 id="modèle-hybride-fluide-cinétique">Modèle hybride fluide-cinétique</h1>
 <p>Les modèles macroscopiques ne sont pas valides dans des régions localisées du domaine de calcul dites hors équilibre, c’est-a-dire <span class="math inline">\(f \neq \mathcal{M}_{[U]}\)</span>. En effet pour certains problèmes, comme dans les zones de chocs ou les problèmes de couches limites, cette description n’est pas suffisante pour un flux hors d’état d’équilibre. Il n’est pour autant pas nécessaire de résoudre un modèle cinétique sur tout le domaine d’étude, qui est bien plus coûteux en temps de calcul.</p>
 <p>Pour tenter d’obtenir un bon compromis entre coût numérique et précision, on se propose de suivre une approche hybride fluide-cinétique. Pour cela, nous allons construire un modèle <em>micro-macro</em>, décrit dans <span class="citation" data-cites="dimarco">[2]</span>, basé sur une décomposition de l’inconnue cinétique <span class="math inline">\(f\)</span> en une partie macroscopique (une distribution maxwellienne), plus une partie microscopique (l’écart par rapport à l’équilibre thermodynamique). Cette décomposition est similaire à celle décrite dans <span class="citation" data-cites="dimarco">[2]</span> ou <span class="citation" data-cites="crestetto">[4]</span>.</p>
 <p>Nous écrivons <span class="math inline">\(f\)</span> comme une somme :</p>
 <p><span class="math display">\[
   f = \mathcal{M}_{[U]} + g
 \]</span></p>
-<p>avec <span class="math inline">\(\mathcal{M}_{[U]}\)</span> définie par (<a href="#2.8" class="aeq">2.8</a>), et où <span class="math inline">\(g\)</span> est l’écart à l’équilibre maxwellien. Or nous avons :</p>
+<p>avec <span class="math inline">\(\mathcal{M}_{[U]}\)</span> définie par (<a href="#2.9" class="aeq">2.9</a>), et où <span class="math inline">\(g\)</span> est l’écart à l’équilibre maxwellien. Or nous avons :</p>
 <p><span class="math display">\[
   \int_{\mathbb{R}^d} m(v)\mathcal{M}_{[U]}\,\mathrm{d}v = \int_{\mathbb{R}^d} m(v)f\,\mathrm{d}v
 \]</span></p>
@@ -234,13 +234,13 @@ Dans des conditions physiques réalistes, il est nécessaire de prendre en compt
      &amp; + \left. \left( \frac{|v-u|^2}{2T} - \frac{d}{2} \right)\frac{2}{d}\left\langle \left(\frac{|v-u|^2}{2T}-\frac{d}{2}\right)\varphi \right\rangle \right]\mathcal{M}_{[U]}\,\forall \phi \in L_M^2
   \end{aligned}
 \]</span><a href="#3.1" id="3.1" class="eq"></a></p>
-<p>La projecteur <span class="math inline">\(\Pi\)</span> va nous permettre d’écrire une équation sur les paramètres de <span class="math inline">\(\mathcal{M}_{[U]}\)</span>, à savoir <span class="math inline">\(U\)</span> ou <span class="math inline">\((\rho,u,T)\)</span>, qui représentera le modèle <em>macro</em> ; et une équation sur <span class="math inline">\(g\)</span>, représentant le modèle <em>micro</em>.</p>
+<p>Le projecteur <span class="math inline">\(\Pi\)</span> va nous permettre d’écrire une équation sur les paramètres de <span class="math inline">\(\mathcal{M}_{[U]}\)</span>, à savoir <span class="math inline">\(U\)</span> ou <span class="math inline">\((\rho,u,T)\)</span>, qui représentera le modèle <em>macro</em> ; et une équation sur <span class="math inline">\(g\)</span>, représentant le modèle <em>micro</em>.</p>
 <h2 id="obtention-du-modèle-macro">Obtention du modèle <em>macro</em></h2>
 <p>Le vecteur <span class="math inline">\(U\)</span> est lié à l’inconnue <span class="math inline">\(f\)</span> via ses moments :</p>
 <p><span class="math display">\[
   U = \int_{\mathbb{R}^d} m(v)f(v)\,\mathrm{d}v
 \]</span></p>
-<p>En introduisant la décomposition <span class="math inline">\(f=\mathcal{M}_{[U]}+g\)</span> et en multipliant le modèle cinétique (<a href="#2.6" class="aeq">2.6</a>) par <span class="math inline">\(m(v)\)</span> puis en intégrant selon <span class="math inline">\(v\)</span> on obtient :</p>
+<p>En introduisant la décomposition <span class="math inline">\(f=\mathcal{M}_{[U]}+g\)</span> et en multipliant le modèle cinétique (<a href="#2.7" class="aeq">2.7</a>) par <span class="math inline">\(m(v)\)</span> puis en intégrant selon <span class="math inline">\(v\)</span> on obtient :</p>
 <p><span class="math display">\[
   \partial_t U + \nabla_x\cdot\int_{\mathbb{R}^d}vm(v)(\mathcal{M}_{[U]}+g)\,\mathrm{d}v + \int_{\mathbb{R}^d}E\cdot\nabla_v (\mathcal{M}_{[U]}+g)m(v)\,\mathrm{d}v = 0
 \]</span></p>
@@ -260,12 +260,12 @@ Dans des conditions physiques réalistes, il est nécessaire de prendre en compt
 <p><span class="math display">\[
   \partial_t U + \nabla_x\cdot\mathcal{F}(U) +  \nabla_x\langle vm(v)g \rangle_v = -\nabla_v\cdot \langle E m(v)\mathcal{M}_{[U]}\rangle_v
 \]</span><a href="#3.2" id="3.2" class="eq"></a></p>
-<p>L’équation (<a href="#3.2" class="aeq">3.2</a>) correspond à la partie macroscopique du modèle hybride <em>micro-macro</em>.</p>
+<p>Par intégration par parties, on remarque que le membre de droite <span class="math inline">\(-\nabla_v\cdot\langle Em(v)\mathcal{M}_{[U]}\rangle_v\)</span> est le terme source <span class="math inline">\(S(U)\)</span> introduit dans (<a href="#2.3" class="aeq">2.3</a>). L’équation (<a href="#3.2" class="aeq">3.2</a>) correspond à la partie macroscopique du modèle hybride <em>micro-macro</em>.</p>
 <blockquote>
 <p><strong>Remarque :</strong> On peut remarquer que lorsque <span class="math inline">\(f\to\mathcal{M}_{[U]}\)</span>, cela correspond à <span class="math inline">\(g\to 0\)</span>, et on retrouve les équations d’Euler.</p>
 </blockquote>
 <h2 id="obtention-du-modèle-micro">Obtention du modèle <em>micro</em></h2>
-<p>Pour obtenir la description microscopique, on ne s’intéresse qu’à la perturbation <span class="math inline">\(g\)</span> de <span class="math inline">\(f\)</span>. En effet toute l’information sur l’équilibre maxwellien <span class="math inline">\(\mathcal{M}_{[U]}\)</span> est contenue dans la description macroscopique. Il suffit maintenant de reprendre le modèle cinétique (<a href="#2.6" class="aeq">2.6</a>) et de le projeter sur <span class="math inline">\(\text{Im}Q\)</span>, c’est-à-dire en appliquant le projecteur <span class="math inline">\(I-\Pi\)</span> :</p>
+<p>Pour obtenir la description microscopique, on ne s’intéresse qu’à la perturbation <span class="math inline">\(g\)</span> de <span class="math inline">\(f\)</span>. En effet toute l’information sur l’équilibre maxwellien <span class="math inline">\(\mathcal{M}_{[U]}\)</span> est contenue dans la description macroscopique. Il suffit maintenant de reprendre le modèle cinétique (<a href="#2.7" class="aeq">2.7</a>) et de le projeter sur <span class="math inline">\(\text{Im}Q\)</span>, c’est-à-dire en appliquant le projecteur <span class="math inline">\(I-\Pi\)</span> :</p>
 <p><span class="math display">\[
   \partial_t g + (I-\Pi)\left[v\cdot\nabla_x(\mathcal{M}_{[U]}+g) + E\cdot\nabla_v(\mathcal{M}_{[U]}+g)\right ] = -\frac{1}{\varepsilon}g
 \]</span><a href="#3.3" id="3.3" class="eq"></a></p>
@@ -280,11 +280,11 @@ Dans des conditions physiques réalistes, il est nécessaire de prendre en compt
     \partial_t g + (I-\Pi)[\mathcal{T}_{v,E}(\mathcal{M}_{[U]}+g)] = -\frac{1}{\varepsilon}g
   \end{cases}
 \]</span><a href="#3.4" id="3.4" class="eq"></a></p>
-<p>où le champ électrique <span class="math inline">\(E\)</span> est calculé de manière similaire à (<a href="#2.5" class="aeq">2.5</a>) :</p>
+<p>où le champ électrique <span class="math inline">\(E\)</span> est calculé de manière similaire à (<a href="#2.6" class="aeq">2.6</a>) :</p>
 <p><span class="math display">\[
   \nabla_x\cdot E = \int_{\mathbb{R}^d} \mathcal{M}_{[U]}\,\mathrm{d}v -1
 \]</span></p>
-<p>Dans <span class="citation" data-cites="BENNOUNE20083781">[1]</span>, il est montré l’équivalence entre le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) et le modèle cinétique original (<a href="#2.7" class="aeq">2.7</a>)</p>
+<p>Dans <span class="citation" data-cites="BENNOUNE20083781">[1]</span>, il est montré l’équivalence entre le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) et le modèle cinétique original (<a href="#2.8" class="aeq">2.8</a>)</p>
 <p>Cette réécriture du modèle cinétique sert de base pour des approximations. En effet il sera plus simple dans cette description de négliger la perturbation à l’équilibre <span class="math inline">\(g\)</span> sur une partie du domaine, que l’on nommera partie fluide du domaine.</p>
 <blockquote>
 <p><strong>Remarque :</strong> Dans le cas limite <span class="math inline">\(\varepsilon \to 0\)</span>, la seconde équation de (<a href="#3.4" class="aeq">3.4</a>) nous donne formellement <span class="math inline">\(g \to 0\)</span>, on retrouve alors l’équation d’Euler dans la première équation. Un développement en puissance de <span class="math inline">\(\varepsilon\)</span> donne :</p>
@@ -294,7 +294,7 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <p>résultat que l’on peut injecter dans l’équation <em>macro</em> pour obtenir les équations de Navier-Stokes.</p>
 </blockquote>
 <h2 id="approximation-du-modèle-micro-macro">Approximation du modèle micro-macro</h2>
-<p>Dans cette étude, nous nous intéressons à des cas où <span class="math inline">\(f\)</span> est très proche de <span class="math inline">\(\mathcal{M}_{[U]}\)</span> dans certaines régions du domaine, et s’en éloigne dans les autres régions.</p>
+<p>Dans cette étude, nous nous intéressons à des configurations où <span class="math inline">\(f\)</span> est très proche de <span class="math inline">\(\mathcal{M}_{[U]}\)</span> dans certaines régions du domaine, et s’en éloigne dans les autres régions.</p>
 <p>L’idée introduite par P. Degond, G. Dimarco et L. Mieussens dans <span class="citation" data-cites="dimarco">[2]</span>, est de coupler le modèle <em>micro</em> (basé sur un modèle cinétique) et le modèle <em>macro</em> (basé sur les équations d’Euler) à l’aide d’une décomposition de domaine <em>adaptative</em>. Cette décomposition va nous permettre de négliger la partie <em>micro</em> dans les régions où le système est proche de son état d’équilibre thermodynamique.</p>
 <p>Dans les régions où le système est à l’équilibre, c’est-à-dire <span class="math inline">\(f \approx \mathcal{M}_{[U]}\)</span>, nous allons faire l’approximation <span class="math inline">\(g=0\)</span> dans cette zone. Nous introduisons la fonction <span class="math inline">\(h:\Omega\mapsto[0,1]\)</span> telle que :</p>
 <ul>
@@ -309,11 +309,11 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <img src="img/omega_h.png" alt="Découpage du domaine \Omega en une zone fluide (\Omega_F) et cinétique (\Omega_K), le découpage laisse apparaître une zone tampon (\Omega_B) qui peut nécessiter une jonction de modèles" /><figcaption>Découpage du domaine <span class="math inline">\(\Omega\)</span> en une zone fluide (<span class="math inline">\(\Omega_F\)</span>) et cinétique (<span class="math inline">\(\Omega_K\)</span>), le découpage laisse apparaître une zone tampon (<span class="math inline">\(\Omega_B\)</span>) qui peut nécessiter une jonction de modèles</figcaption>
 </figure>
 <figure>
-<img src="img/hx.png" alt="La fonction indicatrice h(x) qui permet la décomposition d’une fonction en une partie fluide et cinétique f = f_F + f_K" /><figcaption>La fonction indicatrice <span class="math inline">\(h(x)\)</span> qui permet la décomposition d’une fonction en une partie fluide et cinétique <span class="math inline">\(f = f_F + f_K\)</span></figcaption>
+<img src="img/hx.png" alt="La fonction de transition h(x) qui permet la décomposition d’une fonction en une partie fluide et cinétique f = f_F + f_K" /><figcaption>La fonction de transition <span class="math inline">\(h(x)\)</span> qui permet la décomposition d’une fonction en une partie fluide et cinétique <span class="math inline">\(f = f_F + f_K\)</span></figcaption>
 </figure>
-<p>Illustration de la décomposition de domaine spatial à l’aide d’une fonction indicatrice <span class="math inline">\(h(x)\)</span>.</p>
+<p>Illustration de la décomposition de domaine spatial à l’aide d’une fonction de transition <span class="math inline">\(h(x)\)</span>.</p>
 </div>
-<p>Utiliser une fonction indicatrice <span class="math inline">\(h\)</span> continument dérivable permet d’éviter une rupture de modèle et de ne pas avoir à introduire des conditions aux bords entre le modèle fluide et cinétique comme dans <span class="citation" data-cites="jcp2005">[5]</span> ; comme les approches de décomposition de domaine classiques qui nécessitent des conditions aux bords pour connecter les différents modèles, ainsi qu’une gestion difficile entre l’interface fluide et cinétique en plusieurs dimensions. Nous obtenons donc une zone de transition des modèles où la solution calculée est une superposition des deux solutions, pondérée par la valeur de <span class="math inline">\(h\)</span>. Nous allons pouvoir définir :</p>
+<p>Utiliser une fonction de transition <span class="math inline">\(h\)</span> continument dérivable permet d’éviter une rupture de modèle et de ne pas avoir à introduire des conditions aux bords entre le modèle fluide et cinétique comme dans <span class="citation" data-cites="jcp2005">[5]</span>. En outre, les approches de décomposition de domaine classiques qui nécessitent une interface entre le domaine fluide et cinétique dont la gestion numérique peut s’avérer très difficile. Nous obtenons donc une zone de transition des modèles où la solution calculée est une superposition des deux solutions, pondérée par la valeur de <span class="math inline">\(h\)</span>. Nous allons pouvoir définir :</p>
 <p><span class="math display">\[
   g = hg + (1-h)g = g_K + g_F
 \]</span></p>
@@ -351,7 +351,7 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
   \partial_t g_K + h\mathcal{T}_{v,E}(g_K) + h\mathcal{T}_{v,E}(g_F) = -\frac{1}{\varepsilon}g_K + \frac{g_K}{h}\partial_t h - h(\partial_t+\mathcal{T}_{v,E})\mathcal{M}_{[U]}
 \]</span></p>
 <p>Cette formulation permet de ne conserver aucune projection de <span class="math inline">\(g_F\)</span> ou <span class="math inline">\(g_K\)</span>. Il devient donc plus aisé de travailler sur ces grandeurs que nous souhaitons approximer. Cependant, cela implique numériquement le calcul de l’approximation de <span class="math inline">\(\partial_t \mathcal{M}_{[U]}\)</span> qui est une opération potentiellement coûteuse aussi bien en temps de calcul qu’en utilisation mémoire. Ainsi dans la partie numérique la formulation conservant les projections de <span class="math inline">\(g_K\)</span> sera préférée.</p>
-<p>Nous effectuons une approximation par rapport à <span class="math inline">\(g\)</span>, en effet la fonction indicatrice <span class="math inline">\(h\)</span> permet de subdiviser le domaine. Nous négligerons <span class="math inline">\(g_F\)</span> par la suite :</p>
+<p>Nous effectuons une approximation par rapport à <span class="math inline">\(g\)</span>, en effet la fonction de transition <span class="math inline">\(h\)</span> permet de subdiviser le domaine. Nous négligerons <span class="math inline">\(g_F\)</span> par la suite :</p>
 <p><span class="math display">\[
   g_F = 0
 \]</span></p>
@@ -362,12 +362,13 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
       + h&amp;\Pi(\mathcal{T}_{v,E}(g_K)) + \frac{g_K}{h}\partial_t h
   \end{aligned}
 \]</span><a href="#3.6" id="3.6" class="eq"></a></p>
+<p>Ce modèle sur <span class="math inline">\(g_K\)</span> sera couplé au modèle <em>macro</em> qui lui n’est pas modifié.</p>
 <h1 id="présentation-des-schémas">Présentation des schémas</h1>
 <p>On se limitera dans cette partie à l’étude du problème unidimensionnel : <span class="math inline">\(d=1\)</span>.</p>
 <p>Dans cette partie, nous allons présenter différents schémas numériques pour résoudre le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) et sa version approximée (<a href="#3.6" class="aeq">3.6</a>). Ce modèle comporte plusieurs difficultés qui devront être surmontées :</p>
 <ul>
 <li>Nous allons chercher des schémas d’ordre élevé en <span class="math inline">\((x,v)\)</span> pour capturer les forts gradients qui peuvent apparaître selon les conditions initiales. Ces schémas dans l’espace des phases devront aussi fonctionner en multi-dimensions.</li>
-<li>L’opérateur de collision apporte un terme de raideur en <span class="math inline">\(\frac{1}{\varepsilon}\)</span> quand <span class="math inline">\(\varepsilon \to 0\)</span>, qui va nécessiter des intégrateurs en temps particuliers.</li>
+<li>L’opérateur de collision apporte un terme de raideur en <span class="math inline">\(\frac{1}{\varepsilon}\)</span> quand <span class="math inline">\(\varepsilon \to 0\)</span>, qui va nécessiter des intégrateurs en temps adaptés.</li>
 <li>Il est bien évidemment nécessaire d’assurer la stabilité du schéma par rapport au terme de transport, les simulations de plasma se faisant souvent en temps long.</li>
 </ul>
 <h2 id="schémas-en-temps">Schémas en temps</h2>
@@ -404,7 +405,7 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <p><span class="math display">\[
   u^n \overset{\varepsilon\to 0}{\to} 0
 \]</span></p>
-<p>comme la solution exacte <span class="math inline">\(u(t) = u_0 \exp\left(-\frac{t}{\varepsilon}\right)\)</span>. On dit alors que le schéma est <em>asymptotic preserving</em>. Par conséquent nous utiliserons un schéma d’Euler implicite en temps pour tester et valider nos différents schémas sur le terme de transport.</p>
+<p>comme la solution exacte <span class="math inline">\(u(t) = u_0 \exp\left(-\frac{t}{\varepsilon}\right)\)</span>. On dit alors que le schéma est <em>asymptotic preserving</em>, au sens où la limite quand <span class="math inline">\(\varepsilon\)</span> tend vers <span class="math inline">\(0\)</span> correspond à un schéma consistent avec le modèle asymptotique (qui est le modèle obtenu en passant à la limite <span class="math inline">\(\varepsilon \to 0\)</span> dans (<a href="#4.2" class="aeq">4.2</a>)). Par conséquent nous utiliserons un schéma d’Euler implicite en temps pour tester et valider nos différents schémas sur le terme de transport.</p>
 <h3 id="schéma-runge-kutta-dordre-3">Schéma Runge-Kutta d’ordre 3</h3>
 <p>Pour des raisons de stabilité, liées à l’utilisation de schémas d’ordre élevé en <span class="math inline">\(x\)</span> (que l’on détaillera plus tard en section <a href="#reformulation-exponentielle-du-modèle-micro">4.3.2</a>), nous avons été amenés à considérer le schéma de Runge-Kutta d’ordre 3 (RK3).</p>
 <p>Le schéma en temps se résout de manière indépendante du schéma d’advection, par conséquent il s’agit d’une simple équation différentielle ordinaire que nous écrirons :</p>
@@ -419,8 +420,8 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
     u^{n+1} &amp;= \frac{1}{3}u^n + \frac{2}{3}u^{(2)} + \frac{2}{3}\Delta t L(u^{(2)},t^n+\frac{1}{2}\Delta t)
   \end{aligned}
 \]</span></p>
-<p>Dans le cadre du modèle <em>micro-macro</em> par exemple, nous avons <span class="math inline">\(u=g\)</span> dans la partie <em>micro</em> sans terme de collision, <span class="math inline">\(L\)</span> désignant les termes de transport et les termes sourrce.</p>
-<p>Si la simulation se concentre sur un plasma peu dense, c’est-à-dire <span class="math inline">\(\varepsilon\to\infty\)</span>, le terme raide dans la partie <em>micro</em> du modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) peut s’approximer par 0, d’où :</p>
+<p>Dans le cadre du modèle <em>micro-macro</em> par exemple, nous avons <span class="math inline">\(u=g\)</span> dans la partie <em>micro</em> sans terme de collision, <span class="math inline">\(L\)</span> désignant les termes de transport et les termes source.</p>
+<p>Si la simulation se concentre sur un plasma peu dense, c’est-à-dire <span class="math inline">\(\varepsilon\to\infty\)</span>, le terme raide dans la partie <em>micro</em> du modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) peut être négligé, d’où :</p>
 <p><span class="math display">\[
   \partial_t g + (I-\Pi)[\mathcal{T}_{v,E}(\mathcal{M}_{[U]}+g)] = 0
 \]</span></p>
@@ -451,7 +452,7 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
   u_i^{n+1} = \sum_{k=-r}^s \gamma_k u_{i+k}^n
 \]</span><a href="#4.5" id="4.5" class="eq"></a></p>
 <p>où <span class="math inline">\(\gamma_k\in\mathbb{R}\)</span> est un coefficient dépendant du nombre CFL <span class="math inline">\(\nu = a\frac{\Delta t}{\Delta x}\)</span>.</p>
-<p>On peut réécrire (<a href="#4.5" class="aeq">4.5</a>) en forumulation volumes finis :</p>
+<p>On peut réécrire (<a href="#4.5" class="aeq">4.5</a>) en formulation volumes finis :</p>
 <p><span class="math display">\[
   u_i^{n+1} = u_i^n - \nu (u^n_{i+\frac{1}{2}} - u^n_{i-\frac{1}{2}})
 \]</span></p>
@@ -522,16 +523,12 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <figure>
 <img src="img/ordre_compact_onestep.png" alt="Mesure de l’ordre sur un seul pas de temps" /><figcaption>Mesure de l’ordre sur un seul pas de temps</figcaption>
 </figure>
-<p>La figure 4.1 montre l’erreur en fonction du pas d’espace <span class="math inline">\(\Delta x\)</span> en échelle logarithmique. L’erreur est calculée sur un seul pas de temps <span class="math inline">\(\Delta t = \pi 10^{-6}\)</span>. On y mesure, quelle que soit la méthode de calcul de l’erreur (erreur en norme 1 : <span class="math inline">\(e_1\)</span> ou erreur en norme infinie : <span class="math inline">\(e_\infty\)</span>) l’ordre à une valeur environ de <span class="math inline">\(5\)</span> (pente en pointillée). Ceci est confirmé par les valeurs numériques données dans le tableau ci-dessous. L’ordre partiel <span class="math inline">\(p\)</span>, calculé par :</p>
-<p><span class="math display">\[
-  p = \frac{\log((e_1^1)_i)-\log((e_1^1)_{i-1})}{\Delta x_i - \Delta x_{i-1}}
-\]</span></p>
-<p>permet d’estimer avec les points précédents la valeur de l’ordre. L’ordre partiel calculé à partir de l’erreur infinie donne le même ordre de grandeur. On trouve aussi par cette méthode une valeur proche de <span class="math inline">\(5\)</span>.</p>
+<p>La figure 4.1 montre l’erreur en fonction du pas d’espace <span class="math inline">\(\Delta x\)</span> en échelle logarithmique. L’erreur est calculée sur un seul pas de temps <span class="math inline">\(\Delta t = \pi 10^{-6}\)</span>. On y mesure, quelle que soit la méthode de calcul de l’erreur (erreur en norme 1 : <span class="math inline">\(e_1\)</span> ou erreur en norme infinie : <span class="math inline">\(e_\infty\)</span>) l’ordre à une valeur environ de <span class="math inline">\(5\)</span> (pente en pointillée). Ceci est confirmé par les valeurs numériques données dans le tableau ci-dessous. L’ordre partiel est le coefficient directeur de la droite formée par les 2 précédents points <span class="math inline">\((\log(\Delta x),\log(e_1))\)</span> avec l’erreur en norme 1. Il permet d’estimer la valeur de l’ordre. L’ordre partiel calculé à partir de l’erreur infinie donne le même ordre de grandeur. On trouve aussi par cette méthode une valeur proche de <span class="math inline">\(5\)</span>.</p>
 <table>
 <caption>Erreur et ordre sur un seul pas de temps <span class="math inline">\(\Delta t = \pi 10^{-6}\)</span></caption>
 <colgroup>
 <col style="width: 4%" />
-<col style="width: 26%" />
+<col style="width: 25%" />
 <col style="width: 24%" />
 <col style="width: 26%" />
 <col style="width: 17%" />
@@ -540,50 +537,50 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <tr class="header">
 <th>N</th>
 <th><span class="math inline">\(\log(\Delta x)\)</span></th>
-<th><span class="math inline">\(\log(\Delta e_1)\)</span></th>
-<th><span class="math inline">\(\log(\Delta e_{\infty})\)</span></th>
+<th><span class="math inline">\(\log(e_1)\)</span></th>
+<th><span class="math inline">\(\log(e_{\infty})\)</span></th>
 <th>Ordre partiel</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>10</td>
-<td>0.62831853071795862</td>
+<td>0.6283185307179586</td>
 <td>1.8885115323892025E-008</td>
 <td>4.6439991852054163E-009</td>
 <td>—</td>
 </tr>
 <tr class="even">
 <td>20</td>
-<td>0.31415926535897931</td>
+<td>0.3141592653589793</td>
 <td>6.3343666063889316E-010</td>
 <td>1.5632262151399345E-010</td>
 <td>4.89790541666598</td>
 </tr>
 <tr class="odd">
 <td>30</td>
-<td>0.20943951023931953</td>
+<td>0.2094395102393195</td>
 <td>8.3633337412339448E-011</td>
 <td>2.0870083439206155E-011</td>
 <td>4.99356851573894</td>
 </tr>
 <tr class="even">
 <td>40</td>
-<td>0.15707963267948966</td>
+<td>0.1570796326794896</td>
 <td>1.9970045946399870E-011</td>
 <td>4.9763526632773392E-012</td>
 <td>4.9784428799281</td>
 </tr>
 <tr class="odd">
 <td>50</td>
-<td>0.12566370614359174</td>
+<td>0.1256637061435917</td>
 <td>6.5414345863822243E-012</td>
 <td>1.6342482922482304E-012</td>
 <td>5.00160970143643</td>
 </tr>
 <tr class="even">
 <td>60</td>
-<td>0.10471975511965977</td>
+<td>0.1047197551196597</td>
 <td>2.6340730808331303E-012</td>
 <td>6.5758509748548022E-013</td>
 <td>4.98912561409769</td>
@@ -697,7 +694,7 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <figure>
 <img src="img/ordre_compact.png" alt="Mesure de l’ordre sur plusieurs itérations" /><figcaption>Mesure de l’ordre sur plusieurs itérations</figcaption>
 </figure>
-<p>La figure 4.2 montre l’évolution de l’erreur en fonction du pas d’espace <span class="math inline">\(\Delta x\)</span> en échelle logarithmique. L’erreur est indiquée pour 2 temps distincts <span class="math inline">\(t_1= 0.1\)</span> et <span class="math inline">\(t_2 = 1\)</span> pour un nombre de CFL égal à <span class="math inline">\(c = 10^{-4}\)</span>. L’erreur infinie, au temps <span class="math inline">\(t_i\)</span>, notée <span class="math inline">\(e_\infty^{i}\)</span> est systématiquement plus faible que l’erreur en norme 1, notée <span class="math inline">\(e_1^{i}\)</span>, car cette dernière dénote un caractère plus global (somme des erreurs locales). L’écart entre les erreurs au temps <span class="math inline">\(t_1\)</span> et au temps <span class="math inline">\(t_2\)</span> illustre l’erreur du schéma en temps, ici un schéma d’Euler explicite. Les points pour un <span class="math inline">\(\Delta x\)</span> faible, donc à droite de la figure ne permettent pas de calculer convenablement l’ordre du schéma puisqu’il s’agit d’une propriété à la limite quand <span class="math inline">\(\Delta x \to 0\)</span>. Ainsi l’ordre mesuré sur la figure à l’aide d’une minimisation (valeur de <span class="math inline">\(4.48\)</span>) est faussée par la présence des ces points. Le tableau suivant permet de se donner une idée de l’ordre partiel et ainsi de la valeur limite pour de faibles valeurs de <span class="math inline">\(\Delta x\)</span>. On peut donc affirmer que l’ordre de ce schéma est 5, ce qui est en accord avec le résultat obtenu dans <span class="citation" data-cites="siam2013">[9]</span>.</p>
+<p>La figure 4.2 montre l’évolution de l’erreur en fonction du pas d’espace <span class="math inline">\(\Delta x\)</span> en échelle logarithmique. L’erreur est indiquée pour 2 temps distincts <span class="math inline">\(t_1= 0.1\)</span> et <span class="math inline">\(t_2 = 1\)</span> pour un nombre de CFL égal à <span class="math inline">\(c = 10^{-4}\)</span>. L’erreur infinie, au temps <span class="math inline">\(t_i\)</span>, notée <span class="math inline">\(e_\infty^{i}\)</span> est systématiquement plus faible que l’erreur en norme 1, notée <span class="math inline">\(e_1^{i}\)</span>, car cette dernière dénote un caractère plus global (somme des erreurs locales). L’écart entre les erreurs au temps <span class="math inline">\(t_1\)</span> et au temps <span class="math inline">\(t_2\)</span> illustre l’erreur du schéma en temps, ici un schéma d’Euler explicite. Les points pour un <span class="math inline">\(\Delta x\)</span> faible, donc à droite de la figure ne permettent pas de calculer convenablement l’ordre du schéma puisqu’il s’agit d’une propriété à la limite quand <span class="math inline">\(\Delta x \to 0\)</span>. Ainsi l’ordre mesuré sur la figure à l’aide d’une minimisation (valeur de <span class="math inline">\(4.48\)</span>) est faussée par la présence des ces points. Le tableau suivant permet de se donner une idée de l’ordre partiel (calculé au temps <span class="math inline">\(t_1\)</span>) et ainsi de la valeur limite pour de faibles valeurs de <span class="math inline">\(\Delta x\)</span>. On peut donc affirmer que l’ordre de ce schéma est 5, ce qui est en accord avec le résultat obtenu dans <span class="citation" data-cites="siam2013">[9]</span>.</p>
 <table>
 <caption>Erreur et ordre au temps <span class="math inline">\(t_1 = 0.1\)</span> et au temps <span class="math inline">\(t_2 = 1\)</span>. La colonne <span class="math inline">\(N\)</span> permet de calculer <span class="math inline">\(\Delta x = \frac{2\pi}{N}\)</span>, <span class="math inline">\(n_1\)</span> et <span class="math inline">\(n_2\)</span> sont le nombre d’itérations jusqu’au temps <span class="math inline">\(t_1\)</span> respectivement <span class="math inline">\(t_2\)</span>. Les erreurs sont données au temps <span class="math inline">\(t_1\)</span> (<span class="math inline">\(e_1^1\)</span> et <span class="math inline">\(e_\infty^1\)</span>) ainsi qu’au temps <span class="math inline">\(t_2\)</span> (<span class="math inline">\(e_1^2\)</span> et <span class="math inline">\(e_\infty^2\)</span>) en norme 1 et infinie.</caption>
 <colgroup>
@@ -1293,13 +1290,13 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <p>où <span class="math inline">\(x\)</span> et <span class="math inline">\(y\)</span> sont les deux directions de l’espace, dans lequel nous effectuons un transport à vitesse <span class="math inline">\(a\)</span> dans la direction <span class="math inline">\(x\)</span> et <span class="math inline">\(b\)</span> selon <span class="math inline">\(y\)</span>. La solution exacte est connue pour plusieurs cas tests tels que la translation en 2 dimensions (avec <span class="math inline">\(a\)</span> et <span class="math inline">\(b\)</span> des constantes), ou pour le cas d’une rotation (avec <span class="math inline">\(a(x,y)=y\)</span> et <span class="math inline">\(b(x,y)=-x\)</span>).</p>
 <h4 id="problème-dinstabilité">Problème d’instabilité</h4>
 <p>R. Wang et R. Spiteri démontrent dans <span class="citation" data-cites="weno_time">[13]</span> que l’utilisation conjointe du schéma WENO d’ordre 5 avec un schéma temporel de type d’Euler explicite est instable. Nous confirmons ce résultat numériquement avec la rotation d’une gaussienne en temps long. On remarque qu’une discrétisation en temps de Runge-Kutta d’ordre 3 stabilise le schéma. C’est cette instabilité qui nous a conduit à utiliser un nombre de CFL arbitrairement très petit <span class="math inline">\(c=10^{-5}\)</span> dans le test 1D.</p>
-<p>Nous illustrons ce résultat à l’aide d’un test effectuée en 2D sur un domaine périodiques. Il s’agit d’étudier le comportement d’une gaussienne en rotation autour du centre du domaine.</p>
+<p>Nous illustrons ce résultat à l’aide d’un test effectué en 2D sur un domaine périodique. Il s’agit d’étudier le comportement d’une gaussienne en rotation autour du centre du domaine.</p>
 <p><span class="math display">\[
   \partial_t u + y\partial_x u -x\partial_y u = 0
 \]</span></p>
-<p>avec comme doncition initiale :</p>
+<p>avec comme condition initiale :</p>
 <p><span class="math display">\[
-  u(t=0,x) = e^{ -\frac{(x-\mu_x)^2}{2\sigma_x} - \frac{(y-\mu_y)^2}{2\sigma_y} } 
+  u(t=0,x) = \exp\left( -\frac{(x-\mu_x)^2}{2\sigma_x} - \frac{(y-\mu_y)^2}{2\sigma_y} \right)
 \]</span></p>
 <table>
 <thead>
@@ -1329,14 +1326,14 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 </figure>
 <p>Comparaison du schéma en temps sur la stabilité des résultats.</p>
 </div>
-<p>On remarque sur la figure 4.4 que le schéma d’Euler explicite provoque des instabilités lors de simulations en temps long, instabilités non présentes avec le schéa de Runge-Kutta d’ordre 3 (RK3). Dans les deux cas, on observe une gaussienne aux bonnes coordonnées.</p>
+<p>On remarque sur la figure 4.4 que le schéma d’Euler explicite provoque des instabilités lors de simulations en temps long, instabilités non présentes avec le schéma de Runge-Kutta d’ordre 3 (RK3).</p>
 <p>L’instabilité du couplage WENO-Euler explicite peut être contrôlé à l’aide d’un pas de temps <span class="math inline">\(\Delta t\)</span> plus faible. Ce comportement n’est pas contrôlable dans le cas de simulations en temps long (qui demandent alors un pas de temps beaucoup trop faible).</p>
 <h4 id="test-de-viscosité">Test de viscosité</h4>
 <p>À partir du cas test de la rotation avec des conditions aux bords périodiques :</p>
 <p><span class="math display">\[
   \partial_t u + y\partial_x u -x\partial_y u = 0
 \]</span></p>
-<p>il est possible de mettre à l’épreuve la viscosité numérique du schéma. C’est ce qui est effectué dans <span class="citation" data-cites="qiu2011">[14]</span>, avec 12 rotations d’une condition initiale discontinue.</p>
+<p>il est possible de mettre à l’épreuve la viscosité numérique du schéma. C’est ce qui est effectué dans <span class="citation" data-cites="qiu2011">[14]</span>, avec 6 rotations d’une condition initiale discontinue.</p>
 <p>Ce test se base sur une condition initiale discontinue, présentant aussi des irrégularités à l’aide d’un cylindre tronqué et d’un cône (voir figure 4.5), que l’on fait tourner 6 fois sur lui même (temps final de la simulation <span class="math inline">\(T_f = 12\pi\)</span>). La solution exacte est donc la condition initiale. Il s’agit ici de vérifier le comportement du schéma en espace face à des discontinuités et d’observer la viscosité numérique. Le schéma en temps est celui de Runge-Kutta d’ordre 3.</p>
 <div>
 <figure>
@@ -1345,13 +1342,13 @@ g = -\varepsilon(I-\Pi)v\cdot\nabla_x\mathcal{M}_{[U]} + \mathcal{O}(\varepsilon
 <figure>
 <img src="img/cf_pacman.png" alt="Résultat de la simulation du schéma WENO en espace RK3 en temps" /><figcaption>Résultat de la simulation du schéma WENO en espace RK3 en temps</figcaption>
 </figure>
-<p>Test de viscolsité sur une condition initiale irrégulière</p>
+<p>Test de viscosité sur une condition initiale irrégulière</p>
 </div>
 <h2 id="couplage-de-léquation-de-transport-et-du-terme-de-raideur">Couplage de l’équation de transport et du terme de raideur</h2>
 <p>Dans cette section, on applique les schémas précédents au modèle <em>micro-macro</em>, ce qui va amener à des études supplémentaires comme le calcul de la condition de CFL, ou la reformulation exponentielle du modèle.</p>
 <h3 id="calcul-de-la-condition-cfl">Calcul de la condition CFL</h3>
 <p>Le terme raide, apporté par l’opérateur de collision BGK va induire une modification de la condition CFL habituelle lors du couplage du schéma d’Euler implicite-explicite avec un schéma en espace.</p>
-<p>Pour calculer le nombre de CFL nous allons dans un premier temps nous intéresser au modèle cinétique (<a href="#2.7" class="aeq">2.7</a>) avec <span class="math inline">\(Q(f) = \frac{1}{\varepsilon}(\mathcal{M}_{[U]}-f)\)</span>, la description microscopique du modèle <em>micro-macro</em> est similaire et implique la même condition. Nous utiliserons le schéma d’Euler implicite pour la discrétisation en temps de <span class="math inline">\(Q(f)\)</span>, et pour simplifier les notations nous n’utiliserons qu’un schéma <em>upwind</em> en espace, encore une fois le champ électrique est négligé dans cette partie.</p>
+<p>Pour calculer le nombre de CFL nous allons dans un premier temps nous intéresser au modèle cinétique (<a href="#2.8" class="aeq">2.8</a>) avec <span class="math inline">\(Q(f) = \frac{1}{\varepsilon}(\mathcal{M}_{[U]}-f)\)</span>, la description microscopique du modèle <em>micro-macro</em> est similaire et implique la même condition. Nous utiliserons le schéma d’Euler implicite pour la discrétisation en temps de <span class="math inline">\(Q(f)\)</span>, et pour simplifier les notations nous n’utiliserons qu’un schéma <em>upwind</em> en espace, encore une fois le champ électrique est négligé dans cette partie.</p>
 <p><span class="math display">\[
   \frac{f_{j,k}^{n+1}-f_{j,k}^n}{\Delta t} + v_k\frac{f_{j+\frac{1}{2},k}^n - f_{j-\frac{1}{2},k}^n}{\Delta x} = \frac{1}{\varepsilon}((\mathcal{M}_{[U^{n+1}]})_{j,k} - f_{j,k}^{n+1})
 \]</span></p>
@@ -1455,9 +1452,9 @@ Avec classiquement <span class="math inline">\(\Delta x \sim 10^{-2}\)</span> et
 <p><span class="math display">\[
   L(u,t) = -(I-\Pi)(v\partial_x(u+e^{\frac{t}{\varepsilon}}\mathcal{M}_{[U]})+E\partial_v(u+e^{\frac{t}{\varepsilon}}\mathcal{M}_{[U]}))
 \]</span></p>
-<p>Ceci revient à utiliser les schémas de Lawson <span class="citation" data-cites="siam1967">[16]</span>.</p>
+<p>Ceci revient à utiliser les schémas dits de Lawson <span class="citation" data-cites="siam1967">[16]</span>.</p>
 <h2 id="résolution-des-équations-deuler">Résolution des équations d’Euler</h2>
-<p>Le modèle <em>micro-macro</em> impose la résolution des équations d’Euler modifiées. Nous allons présenter ici la résolution proposée dans <span class="citation" data-cites="dimarco">[2]</span>, adapté à un code de simulation des équations d’Euler déjà existant. La méthode présentée utilise un flux de Lax-Friedrichs avec un limiteur de pente de van Leer symétrique. La discrétisation des équations d’Euler (<a href="#2.1" class="aeq">2.1</a>) s’écrit :</p>
+<p>Le modèle <em>micro-macro</em> impose la résolution des équations d’Euler modifiées. Nous allons présenter ici la résolution proposée dans <span class="citation" data-cites="dimarco">[2]</span>, adaptée à un code de simulation des équations d’Euler déjà existant. La méthode présentée utilise un flux de Lax-Friedrichs avec un limiteur de pente de van Leer symétrique. La discrétisation des équations d’Euler (<a href="#2.1" class="aeq">2.1</a>) s’écrit :</p>
 <p><span class="math display">\[
   U_i^{n+1} = U_i^n - \frac{\Delta t}{\Delta x}(\mathcal{F}_{i+\frac{1}{2}}^n - \mathcal{F}_{i-\frac{1}{2}}^n)
 \]</span></p>
@@ -1467,7 +1464,7 @@ Avec classiquement <span class="math inline">\(\Delta x \sim 10^{-2}\)</span> et
 \]</span><a href="#4.7" id="4.7" class="eq"></a></p>
 <p>où :</p>
 <ul>
-<li><p><span class="math inline">\(\mathcal{F}\)</span> est la fonction du modèle d’Euler est donné par :</p>
+<li><p><span class="math inline">\(\mathcal{F}\)</span> est la fonction du modèle d’Euler et est donné par :</p>
 <p><span class="math display">\[
   \mathcal{F}:U=\begin{pmatrix}\rho \\ \rho u \\ e\end{pmatrix} \mapsto \mathcal{F}(U) = \begin{pmatrix} \rho u \\ \rho u^2 + p \\ eu + pu \end{pmatrix}
 \]</span></p>
@@ -1487,23 +1484,24 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
 <li><p><span class="math inline">\(\lambda\)</span> est la plus grande valeur propre du système d’Euler.</p></li>
 </ul>
 <h2 id="résolution-du-problème-de-poisson">Résolution du problème de Poisson</h2>
-<p>Pour résoudre le problème de Poisson en condition aux bords périodiques nous utiliserons une méthode de transformée de Fourier. Le champ électrique est une fonction de la densité <span class="math inline">\(\rho(t^n,x)\)</span>, il est donc nécessaire de résoudre le problème de Poisson à chaque pas de temps, et à chaque sous-étape dans le cas du schéma RK3.</p>
-<p>Notons <span class="math inline">\(\varrho = \rho -1\)</span>, il suffit de calculer la transformée de Fourier de <span class="math inline">\(\varrho\)</span> pour résoudre le problème (<a href="#2.5" class="aeq">2.5</a>) dans le contexte spectral :</p>
+<p>Pour résoudre le problème de Poisson en condition aux bords périodiques nous utiliserons une méthode spectrale. Le champ électrique est une fonction de la densité <span class="math inline">\(\rho(t^n,x)\)</span>, il est donc nécessaire de résoudre le problème de Poisson à chaque pas de temps, et à chaque sous-étape dans le cas du schéma RK3.</p>
+<p>Notons <span class="math inline">\(\varrho = \rho -1\)</span>, il suffit de calculer la transformée de Fourier de <span class="math inline">\(\varrho\)</span> pour résoudre le problème (<a href="#2.6" class="aeq">2.6</a>) dans le contexte spectral :</p>
 <p><span class="math display">\[
   i\kappa \hat{E}_{\kappa} = \hat{\varrho}_{\kappa}
 \]</span></p>
 <p>où <span class="math inline">\(\kappa\)</span> est l’indice du coefficient de Fourier et <span class="math inline">\(i\)</span> le nombre complexe tel que <span class="math inline">\(i^2 = -1\)</span>. Ainsi on définit pour tout <span class="math inline">\(\kappa\)</span> le coefficient de Fourier :</p>
 <ul>
 <li><span class="math inline">\(\hat{E}_{\kappa} = -i\displaystyle\frac{\hat{\varrho}_{\kappa}}{\kappa}\)</span> si <span class="math inline">\(\kappa \neq 0\)</span></li>
-<li><span class="math inline">\(\hat{E}_0 = 0\)</span> car <span class="math inline">\(E\)</span> est à moyenne nulle d’après la condition (<a href="#2.6" class="aeq">2.6</a>)</li>
+<li><span class="math inline">\(\hat{E}_0 = 0\)</span> car <span class="math inline">\(E\)</span> est à moyenne nulle d’après la condition (<a href="#2.7" class="aeq">2.7</a>)</li>
 </ul>
-<p>Ainsi tous les coefficients de Fourrier de <span class="math inline">\(E\)</span> sont calculés, il suffit d’effectuer la transformée inverse pour trouver le résultat souhaité.</p>
+<p>Ainsi tous les coefficients de Fourier de <span class="math inline">\(E\)</span> sont calculés, il suffit d’effectuer la transformée inverse pour trouver le résultat souhaité.</p>
 <h1 id="application-aux-modèles-cinétiques-et-micro-macro">Application aux modèles cinétiques et <em>micro-macro</em></h1>
 <p>Nous avons appliqué les schémas précédents à différents modèles :</p>
 <ul>
-<li>Un modèle cinétique sur <span class="math inline">\(f\)</span> (<a href="#2.3" class="aeq">2.3</a>) qui permettra de tester nos schémas cinétiques sans couplage avec des équations de type Euler.</li>
+<li>Un modèle cinétique sur <span class="math inline">\(f\)</span> (<a href="#2.4" class="aeq">2.4</a>) qui permettra de tester nos schémas sans couplage avec des équations de type Euler.</li>
 <li>Le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) qui couple la discrétisation de la partie cinétique <em>micro</em> à la partie fluide de type Euler.</li>
 <li>Le modèle <em>micro-macro</em> avec une fonction <span class="math inline">\(h\)</span> qui permettra de tester cette nouvelle modélisation.</li>
+<li>Le modèle fluide d’Euler qui permettra de valider les modèles précédents à la limite <span class="math inline">\(\varepsilon \ll 1\)</span>.</li>
 </ul>
 <h2 id="discrétisation-du-modèle-cinétique">Discrétisation du modèle cinétique</h2>
 <p>Dans un premier temps, pour pouvoir comparer les résultats avec un code de simulation des équations d’Euler (<a href="#2.1" class="aeq">2.1</a>), on étudie le modèle sans champ électrique <span class="math inline">\(E\)</span>, c’est-à-dire le modèle suivant :</p>
@@ -1565,14 +1563,14 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
 <p><span class="math display">\[
     U_i^{n+1} \gets \sum_k m_k f_{i,k}^{n+1} \Delta v
   \]</span></p>
-<p>Dans l’étape 3, la valeur prédite de <span class="math inline">\(U_i^{n+1}\)</span> n’est pas égal aux moments de <span class="math inline">\(f\)</span> : <span class="math inline">\(\sum_k m_k f_{i,k}^{n+1}\Delta v\)</span> à cause de la discrétisation de la vitesse. Cette valeur est donc corrigée à la fin de l’itération.</p>
+<p>Dans l’étape 3, la valeur prédite de <span class="math inline">\(U_i^{n+1}\)</span> n’est pas égale aux moments de <span class="math inline">\(f\)</span> : <span class="math inline">\(\sum_k m_k f_{i,k}^{n+1}\Delta v\)</span> à cause de la discrétisation de la vitesse. Cette valeur est donc corrigée à la fin de l’itération.</p>
 <h3 id="propriété-sur-la-température">Propriété sur la température</h3>
 <p>Le calcul de la maxwellienne <span class="math inline">\(\mathcal{M}_{[U^{n}]}\)</span> dans (<a href="#5.1" class="aeq">5.1</a>) nécessite l’extraction de la racine carrée de la température <span class="math inline">\((T_i^n)_i\)</span> à tout temps <span class="math inline">\(t^n\)</span>, or celle-ci est uniquement définie par :</p>
 <p><span class="math display">\[
   T_i^n = \frac{(U_3)_i^n}{(U_1)_i^n} - \left(\frac{(U_2)_i^n}{(U_1)_i^n}\right)^2
 \]</span></p>
 <p>qui n’est pas nécessairement positif.</p>
-<p>La proposition suivante assure la positivité de cette valeur, condition nécessaire pour assurer la validité des calculs. En utilisant la définition du vecteur <span class="math inline">\(U_i^n\)</span> on peut reformuler <span class="math inline">\(T_i^n\)</span> comme :</p>
+<p>On peut montrer la positivité de cette valeur, condition nécessaire pour assurer la validité des calculs. En utilisant la définition du vecteur <span class="math inline">\(U_i^n\)</span> on peut reformuler <span class="math inline">\(T_i^n\)</span> comme :</p>
 <p><span class="math display">\[
   T_i^n = \frac{ \sum_k |v_k|^2f_{i,k}^n\Delta v }{ \sum_k f_{i,k}^n\Delta v } - \left(\frac{ \sum_k v_k f_{i,k}^n\Delta v}{ \sum_k f_{i,k}^n\Delta v }\right)^2
 \]</span></p>
@@ -1590,30 +1588,29 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
 \]</span></p>
 <p>Ce qui garantit bien la positivité de <span class="math inline">\(T_i^n\)</span> en tout point <span class="math inline">\(x_i\)</span> de l’espace et pour tout temps <span class="math inline">\(t^n\)</span>.</p>
 <h3 id="propriétés-de-conservations">Propriétés de conservations</h3>
-<p>Nous allons étudier ce que donnent les propriétés de conservations énoncées dans l’équation (<a href="#2.4" class="aeq">2.4</a>) dans le domaine discret :</p>
+<p>Nous allons étudier ce que donnent les propriétés de conservations énoncées dans l’équation (<a href="#2.5" class="aeq">2.5</a>) dans le domaine discret :</p>
 <p><span class="math display">\[
   \sum_i U^n_i \Delta x = \sum_i U^0_i \Delta x
-\]</span></p>
+\]</span><a href="#5.2" id="5.2" class="eq"></a></p>
 <p>où <span class="math inline">\(U_i^n\)</span> est calculé de manière discrète par :</p>
 <p><span class="math display">\[
   U_i^n = \sum_k \begin{pmatrix} 1 \\ v_k \\ |v_k|^2 \end{pmatrix}f_{i,k}^{n}\Delta v
 \]</span></p>
-<p>La première composante de cette somme est la masse du système, la seconde la quantité de mouvement et la troisième l’énergie, trois grandeurs conservatives d’un point de vue physique. Il est donc important de tracer ces valeurs pour vérifier leur conservation par le schéma numérique.</p>
-<p>On peut aussi comparer ce résultat à :</p>
+<p>La masse totale, l’impulsion et l’énergie totale sont trois grandeurs, définies par (<a href="#5.2" class="aeq">5.2</a>), conservatives du point de vue physique. Il est donc important de vérifier leur conservation par le schéma numérique.</p>
+<p>Ainsi on s’intéressera aux quantités suivantes :</p>
 <p><span class="math display">\[
   \sum_{i,k} m_k f^n_{i,k} \Delta x \Delta v
 \]</span></p>
-<p>qui doit être indépendant de <span class="math inline">\(n\)</span> à erreur sur <span class="math inline">\(\sum_k \mathcal{M}_{[U]}\)</span> près. En effet au niveau continu nous avons :</p>
+<p>qui doivent être indépendantes de <span class="math inline">\(n\)</span> (à l’erreur sur la discrétisation en vitesse près). En effet au niveau continu nous avons :</p>
 <p><span class="math display">\[
   \int_{\mathbb{R}^d} m(v) f\,\mathrm{d}v = \int_{\mathbb{R}^d} m(v)\mathcal{M}_{[U]}\,\mathrm{d}v = U
 \]</span></p>
 <p>mais ceci n’est plus vrai au niveau discret.</p>
-<p>Il est donc nécessaire d’approximer correctement l’intégrale sur <span class="math inline">\(v \in\mathbb{R}^d\)</span>, numériquement cela se traduit par un <span class="math inline">\(v_{\text{max}}\)</span> suffisamment grand.</p>
-<p>Numériquement on constate bien une conservation de ces valeurs.</p>
+<p>Il est donc nécessaire d’approximer correctement l’intégrale sur <span class="math inline">\(v \in\mathbb{R}^d\)</span>, numériquement cela se traduit par un <span class="math inline">\(v_{\text{max}}\)</span> suffisamment grand et pas un pas de vitesse <span class="math inline">\(\Delta v\)</span> suffisamment petit. Lorsque ces deux contraintes sont respectées, on constate numériquement une bonne conserrvation de ces valeurs (à <span class="math inline">\(10^{-15}\)</span> près).</p>
 <h2 id="discrétisation-du-modèle-micro-macro">Discrétisation du modèle micro-macro</h2>
-<p>Nous voulons discrétiser le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) en considérant le couple de variables <span class="math inline">\((U_i^n,g_{i,k}^n)\)</span> une approximation de <span class="math inline">\(U(t^n,x_i)\)</span> et <span class="math inline">\(g(t^n,x_i,v_k)\)</span> au temps <span class="math inline">\(t^n = n\Delta t\)</span> avec <span class="math inline">\(\Delta t &gt;0\)</span> le pas de temps, à la position <span class="math inline">\(x_i = i\Delta x\)</span> avec <span class="math inline">\(\Delta x\)</span> le pas d’espace, à la vitesse <span class="math inline">\(v_k = k\Delta v\)</span> avec <span class="math inline">\(\Delta v\)</span> le pas de vitesse.</p>
+<p>Nous voulons discrétiser le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) en considérant le couple d’inconnues discrètes <span class="math inline">\((U_i^n,g_{i,k}^n)\)</span> comme une approximation de <span class="math inline">\(U(t^n,x_i)\)</span> et <span class="math inline">\(g(t^n,x_i,v_k)\)</span> au temps <span class="math inline">\(t^n = n\Delta t\)</span> avec <span class="math inline">\(\Delta t &gt;0\)</span> le pas de temps, à la position <span class="math inline">\(x_i = i\Delta x\)</span> avec <span class="math inline">\(\Delta x\)</span> le pas d’espace, à la vitesse <span class="math inline">\(v_k = v_{\text{min}} + k\Delta v\)</span> avec <span class="math inline">\(\Delta v\)</span> le pas de vitesse.</p>
 <h3 id="écriture-de-la-partie-macro">Écriture de la partie <em>macro</em></h3>
-<p>La partie <em>macro</em> du modèle est une modification du modèle d’Euler classique (<a href="#2.1" class="aeq">2.1</a>). Nous avons adapté un code de simulation des équations d’Euler, utilisant un flux de Lax-Friedrichs avec un limiteur de pente de van Leer symétrique, comme présenté dans la partie <a href="#résolution-des-équations-deuler">4.4</a>. Nous utiliserons donc le schéma suivant :</p>
+<p>La partie <em>macro</em> du modèle est une modification du modèle d’Euler classique (<a href="#2.1" class="aeq">2.1</a>). Nous avons donc adapté un code de simulation des équations d’Euler (qui utilise un flux de Lax-Friedrichs avec un limiteur de pente de van Leer symétrique, comme présenté dans la partie <a href="#résolution-des-équations-deuler">4.4</a>). Nous utiliserons donc le schéma suivant :</p>
 <p><span class="math display">\[
   U_i^{n+1} = U_i^n - \frac{\Delta t}{\Delta x}(\mathcal{F}_{i+\frac{1}{2}}^n - \mathcal{F}_{i-\frac{1}{2}}^n) - \frac{\Delta t}{2\Delta x}(G_{i+1}^n - G_{i-1}^n)
 \]</span></p>
@@ -1622,30 +1619,30 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
   G_i^n = \sum_k v_k m_k g_{i,k}^n \Delta v
 \]</span></p>
 <p>où <span class="math inline">\(m_k = m(v_k) = (1,v_k,|v_k|^2)^{\textsf{T}}\)</span>.</p>
-<p>Le flux numérique <span class="math inline">\(\mathcal{F}_{i+\frac{1}{2}}^n\)</span> est donné par (<a href="#4.7" class="aeq">4.7</a>) :</p>
+<p>Le flux numérique <span class="math inline">\(\mathcal{F}_{i+\frac{1}{2}}^n\)</span> est donné par (<a href="#4.7" class="aeq">4.7</a>) (flux de Lax-Friedrichs) :</p>
 <p><span class="math display">\[
   \mathcal{F}_{i+\frac{1}{2}}^n = \frac{1}{2}(\mathcal{F}(U^n_{i}) + \mathcal{F}(U^n_{i+1})) -\frac{1}{2}\lambda(U_{i+1}^n - U_i^n)) + \frac{1}{4}(\sigma_i^{n,+} - \sigma_{i+1}^{n,-})
 \]</span></p>
 <h3 id="écriture-de-la-partie-micro">Écriture de la partie <em>micro</em></h3>
-<p>La partie <em>micro</em> (<a href="#3.3" class="aeq">3.3</a>) ne correspond plus simplement au modèle cinétique précédemment étudié. Le projecteur <span class="math inline">\(\Pi\)</span> (<a href="#3.1" class="aeq">3.1</a>) fait intervenir de nouveaux termes. Une semi-discrétisation en temps basé sur un schéma implicite-explicite d’Euler s’écrit :</p>
+<p>La partie <em>micro</em> (<a href="#3.3" class="aeq">3.3</a>) ne correspond plus simplement au modèle cinétique précédemment étudié. En effet le projecteur <span class="math inline">\(\Pi\)</span> (<a href="#3.1" class="aeq">3.1</a>) fait intervenir de nouveaux termes. Le projecteur <span class="math inline">\(\Pi\)</span> fait intervenir des approximations d’intégrales, réalisées par la méthode des rectangles, que nous ne détaillerons pas ici. Une semi-discrétisation en temps basée sur un schéma implicite-explicite d’Euler nécessaire pour stabiliser le terme raide <span class="math inline">\(-\frac{1}{\varepsilon}g\)</span> vu en section <a href="#schémas-en-temps">4.1</a>, s’écrit :</p>
 <p><span class="math display">\[
-  \frac{g^{n+1}-g^n}{\Delta t} = -(I-\Pi)(v\cdot\nabla_x(\mathcal{M}_{[U^n]}+g^n) - \frac{1}{\varepsilon}g^{n+1}
+  \frac{g^{n+1}-g^n}{\Delta t} = -(I-\Pi)(v\cdot\nabla_x(\mathcal{M}_{[U^{n+1}]}+g^n) - \frac{1}{\varepsilon}g^{n+1}
 \]</span></p>
-<p>out encore :</p>
+<p>ou encore :</p>
 <p><span class="math display">\[
   g^{n+1} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ g^n - \Delta t (I\underbrace{-\Pi}_{\text{(a)}})(v\cdot\nabla_x g^n) - \Delta t (I\underbrace{-\Pi}_{\text{(b)}})(v\cdot\nabla_x \mathcal{M}_{[U^{n+1}]}) \right]
 \]</span></p>
-<p>Ces nouveaux termes <span class="math inline">\(\text{(a)}\)</span> et <span class="math inline">\(\text{(b)}\)</span> nécessitent l’appel du même projecteur <span class="math inline">\(\Pi\)</span>, il est intéressant de les regrouper pour minimiser le temps de calcul :</p>
+<p>Ces nouveaux termes <span class="math inline">\(\text{(a)}\)</span> et <span class="math inline">\(\text{(b)}\)</span> nécessitent le calcul du même projecteur <span class="math inline">\(\Pi\)</span>, il est intéressant de les regrouper pour minimiser le temps de calcul :</p>
 <p><span class="math display">\[
   g^{n+1} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ g^n -\Delta t (I-\Pi)(v\cdot\nabla_x(g^n+\mathcal{M}_{[U^{n+1}]}) \right]
 \]</span></p>
-<p>Ne résulte de cette réécriture qu’une seule dérivée en espace à approximer via les flux numériques d’ordre élevé précédemment présentés.</p>
+<p>Ne résulte de cette réécriture qu’une seule dérivée en espace à approximer via les flux numériques d’ordre élevé précédemment présentés. On obtient alors le schéma suivant pour la partie <em>micro</em> :</p>
 <p><span class="math display">\[
   g^{n+1}_{i,k} = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ g^n_{i,k} - (I-\Pi)\left(\frac{\Delta t}{\Delta x}v_k(\tilde{f}^n_{i+\frac{1}{2},k} - \tilde{f}^n_{i-\frac{1}{2},k})\right)  \right]
 \]</span></p>
 <p>où <span class="math inline">\(\tilde{f}^n_{i+\frac{1}{2},k}\)</span> est le flux numérique de <span class="math inline">\(\tilde{f}^n_{i,k} = g^n_{i,k} + (\mathcal{M}_{[U^{n+1}]})_{i,k}\)</span>. On utilisera les flux présentés précédemment dans la partie <a href="#présentation-des-schémas">4</a>.</p>
 <h3 id="algorithme-général">Algorithme général</h3>
-<p>Nous allons rassembler les différents schémas présentés pour approcher le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) et présenter la strucutre algorithmique ainsi extraite.</p>
+<p>Nous allons rassembler les différents schémas présentés pour approcher le modèle <em>micro-macro</em> (<a href="#3.4" class="aeq">3.4</a>) et présenter la structure algorithmique ainsi extraite.</p>
 <p>On suppose donné un maillage de l’espace des phases, on suppose <span class="math inline">\(g_{i,k}^n\)</span> et <span class="math inline">\(U_i^n\)</span> donnés par l’itération précédente, le calcul de la nouvelle itération s’effectue schématiquement comme suit :</p>
 <ol type="1">
 <li>On calcule le flux <span class="math inline">\(G_i^n\)</span> de <span class="math inline">\(g_{i,k}^n\)</span> :</li>
@@ -1653,7 +1650,7 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
 <p><span class="math display">\[
     G_i^n \gets \sum_k v_k m_k g_{i,k}^n \Delta v
   \]</span></p>
-<p>Ceci permettra d’effectuer une approximation de <span class="math inline">\(\partial_x \langle vm(v)g \rangle\)</span> par <span class="math inline">\(\frac{G_{i+1}^n - G_{i-1}^n}{2\Delta x}\)</span>.</p>
+<p>Ceci permettra d’effectuer une approximation de <span class="math inline">\(\partial_x \langle vm(v)g \rangle_{|x=x_i}\)</span> par <span class="math inline">\(\frac{G_{i+1}^n - G_{i-1}^n}{2\Delta x}\)</span>.</p>
 <ol start="2" type="1">
 <li>Résolution de la partie <em>macro</em> : <span class="math inline">\(\partial_t U + \partial_x \mathcal{F}(U) + \partial_x\langle vm(v)g \rangle = 0\)</span> avec un schéma de <em>Lax-Friedrichs</em>, nous obtenons ainsi <span class="math inline">\(U^{n+1}_i\)</span>, <span class="math inline">\(\forall i\)</span>.</li>
 </ol>
@@ -1667,7 +1664,7 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
     (\mathcal{M}_{[U^{n+1}]})_{i,k} = \frac{\rho^{n+1}_i}{\sqrt{2\pi T^{n+1}_i}} \exp\left(-\frac{1}{2}\frac{ | u^{n+1}_i - v_k |^2 }{T^{n+1}_i}\right)
   \]</span></p>
 <ol start="4" type="1">
-<li>On calcule les flux numériques d’ordre élevé de <span class="math inline">\(\tilde{f}_{i+\frac{1}{2},k}^n = g_{i+\frac{1}{2},k}^n + (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k}\)</span> à l’aide des schémas d’ordre élevé comme le schéma compact ou WENO. Ceci permettra d’approximer les dérivées partielles en espace sur ces termes.</li>
+<li>On calcule les flux numériques d’ordre élevé de <span class="math inline">\(\tilde{f}_{i+\frac{1}{2},k}^n = g_{i+\frac{1}{2},k}^n + (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k}\)</span> à l’aide des schémas d’ordre élevé comme le schéma compact ou WENO.</li>
 </ol>
 <p><span class="math display">\[
     g_{i+\frac{1}{2},k}^n \gets \left( (g_{j,k}^n)_{j\in [\![ i-2;i+2 ]\!] } , v_k \right)
@@ -1684,13 +1681,13 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
     &amp; \left. - (I-\Pi)\left( \frac{\Delta t}{\Delta x}v_k( (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k} - (\mathcal{M}_{[U^{n+1}]})_{i-\frac{1}{2},k})\right) \vphantom{\frac{\Delta}{\Delta}} \right]
   \end{aligned}
   \]</span></p>
-<p>Ceci peut se résumer à deux termes de transports projetés selon <span class="math inline">\((I-\Pi)\)</span>. La discrétisation en temps présentée ici utilise une méthode d’Euler implicite-explicite ; numériquement nous n’avons pas observé d’instabilité dans le cadre d’un gaz raréfié. La mécanique des plasmas étudie traditionnellement des comportement en temps long, dans ce cas une discrétisation d’ordre plus élevé en temps fut nécessaire pour accompagner l’ordre élevé en espace. Pour un schéma en espace d’ordre faible (comme <em>upwind</em>), l’introduction d’un schéma d’ordre élevé en temps n’est pas nécessaire.</p>
+<p>Ceci peut se résumer à deux termes de transports projetés selon <span class="math inline">\((I-\Pi)\)</span>. La discrétisation en temps présentée ici utilise une méthode d’Euler implicite-explicite ; numériquement nous n’avons pas observé d’instabilité dans le cadre d’un gaz raréfié. Le cas des plasmas nécessite des simulations en temps long ; une discrétisation d’ordre plus élevé en temps fut nécessaire pour accompagner l’ordre élevé en espace. Pour un schéma en espace d’ordre faible (comme <em>upwind</em>), l’introduction d’un schéma d’ordre élevé en temps n’est pas nécessaire pour assurer la stabilité du schéma.</p>
 <h3 id="propriétés-du-schéma">Propriétés du schéma</h3>
-<p>Dans le modèle continu, la propriété <span class="math inline">\(\Pi(g) = 0\)</span> est assurée par construction, à tout instant <span class="math inline">\(t\)</span>. Dans le schéma numérique il faut s’assurer que cette propriété est conservée. Pour cela nous allons étudier <span class="math inline">\(\Pi(g^{n+1})\)</span> en supposant <span class="math inline">\(\Pi(g^n) = 0\)</span>. Le schéma nous donne :</p>
+<p>Dans le modèle continu, la propriété <span class="math inline">\(\Pi(g)(t,x,v) = 0\)</span> est assurée par construction si <span class="math inline">\(g\in\text{Im}Q\)</span>, à tout instant <span class="math inline">\(t\)</span>, pour tout <span class="math inline">\(x\)</span>, <span class="math inline">\(v\)</span>. Dans le schéma numérique il faut s’assurer que cette propriété est conservée pour préserver au niveau discret la structure du modèle <em>micro-macro</em>. Pour cela nous allons étudier <span class="math inline">\(\Pi(g^{n+1})\)</span> en supposant <span class="math inline">\(\Pi(g^n) = 0\)</span>. Le schéma nous donne :</p>
 <p><span class="math display">\[
   \Pi(g^{n+1}) = \frac{1}{1+\frac{\Delta t}{\varepsilon}}\left[ \Pi(g^n) - \Pi\left[(I-\Pi)\left( \frac{\Delta t}{\Delta x}v\partial_x \tilde{f}^n  \right)\right]  \right]
 \]</span></p>
-<p>où, pour rappel, <span class="math inline">\(\tilde{f}^n = \mathcal{M}_{[U^{n+1}]}+g^n\)</span>. Or <span class="math inline">\((I-\Pi)(v\partial_x \tilde{f}^n)\)</span> appartient au noyau de <span class="math inline">\(\Pi\)</span>, par propriété du l’opérateur de projection nous obtenons donc :</p>
+<p>où, pour rappel, <span class="math inline">\(\tilde{f}^n = \mathcal{M}_{[U^{n+1}]}+g^n\)</span>. Or <span class="math inline">\((I-\Pi)(v\partial_x \tilde{f}^n)\)</span> appartient au noyau de <span class="math inline">\(\Pi\)</span>, par propriété de l’opérateur de projection. Nous obtenons donc :</p>
 <p><span class="math display">\[
   \Pi(g^{n+1}) = 0
 \]</span></p>
@@ -1698,7 +1695,7 @@ où <span class="math inline">\(p=2e-\rho u^2\)</span> est la pression.</li>
 D’où la propriété suivante :</p>
 <p>La variable d’entrée de simulation <span class="math inline">\(g^0_{i,k}\)</span> doit donc être initialisée de telle sorte à garantir cette propriété. Dans nos cas tests nous connaissons systématiquement la fonction <span class="math inline">\(f^0_{i,k}\)</span>, il suffit alors d’initialiser <span class="math inline">\(g^0_{i,k}\)</span> à :</p>
 <p><span class="math display">\[
-  g^0_{i,k} = f^0_{i,k} - (\mathcal{M}_{[U^0]})_{i,k}
+  g^0_{i,k} = (I-\Pi)(f_{i,k}^0) 
 \]</span></p>
 <h2 id="approximation-du-modèle-micro-macro-avec-htx">Approximation du modèle <em>micro-macro</em> avec <span class="math inline">\(h(t,x)\)</span></h2>
 <p>Dans cette partie, nous fixons la dimension du problème à <span class="math inline">\(d=1\)</span>, en effet l’approche que nous avons pu avoir par la suite sur la fonction <span class="math inline">\(h(t,x)\)</span> ne se généralise pas directement aux cas <span class="math inline">\(d=2,3\)</span>, mais fera l’objet d’une étude future.</p>
@@ -1709,30 +1706,31 @@ D’où la propriété suivante :</p>
     &amp; \left. - h_i^n(I-\Pi)\left( \frac{\Delta t}{\Delta x}v_k( (\mathcal{M}_{[U^{n+1}]})_{i+\frac{1}{2},k} - (\mathcal{M}_{[U^{n+1}]})_{i-\frac{1}{2},k})\right) \right. \\
     &amp; \left. \vphantom{\frac{\Delta}{\Delta}} + \frac{g_{i,k}^n}{h_i^n} \frac{h_i^{n+1}-h_i^n}{\Delta t} \right]
   \end{aligned}
-\]</span><a href="#5.2" id="5.2" class="eq"></a></p>
+\]</span><a href="#5.3" id="5.3" class="eq"></a></p>
 <p>où <span class="math inline">\(h_i^n\)</span> est une approximation de <span class="math inline">\(h(t^n,x_i)\)</span></p>
-<p>L’approche proposée dans <span class="citation" data-cites="dimarco">[2]</span> est de calculer la fonction <span class="math inline">\(h(t,x)\)</span> à partir du moment de la fonction <span class="math inline">\(g\)</span>, c’est-à-dire à partir de <span class="math inline">\(\langle m_k g_{i,k}^n\rangle_v\)</span>. Cette méthode de calcul de la fonction <span class="math inline">\(h\)</span> nécessite le parcours de l’ensemble du domaine à l’itération <span class="math inline">\(t^n\)</span> ; une approche similaire est utilisée dans <span class="citation" data-cites="filbet">[3]</span> avec le calcul des cellules du milieu hydrodynamique ou cinétique en fonction d’un critère évalué à chaque itération. Cette méthode fonctionne très bien en théorie mais ne permet pas de réduire le temps de calcul en ne parcourant, à l’itération <span class="math inline">\(t^n\)</span>, que le support de <span class="math inline">\(h(t^n,\cdot)\)</span>. Nous avons opté ici pour une technique nécessitant une connaissance en amont des zones de chocs et du parcours de l’onde de choc, c’est-à-dire une connaissance <em>a priori</em> de <span class="math inline">\(\Omega_K(t)\)</span>.</p>
-<p>Dans un premier temps, pour étudier la dynamique et les conséquences d’une fonction indicatrice nous nous sommes restreints à une fonction <span class="math inline">\(h\)</span> constante au cours du temps, et avons testé différents profils : fonction porte ou trapézoïdale. Cela a permis de mettre au point la résolution de la partie <em>micro</em> uniquement sur le sous-domaine <span class="math inline">\(\Omega_K\)</span>. Algorithmiquement cela se traduit par l’introduction de deux variables <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> (<span class="math inline">\(s\)</span> pour <em>start</em> et <span class="math inline">\(e\)</span> pour <em>end</em>) telles que :</p>
+<p>L’approche proposée dans <span class="citation" data-cites="dimarco">[2]</span> consiste à calculer la fonction <span class="math inline">\(h(t,x)\)</span> à partir du moment de la fonction <span class="math inline">\(g\)</span>, c’est-à-dire à partir de <span class="math inline">\(\langle m_k g_{i,k}^n\rangle_v\)</span>. Cette méthode de calcul de la fonction <span class="math inline">\(h\)</span> nécessite le parcours de l’ensemble du domaine à l’itération <span class="math inline">\(t^n\)</span> ; une approche similaire est utilisée dans <span class="citation" data-cites="filbet">[3]</span> où un critère (évalué à chaque itération) permet d’identifier les régions fluides et cinétiques. L’évaluation systématique d’un critère est potentiellement coûteux en temps de calcul, mais permet de réduire globalement le temps de simulation par rapport à une simulation directe du modèle cinétique, contrairement à l’approche décrite dans <span class="citation" data-cites="dimarco">[2]</span>. L’approche par cellules nécessite des arangements dans les schémas pour l’évaluation des dérivées à la jonction entre deux modèles. Nous avons opté ici pour une technique nécessitant une connaissance en amont des zones de chocs et du parcours de l’onde de choc, c’est-à-dire une connaissance <em>a priori</em> de <span class="math inline">\(\Omega_K(t)\)</span>. On peut généraliser et automatiser avec un critère comme dans <span class="citation" data-cites="dimarco">[2]</span> ou <span class="citation" data-cites="filbet">[3]</span>.</p>
+<p>Dans un premier temps, pour étudier la dynamique et l’influence d’une fonction de transition nous nous sommes restreints à une fonction <span class="math inline">\(h\)</span> constante au cours du temps, et avons testé différents profils : fonction porte ou trapézoïdale. Cela a permis de mettre au point la résolution de la partie <em>micro</em> uniquement sur le sous-domaine <span class="math inline">\(\Omega_K\)</span>. Algorithmiquement cela se traduit par l’introduction de deux variables <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> (<span class="math inline">\(s\)</span> pour <em>start</em> et <span class="math inline">\(e\)</span> pour <em>end</em>) telles que :</p>
 <p><span class="math display">\[
   \Omega_K \subset [x_s,x_e]
 \]</span></p>
-<p>Nous définissons 2 indices <span class="math inline">\(i_s\)</span> et <span class="math inline">\(i_e\)</span> tels que <span class="math inline">\(x_s = i_s\Delta x\)</span> et <span class="math inline">\(x_e = i_e \Delta x\)</span>. Le schéma sur <span class="math inline">\(g\)</span> se définit comme :</p>
+<p>Nous définissons 2 indices <span class="math inline">\(i_s\)</span> et <span class="math inline">\(i_e\)</span> tels que <span class="math inline">\(x_s = i_s\Delta x\)</span> et <span class="math inline">\(x_e = i_e \Delta x\)</span>, l’inconnue <em>micro</em> <span class="math inline">\(g\)</span> vérifie alors :</p>
 <p><span class="math display">\[
   g_{i,k}^n \gets \begin{cases}
     \hat{g}_{i,k}^n  &amp; \text{si } i\in [\![ i_s , i_e  ]\!] \\
     0                &amp; \text{sinon}
   \end{cases}
 \]</span></p>
-<p>où <span class="math inline">\(\hat{g}_{i,k}^n\)</span> est la grandeur calculée par (<a href="#5.2" class="aeq">5.2</a>). Une fois cette technique mise au point il a suffi de trouver, de manière empirique, deux fonctions <span class="math inline">\(x_s:t\mapsto x_s(t)\)</span> et <span class="math inline">\(x_e:t\mapsto x_e(t)\)</span> s’adaptant correctement aux conditions initiales simulées.</p>
+<p>où <span class="math inline">\(\hat{g}_{i,k}^n\)</span> est la grandeur calculée par (<a href="#5.3" class="aeq">5.3</a>). Une fois cette technique mise au point il a suffi de trouver, de manière empirique, deux fonctions <span class="math inline">\(x_s:t\mapsto x_s(t)\)</span> et <span class="math inline">\(x_e:t\mapsto x_e(t)\)</span> s’adaptant correctement à la dynamique simulée. Ainsi, l’introduction de la fonction <span class="math inline">\(h\)</span> permet de ne parcourir que les points de la grille spatiale compris entre <span class="math inline">\(x_{i_s}\)</span> et <span class="math inline">\(x_{i_e}\)</span>.</p>
 <h3 id="h-une-fonction-porte"><span class="math inline">\(h\)</span> une fonction porte</h3>
-<p>Dans un premier temps nous allons considérer une fonction <span class="math inline">\(h\)</span> continument dérivable mais dont les variations s’effectuent sur un intervalle de longueur inférieure à <span class="math inline">\(\Delta x\)</span>, <span class="math inline">\(h\)</span> se résume donc à une fonction porte :</p>
+<p>Dans un premier temps nous allons considérer une fonction <span class="math inline">\(h\)</span> constante en temps mais dont les variations spatiales s’effectuent sur un intervalle de longueur inférieure à <span class="math inline">\(\Delta x\)</span>, <span class="math inline">\(h\)</span> se résume donc à une fonction porte :</p>
 <p><span class="math display">\[
   h_i = h(x_i) = \begin{cases}
     0 &amp;  \textrm{, si}\ x_i &lt; x_s \\
     1 &amp;  \textrm{, si}\ x_s \leq x_i \leq x_e \\
     0 &amp;  \textrm{, si}\ x_i &gt; x_e \\
     \end{cases}
-\]</span><a href="#5.3" id="5.3" class="eq"></a></p>
+\]</span><a href="#5.4" id="5.4" class="eq"></a></p>
+<p>représentée sur la figure 5.1.</p>
 <figure>
 <img src="img/h_gate.png" alt="Représentation de h(x) avec les notations x_s, x_e" /><figcaption>Représentation de <span class="math inline">\(h(x)\)</span> avec les notations <span class="math inline">\(x_s\)</span>, <span class="math inline">\(x_e\)</span></figcaption>
 </figure>
@@ -1748,6 +1746,7 @@ D’où la propriété suivante :</p>
     0                                               &amp; \textrm{, si\ } x_e     &lt; x_i           \\
   \end{cases}
 \]</span></p>
+<p>et est représentée sur la figure 5.2.</p>
 <figure>
 <img src="img/h_trap.png" alt="Représentation de h(x) avec les notations x_s, x_e, x_s^*, x_e^* et \delta x" /><figcaption>Représentation de <span class="math inline">\(h(x)\)</span> avec les notations <span class="math inline">\(x_s\)</span>, <span class="math inline">\(x_e\)</span>, <span class="math inline">\(x_s^*\)</span>, <span class="math inline">\(x_e^*\)</span> et <span class="math inline">\(\delta x\)</span></figcaption>
 </figure>
@@ -1755,22 +1754,21 @@ D’où la propriété suivante :</p>
 <p><span class="math display">\[
   x_s^* = x_s + \delta x \qquad x_e^* = x_e - \delta x
 \]</span></p>
-<p>On obtient ainsi dans les cas extrêmes une fonction porte pour <span class="math inline">\(\delta x = 0\)</span> ou une fonction chapeau pour <span class="math inline">\(\delta x = \frac{x_e-x_s}{2}\)</span>.</p>
+<p>On obtient ainsi une fonction porte pour <span class="math inline">\(\delta x = 0\)</span> ou une fonction chapeau pour <span class="math inline">\(\delta x = \frac{x_e-x_s}{2}\)</span>.</p>
 <h3 id="htx-une-fonction-dépendant-du-temps"><span class="math inline">\(h(t,x)\)</span> une fonction dépendant du temps</h3>
-<p>Maintenant essayons de faire évoluer <span class="math inline">\(h\)</span> en fonction du temps. Comme nous l’avons écrit précédemment il est possible d’utiliser la troisième composante du flux cinétique de <span class="math inline">\(g\)</span>, comme dans <span class="citation" data-cites="dimarco">[2]</span>. Ceci implique de calculer <span class="math inline">\(g\)</span> en tout point de l’espace, ce que l’introduction de la fonction <span class="math inline">\(h\)</span> nous permet en principe d’éviter. En effet, l’introduction de la fonction <span class="math inline">\(h\)</span> permet, dans la partie <em>micro</em>, plus coûteuse en temps de calcul que la partie <em>macro</em>, de ne parcourir l’espace qu’entre les valeurs <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span>.</p>
-<p>Une autre méthode utilisée dans <span class="citation" data-cites="filbet">[3]</span>, est de déterminer dans chaque cellule spatiale, à chaque itération, le modèle prédominant entre fluide et cinétique. Cela demande de l’évaluation systématique d’un critère, potentiellement coûteux en temps de calcul, pour éventuellement échanger le modèle prédominant dans chaque cellule. L’inconvénient de ce type d’approche est le calcul de dérivées à la jonction entre deux modèles. Le nombre restreint de cellules où le modèle cinétique est effectivement évalué permet en principe de réduire globalement le temps de simulation.</p>
-<p>À l’inverse des approches présentées dans <span class="citation" data-cites="dimarco">[2]</span> et <span class="citation" data-cites="filbet">[3]</span>, nous avons besoin d’une connaissance amont du problème. Pour ce faire nous allons étudier la troisième composante du flux cinétique de <span class="math inline">\(g\)</span> dans sa globalité, sans fonction <span class="math inline">\(h\)</span>, seule composante non nulle du flux cinétique en théorie par la définition de <span class="math inline">\(g\)</span> comme étant à moyenne nulle en <span class="math inline">\(v\)</span>. Au niveau discret, la troisième composante du flux cinétique de <span class="math inline">\(g\)</span> au temps final <span class="math inline">\(T_f = N\Delta t\)</span> est calculée par :</p>
+<p>Maintenant essayons de faire évoluer <span class="math inline">\(h\)</span> en fonction du temps. Comme nous l’avons écrit précédemment il est possible d’utiliser la troisième composante du flux cinétique de <span class="math inline">\(g\)</span> pour construire <span class="math inline">\(h(t,x)\)</span>, comme dans <span class="citation" data-cites="dimarco">[2]</span>. Ceci implique de calculer <span class="math inline">\(g\)</span> en tout point de l’espace, ce que l’introduction de la fonction <span class="math inline">\(h\)</span> nous permet en principe d’éviter. En effet, l’introduction de la fonction <span class="math inline">\(h\)</span> permet, dans la partie <em>micro</em>, plus coûteuse en temps de calcul que la partie <em>macro</em>, de ne parcourir l’espace qu’entre les valeurs <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span>.</p>
+<p>À l’inverse des approches présentées dans <span class="citation" data-cites="dimarco">[2]</span> et <span class="citation" data-cites="filbet">[3]</span>, nous avons besoin ici d’une connaissance amont du problème. Pour ce faire nous allons étudier la troisième composante du flux cinétique de <span class="math inline">\(g\)</span>, sans fonction <span class="math inline">\(h\)</span>. Au niveau discret, la troisième composante du flux cinétique de <span class="math inline">\(g\)</span> au temps final <span class="math inline">\(T_f = N\Delta t\)</span> est calculée par :</p>
 <p><span class="math display">\[
   \sum_k v_k^3 g_{i,k}^N\Delta v
-\]</span></p>
-<p>Une première simulation sur un tube de Sod (test décrit en section <a href="#condition-aux-bords-de-neumann">5.4.2</a>) a été effecutée pour estimer le support de <span class="math inline">\(g\)</span> en fin de simulation. Ce test est fait sur un domaine <span class="math inline">\(\Omega=[0,1]\)</span> avec des conditions aux bords de Neumann, jusqu’au temps final <span class="math inline">\(T_f=0.067\)</span>, avec la condition initiale :</p>
+\]</span><a href="#5.5" id="5.5" class="eq"></a></p>
+<p>Une première simulation sur un tube de Sod (test décrit en section <a href="#condition-aux-bords-de-neumann">5.4.2</a>) a été effectuée pour estimer le support de <span class="math inline">\(g\)</span> en espace en fin de simulation. Ce test est fait sur un domaine <span class="math inline">\(\Omega=[0,1]\)</span> avec des conditions aux bords de Neumann, jusqu’au temps final <span class="math inline">\(T_f=0.067\)</span>, avec la condition initiale :</p>
 <p><span class="math display">\[
   U(t=0,x) = \begin{cases}
-    U_L = (\rho_L,u_L,T_L) = (1,0,1) \quad &amp;amp; , x \leq \frac{1}{2} \\
-    U_R = (\rho_R,u_R,T_R) = (0.125,0,0.8) &amp;amp; , x &amp;gt; \frac{1}{2}
+    U_L = (\rho_L,u_L,T_L) = (1,0,1)       &amp; , x \leq \frac{1}{2} \\
+    U_R = (\rho_R,u_R,T_R) = (0.125,0,0.8) &amp; , x &gt;    \frac{1}{2}
   \end{cases}
 \]</span></p>
-<p>Le flux cinétique de <span class="math inline">\(g\)</span> (respectivement le logarithme de ce flux) est représenté en figure 5.3(a) (respectivement en figure 5.3(b)).</p>
+<p>Le flux cinétique (<a href="#5.5" class="aeq">5.5</a>) (respectivement le logarithme de ce flux) est représenté en figure 5.3(a) (respectivement en figure 5.3(b)).</p>
 <div>
 <figure>
 <img src="img/mimas_test/h_t/fluxg.png" alt="Flux numérique de g" /><figcaption>Flux numérique de <span class="math inline">\(g\)</span></figcaption>
@@ -1780,21 +1778,26 @@ D’où la propriété suivante :</p>
 </figure>
 <p>Visualisation de la troisième composante du flux cinétique de <span class="math inline">\(g\)</span> en fin de simulation</p>
 </div>
-<p>Contrairement à ce qui était attendu le flux ne diminue pas suffisamment pour le contraindre dans une région. Le seuil que nous allons utiliser est <span class="math inline">\(10^{-15}\)</span>, ce qui peut correspondre à la sortie du bruit numérique de la précision du zéro machine ; un seuil plus petit, aux alentours de <span class="math inline">\(10^{-17}\)</span> est envisageable mais se fait au détriment du temps de calcul. Le seuil plus fréquent en mécanique des fluides est <span class="math inline">\(10^{-5}\)</span>, seuil lié à la précision possible des mesures et du bruit dû aux turbulences.</p>
+<p>Contrairement à ce qui était attendu le flux ne diminue pas suffisamment pour le contraindre dans une région. Le seuil que nous allons utiliser est <span class="math inline">\(10^{-15}\)</span>, ce qui peut correspondre à la sortie du bruit numérique de la précision du zéro machine ; un seuil plus petit, aux alentours de <span class="math inline">\(10^{-17}\)</span> est envisageable mais se fait au détriment du temps de calcul. Un seuil acceptable et qui sera utilisé par la suite est <span class="math inline">\(10^{-5}\)</span>, seuil lié à la précision possible des mesures et du bruit dû aux turbulences.</p>
+<p>Nous définissons l’ensemble <span class="math inline">\(\mathscr{I}^n\)</span> défini par :</p>
+<p><span class="math display">\[
+  \mathscr{I}^n = \left\{ i\in [\![ 0 , N_x ]\!] , \left| \sum_k v_k^3 g_{i,k}^n \Delta v  \right| &gt; 10^{-5} \right\}
+\]</span></p>
+<p>où <span class="math inline">\(N_x\)</span> correspond à la taille de la grille en espace. Cette ensemble, non nécessairement connexe, rassemble tous les indices <span class="math inline">\(i\)</span> où le flux cinétique de <span class="math inline">\(g\)</span> au temps <span class="math inline">\(t^n\)</span> dépasse une valeur seuil, ici fixé à <span class="math inline">\(10^{-5}\)</span>. Nous considérons maintenant <span class="math inline">\(i_s^n = \min \mathscr{I}^n\)</span> et <span class="math inline">\(i_e^n = \max \mathscr{I}^n\)</span>, ce qui nous permet de définir l’intervalle <span class="math inline">\([\![ i_s^n , i_e^n ]\!]\)</span>. Nous définissons ainsi les deux points de l’espace <span class="math inline">\(x_s^n = i_s^n \Delta x\)</span> et <span class="math inline">\(x_e^n = i_e^n \Delta x\)</span>.</p>
 <figure>
-<img src="img/mimas_test/h_t/xsxe.png" alt="Évolution de x_s et x_e au cours du temps" /><figcaption>Évolution de <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> au cours du temps</figcaption>
+<img src="img/mimas_test/h_t/xsxe.png" alt="Évolution de x_s et x_e au cours du temps avec un seuil de 10^{-15}" /><figcaption>Évolution de <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> au cours du temps avec un seuil de <span class="math inline">\(10^{-15}\)</span></figcaption>
 </figure>
-<p>Sur la figure 5.4, <span class="math inline">\(x_s\)</span> correspond au premier dépassement du seuil, et <span class="math inline">\(x_e\)</span> au dernier ; sont aussi représentées les valeurs de <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> précédemment choisies dans le cas d’une fonction porte.</p>
-<p>Nous souhaitons que <span class="math inline">\(h(t,x)\)</span> enveloppe la zone où <span class="math inline">\(\langle v_k^3g_{i,k}^n\rangle_v &gt; 10^{-15}\)</span>, pour cela nous considérons deux fonctions <span class="math inline">\(x_s^n\)</span> et <span class="math inline">\(x_e^n\)</span> donnant au cours du temps le domaine cinétique. Cette démarche ne fonctionne pas telle quelle pour un système périodique, puisque la résolution du modèle s’effectue sur l’intervalle <span class="math inline">\([x_s,x_e]\)</span> avec <span class="math inline">\(x_s &lt; x_e\)</span>. Des conditions aux bords périodiques n’assurent pas la condition <span class="math inline">\(x_s &lt; x_e\)</span> ce qui pose problème pour les indices de parcours lors de l’implémentation. C’est pour cela que nous sommes restés avec des conditions aux bords de Neumann. L’approche dans <span class="citation" data-cites="filbet">[3]</span> ne permet pas de diminuer la taille du domaine à parcourir au cours du temps ; en revanche elle propose, dans le cas d’une solution régulière, d’avoir un libre parcours moyen dépendant de <span class="math inline">\(x\)</span>, cela permet d’effectuer une transition plus douce entre un modèle cinétique et fluide.</p>
+<p>Sur la figure 5.4, <span class="math inline">\(x_s\)</span> correspond au premier dépassement du seuil de <span class="math inline">\(10^{-15}\)</span>, et <span class="math inline">\(x_e\)</span> au dernier ; sont aussi représentées les valeurs de <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> précédemment choisies dans le cas d’une fonction porte.</p>
+<p>Nous souhaitons que <span class="math inline">\(h(t,x)\)</span> enveloppe la zone où <span class="math inline">\(\langle v_k^3g_{i,k}^n\rangle_v &gt; 10^{-5}\)</span>, pour cela nous considérons deux fonctions <span class="math inline">\(x_s^n\)</span> et <span class="math inline">\(x_e^n\)</span> donnant au cours du temps le domaine cinétique. Cette démarche ne fonctionne pas telle quelle pour un système périodique, puisque la résolution du modèle s’effectue sur l’intervalle <span class="math inline">\([x_s,x_e]\)</span> avec <span class="math inline">\(x_s &lt; x_e\)</span>. Des conditions aux bords périodiques n’assurent pas la condition <span class="math inline">\(x_s &lt; x_e\)</span> ce qui pose des problèmes techniques pour les indices de parcours lors de l’implémentation. C’est pour cela que nous sommes restés avec des conditions aux bords de Neumann. Une implémentation efficace du cas d’intervalles disjoints est en cours de développement.</p>
 <h2 id="tests-numériques-dans-le-cas-de-gaz-raréfiés">Tests numériques dans le cas de gaz raréfiés</h2>
-<p>Dans cette section, nous allons présenter différents résultats numériques et comparer les performances du modèle <em>micro-macro</em>, dans le contexte d’un gaz raréfié c’est-à-dire en l’absence de champ électrique <span class="math inline">\(E\)</span> et dans un régime proche d’un fluide <span class="math inline">\(\varepsilon \to 0\)</span>. Plusieurs cas tests de la littérature ont été utilisés pour démontrer la versatilité de la modélisation.</p>
+<p>Dans cette section, nous allons présenter différents résultats numériques et comparer les performances du modèle <em>micro-macro</em>, dans le contexte d’un gaz raréfié c’est-à-dire en l’absence de champ électrique <span class="math inline">\(E\)</span> et dans un régime où <span class="math inline">\(\varepsilon \ll 1\)</span> pour pouvoir comparer les résultats à ceux obtenus par la résolution des équations d’Euler. Plusieurs cas tests de la littérature ont été utilisés pour démontrer la versatilité de la modélisation.</p>
 <h3 id="conditions-aux-bords-périodiques">Conditions aux bords périodiques</h3>
-<p>Le premier cas test que nous considérons est un domaine <span class="math inline">\(\Omega\)</span> périodique avec pour condition initiale la fonction de densité suivante :</p>
+<p>Le premier cas test que nous considérons est un domaine spatial <span class="math inline">\(\Omega\)</span> périodique avec pour condition initiale la fonction suivante :</p>
 <p><span class="math display">\[
   f(t=0,x,v) = \frac{1}{\sqrt{2\pi}}(1 + \alpha\cos(k_x x))\text{e}^{-\frac{|v|^2}{2}}
-\]</span><a href="#5.4" id="5.4" class="eq"></a></p>
-<p>avec les paramètres <span class="math inline">\(\alpha\)</span> et <span class="math inline">\(k_x=0.5\)</span> représentant respectivement la perturbation initiale et le nombre d’onde. Le domaine <span class="math inline">\(\Omega\)</span> est défini par <span class="math inline">\(\Omega = [0,\frac{2\pi}{k_x}]\)</span> pour assurer une période en <span class="math inline">\(x\)</span> de la condition initiale. La condition périodique se traduit par <span class="math inline">\(f(t,0,v)=f(t,\frac{2\pi}{k_x},v)\)</span> à tout instant <span class="math inline">\(t\)</span> pour tout <span class="math inline">\(v\)</span>. Le domaine en <span class="math inline">\(v\)</span> est en théorie infini, numériquement il sera borné et inclu dans l’intervalle <span class="math inline">\([-v_{\text{max}},v_{\text{max}}]\)</span>, avec <span class="math inline">\(v_{\text{max}}\)</span> pris suffisament grand pour que <span class="math inline">\(f(t,x,v_{\text{max}})\approx 0\)</span>.</p>
-<p>Nous allons comparer les résultats avec un code de simulation des équations d’Euler qui servira de référence. Il est donc nécessaire de traduire la condition (<a href="#5.4" class="aeq">5.4</a>) dans le domaine macroscopique :</p>
+\]</span><a href="#5.6" id="5.6" class="eq"></a></p>
+<p>avec les paramètres <span class="math inline">\(\alpha\)</span> et <span class="math inline">\(k_x=0.5\)</span> représentant respectivement la perturbation initiale et le nombre d’onde. Le domaine <span class="math inline">\(\Omega\)</span> est défini par <span class="math inline">\(\Omega = [0,\frac{2\pi}{k_x}]\)</span> pour assurer une période en <span class="math inline">\(x\)</span> de la condition initiale. La condition périodique se traduit par <span class="math inline">\(f(t,0,v)=f(t,\frac{2\pi}{k_x},v)\)</span> à tout instant <span class="math inline">\(t\)</span> pour tout <span class="math inline">\(v\)</span>. Le domaine en <span class="math inline">\(v\)</span> est en théorie infini, numériquement il sera borné et inclu dans l’intervalle <span class="math inline">\([-v_{\text{max}},v_{\text{max}}]\)</span>, avec <span class="math inline">\(v_{\text{max}}\)</span> pris suffisamment grand pour que <span class="math inline">\(f(t,x,v_{\text{max}})\approx 0\)</span>.</p>
+<p>Nous allons comparer les résultats avec un code de simulation des équations d’Euler. Il est donc nécessaire de traduire la condition (<a href="#5.6" class="aeq">5.6</a>) dans le domaine macroscopique pour définir les conditions initiales fluides :</p>
 <p><span class="math display">\[
   U(t=0,x) = \begin{pmatrix} 1+\alpha\cos(k_x x) \\ 0 \\ 1+\alpha\cos(k_x x) \end{pmatrix}
 \]</span></p>
@@ -1809,49 +1812,49 @@ D’où la propriété suivante :</p>
 <li>Nombre de Knudsen <span class="math inline">\(\varepsilon = 10^{-4}\)</span></li>
 <li>Pas de temps <span class="math inline">\(\Delta t = \frac{1}{2}\frac{\Delta x}{v_{\text{max}}}\)</span></li>
 </ul>
-<p>Conformément au calcul de condition CFL effectué en section <a href="#calcul-de-la-condition-cfl">4.3.1</a>, nous n’avons pas de contrainte numérique sur le pas de temps <span class="math inline">\(\Delta t\)</span>, puisque nous nous plaçons en régime fluide. Le schéma WENO, instable avec un schéma en temps Euler explicite oblige à conserver un pas de temps relativement faible.</p>
-<p>Sur la figure 5.5 on observe un bon accord entre la modélisation par les équations d’Euler et le modèle cinétique avec <span class="math inline">\(\varepsilon = 10^{-4}\ll 1\)</span>, ce qui est conforme avec la théorie. Le schéma en espace du modèle cinétique est un simple schéma <em>up-wind</em> d’ordre 1, on remarque une difficulté du schéma à capturer les régions de forts gradients.</p>
+<p>Conformément au calcul de condition CFL effectué en section <a href="#calcul-de-la-condition-cfl">4.3.1</a>, nous n’avons pas de contrainte numérique liée à <span class="math inline">\(\varepsilon\)</span> sur le pas de temps <span class="math inline">\(\Delta t\)</span>, lorsqu’un schéma <em>upwind</em> ou compact est considéré. Le schéma WENO, instable avec un schéma en temps Euler explicite oblige à conserver un pas de temps relativement faible.</p>
+<p>Sur la figure 5.5 on observe un bon accord entre la modélisation par les équations d’Euler et le modèle cinétique avec <span class="math inline">\(\varepsilon = 10^{-4}\ll 1\)</span>, ce qui est conforme avec la théorie. Le schéma en espace du modèle cinétique est un schéma <em>upwind</em> d’ordre 1 ; on remarque que ce schéma capture assez mal les forts gradients générés par la solution.</p>
 <div>
 <figure>
-<img src="img/periodique/per_1_rho.png" alt="Densité finale \rho_i en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_1_rho.png" alt="Densité finale \rho en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/periodique/per_1_u.png" alt="Vitesse moyenne finale u_i en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_1_u.png" alt="Vitesse moyenne finale u en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/periodique/per_1_T.png" alt="Température finale T_i en fonction de x" /><figcaption>Température finale <span class="math inline">\(T_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_1_T.png" alt="Température finale T en fonction de x" /><figcaption>Température finale <span class="math inline">\(T\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <p>Comparaison entre la modélisation par les équations d’Euler et le modèle cinétique sur un cas de conditions aux bords périodiques.</p>
 </div>
-<p>Nous testons sur ce même exemple les deux schémas d’ordre élevé présentés. Le schéma compact présente une assymétrie que nous n’avons pas réussi à analyser, cela semble provenir d’une erreur d’implémentation mais la source exacte du problème n’a pas été identifiée. Le schéma compact, schéma d’ordre élevé, fait apparaître des oscillations dans les discontinuités, ce phénomène est visible dans les discontinuités de la vitesse. Le schéma WENO répond parfaitement à nos attentes en reproduisant les mêmes phénomènes que la simulation avec les équations d’Euler. Les indicateur de continuités <span class="math inline">\(\beta^{\pm}_i\)</span> du schéma WENO permettent de limiter l’apparition de ces oscillations.</p>
+<p>Nous testons sur ce même exemple les deux schémas d’ordre élevé présentés et présentons les résultats sur la figure 5.6. Le schéma compact présente une asymétrie que nous n’avons pas réussi à analyser, cela semble provenir d’une erreur d’implémentation mais la source exacte du problème n’a pas été identifiée. Le schéma compact, schéma d’ordre élevé, fait apparaître des oscillations dans les discontinuités, ce phénomène est visible dans les discontinuités de la vitesse. Le schéma WENO répond parfaitement à nos attentes en reproduisant les mêmes phénomènes que la simulation avec les équations d’Euler. Les indicateurs de continuités <span class="math inline">\(\beta^{\pm}_i\)</span> du schéma WENO permettent de limiter l’apparition de ces oscillations.</p>
 <div>
 <figure>
-<img src="img/periodique/per_2_rho.png" alt="Densité finale \rho_i en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_2_rho.png" alt="Densité finale \rho en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/periodique/per_2_u.png" alt="Vitesse moyenne finale u_i en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_2_u.png" alt="Vitesse moyenne finale u en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/periodique/per_2_T.png" alt="Température finale T_i en fonction de x" /><figcaption>Température finale <span class="math inline">\(T_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_2_T.png" alt="Température finale T en fonction de x" /><figcaption>Température finale <span class="math inline">\(T\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <p>Comparaison entre différents schémas du même problème aux conditions aux bords périodiques.</p>
 </div>
-<p>Cette étude a pour but de valider le modèle <em>micro-macro</em>, c’est ce que nous faisons. Maintenant que le schéma WENO a été validé, nous nous intéressons à la comparaison entre les résultats du code de simulation cinétique et le <em>micro-macro</em>. La modélisation <em>micro-macro</em> est bien parfaitement équivalente à la modélisation cinétique. Les petites différences dans les régions de fortes variations sont dû à la partie <em>macro</em> du modèle <em>micro-macro</em>, d’ordre plus faible.</p>
+<p>Cette étude a pour but de valider le modèle <em>micro-macro</em>. Nous nous intéressons donc à la comparaison entre les résultats du code de simulation cinétique et <em>micro-macro</em>. Sur les figures 5.7, on observe un très bon accord entre les résultats obtenus avec les 2 codes. Les petites différences dans les régions de fortes variations sont dues à la partie <em>macro</em> du modèle <em>micro-macro</em>, d’ordre plus faible.</p>
 <div>
 <figure>
-<img src="img/periodique/per_3_rho.png" alt="Densité finale \rho_i en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_3_rho.png" alt="Densité finale \rho en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/periodique/per_3_u.png" alt="Vitesse moyenne finale u_i en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_3_u.png" alt="Vitesse moyenne finale u en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/periodique/per_3_T.png" alt="Température finale T_i en fonction de x" /><figcaption>Température finale <span class="math inline">\(T_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/periodique/per_3_T.png" alt="Température finale T en fonction de x" /><figcaption>Température finale <span class="math inline">\(T\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <p>Comparaison entre le modèle cinétique et <em>micro-macro</em> sur le problème aux conditions aux bords périodiques.</p>
 </div>
 <h3 id="conditions-aux-bords-de-neumann">Conditions aux bords de Neumann</h3>
-<p>Le second cas test abondant dans la littérature est le tube à choc de Sod (<span class="citation" data-cites="leveque">[17]</span>). La condition initiale est une fonction discontinue, le temps de simulation est suffisamment court pour ne pas étudier le contact de l’onde de choc sur les bords. Le tube est modélisé par un domaine <span class="math inline">\(\Omega = [0,1]\)</span>. Les conditions aux bords sont des conditions de Neumann, c’est-à-dire <span class="math inline">\(\partial_x f(t,0,v) = \partial_x f(t,1,v) = 0\)</span> à tout instant <span class="math inline">\(t\)</span> pour toute vitesse <span class="math inline">\(v\)</span>. Comme pour le cas test précédent, le domaine en <span class="math inline">\(v\)</span>, théoriquement égal à <span class="math inline">\(\mathbb{R}\)</span>, est numériquement restreint à l’intervalle <span class="math inline">\([-v_{\text{max}},v_{\text{max}}]\)</span>, avec <span class="math inline">\(v_{\text{max}}\)</span> pris suffisament grand, et avec des conditions aux bords périodiques.</p>
-<p>La simulation est initialisée par la condition initiale :</p>
+<p>Le second cas test abondant dans la littérature est le tube à choc de Sod (<span class="citation" data-cites="leveque">[17]</span>). La condition initiale est une fonction discontinue, le temps de simulation est suffisamment court pour éviter l’interaction de l’onde de choc avec les bords. Le tube est modélisé par un domaine <span class="math inline">\(\Omega = [0,1]\)</span>. Les conditions aux bords sont des conditions de Neumann, c’est-à-dire <span class="math inline">\(\partial_x f(t,0,v) = \partial_x f(t,1,v) = 0\)</span> à tout instant <span class="math inline">\(t\)</span> pour toute vitesse <span class="math inline">\(v\)</span>. Comme pour le cas test précédent, le domaine en <span class="math inline">\(v\)</span>, théoriquement égal à <span class="math inline">\(\mathbb{R}\)</span>, est numériquement restreint à l’intervalle <span class="math inline">\([-v_{\text{max}},v_{\text{max}}]\)</span>, avec <span class="math inline">\(v_{\text{max}}\)</span> pris suffisamment grand, et avec des conditions aux bords périodiques.</p>
+<p>La simulation est initialisée par la condition initiale suivante (<span class="citation" data-cites="leveque">[17]</span>) :</p>
 <p><span class="math display">\[
   U(t=0,x) = \begin{cases}
     U_L = (\rho_L,u_L,T_L) = (1,0,1) \quad &amp; , x \leq \frac{1}{2} \\
@@ -1860,7 +1863,7 @@ D’où la propriété suivante :</p>
 \]</span></p>
 <p>Pour initialiser la simulation du modèle cinétique ou la partie <em>micro</em> du modèle <em>micro-macro</em> nous utilisons la maxwellienne associée à cette condition initiale :</p>
 <p><span class="math display">\[
-  f(t=0,x,v) = \mathcal{M}_{[U(t=0,x)]}
+  f(t=0,x,v) = \mathcal{M}_{[U(t=0,x)]} \, g(t=0,x,v) = 0
 \]</span></p>
 <p>Les paramètres de simulations sont :</p>
 <ul>
@@ -1870,49 +1873,49 @@ D’où la propriété suivante :</p>
 <li>Grille de l’espace des phases <span class="math inline">\((x,v)\)</span> : <span class="math inline">\(1000 \times 64\)</span></li>
 <li>Nombre de Knudsen <span class="math inline">\(\varepsilon = 10^{-4}\)</span></li>
 </ul>
-<p>Le pas de temps <span class="math inline">\(\Delta t\)</span> peut de nouveau être choisi indépendamment de <span class="math inline">\(\varepsilon\)</span> conformément au calcul de la condition CFL.</p>
-<p>Nous procédons ici de manière équivalente au cas test précédent. Nous validons le modèle cinétique en le comparant aux équations d’Euler. La simulation cinétique est faite avec un schéma <em>up-wind</em> d’ordre faible, celui-ci nécessiterait donc un nombre de points beaucoup plus important pour réussir à capturer efficacement le choc simulé.</p>
+<p>Le pas de temps <span class="math inline">\(\Delta t\)</span> peut de nouveau être choisi indépendamment de <span class="math inline">\(\varepsilon\)</span> conformément au calcul de la condition CFL de la partie <a href="#calcul-de-la-condition-cfl">4.3.1</a>.</p>
+Nous procédons ici de manière équivalente au cas test précédent. Nous validons le modèle cinétique en le comparant aux équations d’Euler, dont nous montrons les résultats sur la figure 5.8. La simulation cinétique est faite avec un schéma <em>upwind</em> d’ordre faible. Comme précédemment, on observe la diffusion numérique du schéma <em>upwind</em> près des zones à fort gradients (<span class="math inline">\(x\equiv 0.4\)</span> et <span class="math inline">\(x\equiv 0.65\)</span>).
 <div>
 <figure>
-<img src="img/neumann/neu_1_rho.png" alt="Densité finale \rho_i en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_1_rho.png" alt="Densité finale \rho en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/neumann/neu_1_u.png" alt="Vitesse moyenne finale u_i en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_1_u.png" alt="Vitesse moyenne finale u en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/neumann/neu_1_T.png" alt="Température finale T_i en fonction de x" /><figcaption>Température finale <span class="math inline">\(T_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_1_T.png" alt="Température finale T en fonction de x" /><figcaption>Température finale <span class="math inline">\(T\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <p>Comparaison entre la modélisation avec les équations d’Euler et le modèle cinétique sur le problème du tube de Sod.</p>
 </div>
-<p>Nous testons maintenant différents schémas en espace sur le modèle cinétique. Les schémas d’ordre élevé (compact et WENO) capturent mieux les zones de forts gradients. Le schéma compact, provoque des oscillations à l’approche d’une discontinuité, ce constat est bien mis en évidence sur la vitesse moyenne où on observe une oscillation en amont et aval de la discontinuité (autour de <span class="math inline">\(x=0.65\)</span> sur la figure 5.6). Le schéma WENO est construit pour se prémunir de ce phénomène.</p>
+<p>Nous testons maintenant différents schémas en espace sur le modèle cinétique, résultats présentés sur la figure 5.9. Les schémas d’ordre élevé (compact et WENO) capturent mieux les zones de forts gradients. Le schéma compact, provoque des oscillations à l’approche d’une discontinuité, ce constat est bien mis en évidence sur la vitesse moyenne où on observe une oscillation en amont et aval de la discontinuité (autour de <span class="math inline">\(x=0.65\)</span> sur la figure 5.9). Le schéma WENO est construit pour se prémunir de ce phénomène.</p>
 <div>
 <figure>
-<img src="img/neumann/neu_2_rho.png" alt="Densité finale \rho_i en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_2_rho.png" alt="Densité finale \rho en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/neumann/neu_2_u.png" alt="Vitesse moyenne finale u_i en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_2_u.png" alt="Vitesse moyenne finale u en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/neumann/neu_2_T.png" alt="Température finale T_i en fonction de x" /><figcaption>Température finale <span class="math inline">\(T_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_2_T.png" alt="Température finale T en fonction de x" /><figcaption>Température finale <span class="math inline">\(T\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <p>Comparaison entre les schémas <em>up-wind</em>, compact et WENO avec une modélisation cinétique sur le problème du tube de Sod.</p>
 </div>
-<p>Nous pouvons maintenant tester le modèle <em>micro-macro</em> dans le cas du tube à choc de Sod. On remarque de faibles variations dûes à la partie <em>macro</em> qui épouse mieux les résultats observés avec notre code de simulation des équations d’Euler. Par exemple, sur la température, on remarque que le modèle <em>micro-macro</em> reproduit à la fois l’oscillation en début de crète, aussi présente sur les résultats du code de simulation des équations d’Euler, et l’oscillation en milieu de crète, présente sur le modèle cinétique.</p>
+<p>Nous pouvons maintenant tester le modèle <em>micro-macro</em> dans le cas du tube à choc de Sod, résultat que nous présentons sur la figure 5.10. On remarque de faibles différences dues à la partie <em>macro</em> qui reproduit des comportements déjà observés avec notre code de simulation des équations d’Euler. Par exemple, sur la température, on remarque que le modèle <em>micro-macro</em> reproduit à la fois l’oscillation en début de crête, aussi présente sur les résultats du code de simulation des équations d’Euler, et l’oscillation en milieu de crête, présente sur le modèle cinétique.</p>
 <div>
 <figure>
-<img src="img/neumann/neu_3_rho.png" alt="Densité finale \rho_i en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_3_rho.png" alt="Densité finale \rho en fonction de x" /><figcaption>Densité finale <span class="math inline">\(\rho\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/neumann/neu_3_u.png" alt="Vitesse moyenne finale u_i en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_3_u.png" alt="Vitesse moyenne finale u en fonction de x" /><figcaption>Vitesse moyenne finale <span class="math inline">\(u\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/neumann/neu_3_T.png" alt="Température finale T_i en fonction de x" /><figcaption>Température finale <span class="math inline">\(T_i\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/neumann/neu_3_T.png" alt="Température finale T en fonction de x" /><figcaption>Température finale <span class="math inline">\(T\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <p>Comparaison entre le modèle cinétique et <em>micro-macro</em> dans le cas test du tube de Sod.</p>
 </div>
 <p>Ce cas test, avec le précédent, met à l’épreuve la modélisation <em>micro-macro</em> ainsi que son implémentation avec un schéma d’ordre élevé WENO d’ordre 5. Nous validons ainsi le programme réalisé sur deux cas tests classiques.</p>
-<h3 id="fonction-indicatrice-h">Fonction indicatrice <span class="math inline">\(h\)</span></h3>
-<p>L’implémentation que nous avons pu faire de la fonction indicatrice <span class="math inline">\(h\)</span>, décrite dans la section <a href="#htx-une-fonction-dépendant-du-temps">5.3.3</a>, ne fonctionne pas dans le cas de conditions aux bords périodiques. Nous reprenons pour ces tests le cas du tube de Sod avec des conditions aux bords de Neumann. Plusieurs fonctions <span class="math inline">\(h\)</span> ont été testées, décrites dans la section <a href="#approximation-du-modèle-micro-macro-avec-htx">5.3</a>. La simulation est initialisée par la condition initiale :</p>
+<h3 id="fonction-de-transition-h">Fonction de transition <span class="math inline">\(h\)</span></h3>
+<p>Nous reprenons pour ces tests le cas du tube de Sod avec des conditions aux bords de Neumann. Plusieurs fonctions <span class="math inline">\(h\)</span> ont été testées, décrites dans la section <a href="#approximation-du-modèle-micro-macro-avec-htx">5.3</a>. La simulation est initialisée par la condition initiale :</p>
 <p><span class="math display">\[
   U(t=0,x) = \begin{cases}
     U_L = (\rho_L,u_L,T_L) = (1,0,1) \quad &amp; , x \leq \frac{1}{2} \\
@@ -1921,7 +1924,7 @@ D’où la propriété suivante :</p>
 \]</span></p>
 <p>Pour initialiser la simulation du modèle cinétique ou la partie <em>micro</em> du modèle <em>micro-macro</em> nous utilisons la maxwellienne de cette condition initiale :</p>
 <p><span class="math display">\[
-  f(t=0,x,v) = \mathcal{M}_{[U(t=0,x)]}
+  f(t=0,x,v) = \mathcal{M}_{[U(t=0,x)]} \, g(t=0,x,v) = 0
 \]</span></p>
 <p>Les paramètres de simulations sont :</p>
 <ul>
@@ -1931,12 +1934,12 @@ D’où la propriété suivante :</p>
 <li>Grille de l’espace des phases <span class="math inline">\((x,v)\)</span> : <span class="math inline">\(1000 \times 64\)</span></li>
 <li>Nombre de Knudsen <span class="math inline">\(\varepsilon = 1\)</span></li>
 </ul>
-<p>Les résultats précédents sont les résultats de simulation d’un fluide classique : <span class="math inline">\(\varepsilon \ll 1\)</span>, donc proche de son état d’équilibre thermodynamique (<span class="math inline">\(g\approx 0\)</span> sur tout le domaine <span class="math inline">\(\Omega\)</span>). Pour mettre en évidence l’approximation du modèle <em>micro-macro</em>, nous nous plaçons maintenant dans le contexte d’un gaz rarégiés : <span class="math inline">\(\varepsilon = 1\)</span>.</p>
-<p>L’approximation au niveau de l’inconnue <span class="math inline">\(g\)</span>, nous présenterons des résultats dans cette section sur la troisième composante de son flux en fin de simulation (<span class="math inline">\(t=T_f=N\Delta t\)</span>). En effet nous tracerons la quantité suivante :</p>
+<p>Les résultats précédents sont les résultats de simulation dans le régime fluide où le système est proche de son état d’équilibre thermodynamique : <span class="math inline">\(\varepsilon \ll 1\)</span> (<span class="math inline">\(g\approx 0\)</span> sur tout le domaine <span class="math inline">\(\Omega\)</span>). Pour mettre en évidence l’approximation du modèle <em>micro-macro</em> à l’aide de la fonction <span class="math inline">\(h\)</span>, nous nous plaçons maintenant dans le régime cinétique : <span class="math inline">\(\varepsilon = 1\)</span>.</p>
+<p>Nous tracerons la troisième composante du flux cinétique en fin de simulation (<span class="math inline">\(t=T_f=N\Delta t\)</span>), c’est-à-dire :</p>
 <p><span class="math display">\[
   \int_{\mathbb{R}} v^3 g(t=T_f,x,v)\,\mathrm{d}v \approx \sum_{k} v_k^3 g_{i,k}^N \Delta v
 \]</span></p>
-<p>grandeur sur laquelle les erreurs dûes à l’approximation sont les plus visibles. Numériquement on vérifie bien que les deux premières composantes du flux sont nulles (oscillations d’amplitudes inférieur à <span class="math inline">\(10^{-14}\)</span>), c’est-à-dire :</p>
+<p>grandeur sur laquelle les erreurs dues à l’approximation sont les plus visibles. Numériquement on vérifie bien que les deux premières composantes du flux sont nulles (oscillations d’amplitudes inférieures à <span class="math inline">\(10^{-14}\)</span>), c’est-à-dire :</p>
 <p><span class="math display">\[
   \begin{aligned}
     \sum_k v_k   g_{i,k}^N &amp;\approx 0 \\
@@ -1945,53 +1948,49 @@ D’où la propriété suivante :</p>
 \]</span></p>
 <p>Cela permet de confirmer numériquement la propriété démontrée dans la sous-section <a href="#propriétés-du-schéma">5.2.4</a>.</p>
 <h4 id="h-une-fonction-porte-1"><span class="math inline">\(h\)</span> une fonction porte</h4>
-<p>Le premier exemple est une fonction porte définie en (<a href="#5.3" class="aeq">5.3</a>). Il s’agit plus d’un démonstrateur technique qu’un test intéressant numériquement. Il permet aussi d’étudier les limites de la méthode avec l’introduction d’une fonction porte trop <em>étroite</em> pour la simulation, c’est-à-dire, en réutilisant les notations de la section <a href="#approximation-du-modèle-micro-macro-avec-htx">5.3</a> :</p>
+<p>Le premier exemple est une fonction porte définie en (<a href="#5.4" class="aeq">5.4</a>). Il s’agit plus d’un démonstrateur technique qu’un test intéressant numériquement. Il permet aussi d’étudier les limites de la méthode avec l’introduction d’une fonction porte trop <em>étroite</em> pour la simulation, c’est-à-dire, en réutilisant les notations de la section <a href="#approximation-du-modèle-micro-macro-avec-htx">5.3</a> :</p>
 <p><span class="math display">\[
-  [x_s,x_e] \subset \Omega
+  [x_s,x_e] \subset \Omega_K
 \]</span></p>
-<p>Nous prenons ici pour une première simulation, une fonction porte relativement large : <span class="math inline">\(x_s = 0.27\)</span> et <span class="math inline">\(x_e = 0.73\)</span>. Nous constatons que ceci influe que très peu sur la valeur du flux de <span class="math inline">\(g\)</span>. Une fonction porte plus étroite : <span class="math inline">\(x_s = 0.32\)</span> et <span class="math inline">\(x_e = 0.68\)</span> implique des discontinuités dans le flux de <span class="math inline">\(g\)</span>, discontinuité pouvant entrainer des oscillations dans le cas de l’utilisation du schéma compact. Ceci est dû au fait que <span class="math inline">\(g\)</span> n’est pas nulle pour <span class="math inline">\(x \not\in [0.32,0.68]\)</span>.</p>
+<p>Nous considérons tout d’abord, une fonction porte relativement large (figure 5.11) : <span class="math inline">\(x_s = 0.27\)</span> et <span class="math inline">\(x_e = 0.73\)</span>. Nous constatons que ceci influe que très peu sur la valeur du flux de <span class="math inline">\(g\)</span> puisque les résultats obtenus sont presque confondus aux résultats de référence obtenus avec le code <em>micro-macro</em> avec une fonction <span class="math inline">\(h(x) = 1\)</span>. Une fonction porte plus étroite : <span class="math inline">\(x_s = 0.32\)</span> et <span class="math inline">\(x_e = 0.68\)</span> implique des discontinuités dans le flux de <span class="math inline">\(g\)</span>, discontinuité pouvant entrainer des oscillations dans le cas de l’utilisation du schéma compact. Ceci est dû au fait que <span class="math inline">\(g\)</span> n’est pas nulle pour <span class="math inline">\(x \not\in [0.32,0.68]\)</span>.</p>
 <figure>
-<img src="img/h/neuh_1_g.png" alt="Exemple avec une fonction porte large (x_s = 0.3 et x_e = 0.7), \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction porte large (<span class="math inline">\(x_s = 0.3\)</span> et <span class="math inline">\(x_e = 0.7\)</span>), <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/h/neuh_1_g.png" alt="Exemple avec une fonction porte large (x_s = 0.27 et x_e = 0.73), \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction porte large (<span class="math inline">\(x_s = 0.27\)</span> et <span class="math inline">\(x_e = 0.73\)</span>), <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <figure>
-<img src="img/h/neuh_2_g.png" alt="Exemple avec une fonction porte étroite (x_s = 0.37 et x_e = 0.65), \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction porte étroite (<span class="math inline">\(x_s = 0.37\)</span> et <span class="math inline">\(x_e = 0.65\)</span>), <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/h/neuh_2_g.png" alt="Exemple avec une fonction porte étroite (x_s = 0.32 et x_e = 0.68), \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction porte étroite (<span class="math inline">\(x_s = 0.32\)</span> et <span class="math inline">\(x_e = 0.68\)</span>), <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
 <h4 id="h-une-fonction-trapèze-1"><span class="math inline">\(h\)</span> une fonction trapèze</h4>
-<p>L’utilisation d’une fonction trapèze permet d’obtenir une transition plus douce entre les sous-domaines <span class="math inline">\(\Omega_K\)</span> et <span class="math inline">\(\Omega_F\)</span>, bien que rien de l’impose dans le modèle. L’approche locale utilisée dans <span class="citation" data-cites="dimarco">[2]</span> mène à une fonction <span class="math inline">\(h\)</span> en escalier.</p>
+<p>L’utilisation d’une fonction trapèze permet d’obtenir une transition plus douce entre les sous-domaines <span class="math inline">\(\Omega_K\)</span> et <span class="math inline">\(\Omega_F\)</span>. L’approche utilisée dans <span class="citation" data-cites="dimarco">[2]</span> correspond à une fonction <span class="math inline">\(h\)</span> en créneaux.</p>
 <p>La transition progressive entre <span class="math inline">\(\Omega_K\)</span> et <span class="math inline">\(\Omega_F\)</span> permet de se prémunir des oscillations dues à une mauvaise étude amont du problème. Cela ne garantit pas la validité des résultats.</p>
-<p>Nous effectuons la simulation avec les valeurs <span class="math inline">\(x_s = 0.27\)</span>, <span class="math inline">\(x_e=0.73\)</span> et <span class="math inline">\(\delta x = 0.05 = 50\Delta x\)</span>. Nous obtenons une zone de transition relativement large entre <span class="math inline">\(\Omega_F\)</span> et <span class="math inline">\(\Omega_K\)</span>.</p>
+<p>Nous effectuons la simulation avec les valeurs <span class="math inline">\(x_s = 0.27\)</span>, <span class="math inline">\(x_e=0.73\)</span> et <span class="math inline">\(\delta x = 0.05 = 50\Delta x\)</span> en réutilisant les notations de la section <a href="#approximation-du-modèle-micro-macro-avec-htx">5.3</a>. Nous obtenons une zone de transition relativement large entre <span class="math inline">\(\Omega_F\)</span> et <span class="math inline">\(\Omega_K\)</span>.</p>
 <figure>
-<img src="img/h/neuh_3_g.png" alt="Exemple avec une fonction trapèze (x_s = 0.3, x_e = 0.7 et \delta x = 0.05), \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction trapèze (<span class="math inline">\(x_s = 0.3\)</span>, <span class="math inline">\(x_e = 0.7\)</span> et <span class="math inline">\(\delta x = 0.05\)</span>), <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/h/neuh_3_g.png" alt="Exemple avec une fonction trapèze (x_s = 0.27, x_e = 0.73 et \delta x = 0.05), \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction trapèze (<span class="math inline">\(x_s = 0.27\)</span>, <span class="math inline">\(x_e = 0.73\)</span> et <span class="math inline">\(\delta x = 0.05\)</span>), <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
-<p>On remarque sur la figure 5.13 que la fonction trapèze prémuni des oscillations qui apparaissaient à droite.</p>
 <h4 id="htx-une-fonction-dépendant-du-temps-1"><span class="math inline">\(h(t,x)\)</span> une fonction dépendant du temps</h4>
-<p>Dans le cas du tube à chocs de Sod, l’onde de choc se propage depuis le centre du domaine en s’étendant. Il n’est donc pas nécessaire d’évaluer le modèle cinétique sur tout le domaine <span class="math inline">\(\Omega_K\)</span> précédemment utilisé. Il est aussi possible de construire des cas tests où une fonction indicatrice <span class="math inline">\(h\)</span> indépendante du temps impose de simuler la partie <em>micro</em> sur tout le domaine, c’est le cas par exemple du cas test aux conditions aux bords périodiques.</p>
-<p>La construction de notre fonction <span class="math inline">\(h\)</span> dépendante du temps s’est faite <em>a posteriori</em>. Elle a nécessité une première étude du cas test sur tout le domaine, avec éventuellement un maillage plus grossier. Aucune procédure d’automatisation d’obtention de cette fonction n’a été envisagée, autre que celles que nous avons pu évoquer dans la littérature.</p>
-<p>Nous approximons au mieux le support du flux de <span class="math inline">\(g\)</span> au cours du temps par le domaine <span class="math inline">\([x_s(t),x_e(t)]\)</span> avec <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> deux fonctions affines définies par :</p>
+<p>Dans le cas du tube à choc de Sod, l’onde de choc se propage depuis le centre du domaine en s’étendant. Il n’est donc pas nécessaire d’évaluer le modèle cinétique sur tout le sous-domaine <span class="math inline">\([x_s,x_e]\)</span> précédemment utilisé dans le cas d’une fonction porte suffisamment large. Une fonction <span class="math inline">\(h\)</span> dynamique en temps est nécessaire pour être plus précis par rapport aux cas tests tout en permettant de diminuer le temps de calcul.</p>
+<p>La construction de notre fonction <span class="math inline">\(h\)</span> dépendante du temps s’est faite <em>a posteriori</em>. Elle a nécessité une première étude du cas test sur tout le domaine, avec éventuellement un maillage plus grossier. Aucune procédure d’automatisation d’obtention de cette fonction n’a été envisagée, autre que celles que nous avons pu évoquer dans la littérature, mais il est possible d’ajouter facilement une étape dans l’algorithme.</p>
+<p>Nous avons déterminé numériquement le support du flux de <span class="math inline">\(g\)</span> au cours du temps, comme ce qui a été observé en section <a href="#htx-une-fonction-dépendant-du-temps">5.3.3</a>. L’intervalle <span class="math inline">\([x_s(t),x_e(t)]\)</span> avec <span class="math inline">\(x_s\)</span> et <span class="math inline">\(x_e\)</span> deux fonctions affines définies par :</p>
 <p><span class="math display">\[
   \begin{cases}
     x_s:t\mapsto -9.5 x +0.45 \\
     x_e:t\mapsto 9.5 x +0.55 \\
   \end{cases}
 \]</span></p>
+<p>permet de bien capturer le support du flux de <span class="math inline">\(g\)</span>.</p>
 <figure>
-<img src="img/h/neuh_4_g.png" alt="Exemple avec une fonction indicatrice h(t,x) dépendante du temps, \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction indicatrice <span class="math inline">\(h(t,x)\)</span> dépendante du temps, <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
+<img src="img/h/neuh_4_g.png" alt="Exemple avec une fonction de transition h(t,x) dépendante du temps, \int v^3g(T_f,x,v)\,\mathrm{d}v en fonction de x" /><figcaption>Exemple avec une fonction de transition <span class="math inline">\(h(t,x)\)</span> dépendante du temps, <span class="math inline">\(\int v^3g(T_f,x,v)\,\mathrm{d}v\)</span> en fonction de <span class="math inline">\(x\)</span></figcaption>
 </figure>
-<p>Dans ce cas, le résultat épouse parfaitement le résultat de référence. La fonction indicatrice <span class="math inline">\(h(t,x)\)</span> permet de parcourir tout <span class="math inline">\(\Omega_K\)</span> tout au long du temps :</p>
-<p><span class="math display">\[
-  \Omega_K(t) \subset [x_s(t),x_e(t)]
-\]</span></p>
-<p>Notre implémentation permet en plus de diminuer le temps de simulation.</p>
-<p>L’introduction d’une fonction <span class="math inline">\(h(t,x)\)</span> est indispensable si l’onde de choc à le temps de parcourir une portion trop importante du domaine, ce qui est notre cas ici.</p>
+<p>Dans ce cas, le résultat épouse parfaitement le résultat de référence. La fonction de transition <span class="math inline">\(h(t,x)\)</span> est une fonction trapèze déterminée à chaque itération.</p>
+<p>Notre implémentation permet de diminuer le temps de simulation car nous parcourons la grille seulement sur le support de <span class="math inline">\(h(t,x)\)</span>, c’est-à-dire sur l’intervalle <span class="math inline">\([\![ x_s , x_e ]\!]\)</span> en réutilisant les notations de <a href="#htx-une-fonction-dépendant-du-temps">5.3.3</a>. Nous avons observer une diminution du temps de calcul d’un facteur 2 environ.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p>Nous avons pu au cours de ce stage étudier plusieurs modèles de la physique des plasmas, en particulier les modèles microscopique, cinétique et macroscopique, seuls les deux derniers ont bénéficié d’une attention plus particulière dans cette étude. Le modèle macroscopique (étudié en section <a href="#modèle-macroscopique">2.2</a>), peu coûteux en temps de calcul et espace mémoire, ne permet de décrire qu’un système à l’équilibre thermodynamique, c’est-à-dire un système où la distribution des particules en vitesse est supposée maxwellienne. Le modèle cinétique (étudié en section <a href="#modèle-cinétique">2.3</a>) quant à lui propose une description plus précise des phénomènes dits <em>hors-équilibre</em>, au détriment d’un coût numérique plus important. Nous avons élaboré un modèle hybride fluide-cinétique <em>micro-macro</em> pour associer les avantages de ces deux approches dans la section <a href="#modèles-hybrides-fluides-cinétiques">3</a>. L’intérêt de ce modèle est de servir de base pour effectuer des approximations, en particulier de la partie <em>micro</em>, coûteuse en temps de calcul. Cela s’est fait par l’introduction d’une fonction indicatrice <span class="math inline">\(h\)</span> (dans la section <a href="#approximation-du-modèle-micro-macro">3.3</a>) dont le fonctionnement est similaire à celui d’une décomposition de domaine. Une connaissance amont du problème permet de construire une telle fonction indicatrice permettant de résoudre le modèle cinétique seulement sur la région hors-équilibre.</p>
-<p>Dans la section <a href="#présentation-des-schémas">4</a> nous nous sommes intéressés à différents schémas numériques d’ordre élevé pour résoudre au mieux notre modèle <em>micro-macro</em>. Deux schémas en espace d’ordre élevé ont été implémentés et comparés : les schémas compacts et le schéma WENO d’ordre 5. Notre étude s’est orienté vers l’utilisation du schéma WENO qui se comporte mieux dans le cas de discontinuités et de forts gradients.</p>
-<p>Nos schémas ont été testés sur deux cas proches d’un cas fluide classique (voir sections <a href="#conditions-aux-bords-périodiques">5.4.1</a> et <a href="#conditions-aux-bords-de-neumann">5.4.2</a>), c’est-à-dire <span class="math inline">\(\varepsilon \to 0\)</span>. Ces tests ont permis de valider notre approche <em>micro-macro</em>. L’approximation à l’aide de la fonction <span class="math inline">\(h(t,x)\)</span> (dans la section <a href="#fonction-indicatrice-h">5.4.3</a>) fut l’objet de différents tests avec une implémentation particulière permettant de réduire le temps de calcul d’environ un facteur 2, en ne parcourant le domaine de calcul uniquement sur le support de la fonction indicatrice.</p>
-<p>Le travail prospectif pour la suite de l’étude a déjà avancé. Un code permettant de résoudre le modèle de Vlasov-Poisson (<a href="#2.6" class="aeq">2.6</a>), est en phase de validation, en utilisant soit le modèle cinétique ou le modèle <em>micro-macro</em> développé au cours de ce stage. Celui-ci permet de retrouver des résultats de la physique des plasmas comme visible en figure 6.1.</p>
+<p>Nous avons pu au cours de ce stage étudier plusieurs modèles de la physique des plasmas, en particulier les modèles microscopique, cinétique et macroscopique, seuls les deux derniers ont bénéficié d’une attention plus particulière dans cette étude. Le modèle macroscopique (étudié en section <a href="#modèle-macroscopique">2.2</a>), peu coûteux en temps de calcul et espace mémoire, ne permet de décrire qu’un système à l’équilibre thermodynamique, c’est-à-dire un système où la distribution des particules en vitesse est supposée maxwellienne. Le modèle cinétique (étudié en section <a href="#modèle-cinétique">2.3</a>) quant à lui propose une description plus précise des phénomènes dits <em>hors-équilibre</em>, au détriment d’un coût numérique plus important. Nous avons élaboré un modèle hybride fluide-cinétique <em>micro-macro</em> pour associer les avantages de ces deux approches dans la section <a href="#modèles-hybrides-fluides-cinétiques">3</a>. L’intérêt de ce modèle est de servir de base pour effectuer des approximations, en particulier de la partie <em>micro</em>, coûteuse en temps de calcul. Cela s’est fait par l’introduction d’une fonction de transition <span class="math inline">\(h\)</span> (dans la section <a href="#approximation-du-modèle-micro-macro">3.3</a>) dont le fonctionnement est similaire à celui d’une décomposition de domaine. Une connaissance amont du problème permet de construire une telle fonction de transition permettant de résoudre le modèle cinétique seulement sur la région hors-équilibre.</p>
+<p>Dans la section <a href="#présentation-des-schémas">4</a> nous nous sommes intéressés à différents schémas numériques d’ordre élevé pour résoudre au mieux notre modèle <em>micro-macro</em>. Deux schémas en espace d’ordre élevé ont été implémentés et comparés : les schémas compacts et le schéma WENO d’ordre 5. Notre étude s’est orientée vers l’utilisation du schéma WENO qui se comporte mieux dans le cas de discontinuités et de forts gradients.</p>
+<p>Nos schémas ont été testés sur deux cas proches d’un cas fluide classique (voir sections <a href="#conditions-aux-bords-périodiques">5.4.1</a> et <a href="#conditions-aux-bords-de-neumann">5.4.2</a>), c’est-à-dire <span class="math inline">\(\varepsilon \to 0\)</span>. Ces tests ont permis de valider notre approche <em>micro-macro</em>. L’approximation à l’aide de la fonction <span class="math inline">\(h(t,x)\)</span> (dans la section <a href="#fonction-de-transition-h">5.4.3</a>) fut l’objet de différents tests avec une implémentation particulière permettant de réduire le temps de calcul d’environ un facteur 2, en parcourant le domaine de calcul uniquement sur le support de la fonction de transition.</p>
+<p>Le travail prospectif pour la suite de l’étude a déjà avancé. Un code permettant de résoudre le modèle de Vlasov-Poisson (<a href="#2.7" class="aeq">2.7</a>), est en phase de validation, en utilisant soit le modèle cinétique soit le modèle <em>micro-macro</em> développé au cours de ce stage. Celui-ci permet de retrouver des résultats de la physique des plasmas comme visible en figure 6.1.</p>
 <figure>
 <img src="img/Enrj.png" alt="Exemple de résultat de physique des plasmas obtenu à l’aide du code micro-macro, ici l’amortissement de Landau" /><figcaption>Exemple de résultat de physique des plasmas obtenu à l’aide du code <em>micro-macro</em>, ici l’amortissement de Landau</figcaption>
 </figure>
-<p>Dans les perspectives de cette étude nous pouvons évoquer l’introduction d’une fonction indicatrice <span class="math inline">\(h(v)\)</span>, permettant une décomposition de domaine dans l’espace des phases en ne s’intéressant qu’à des anomalies positives dans la distribution maxwellienne, c’est-à-dire des particules plus rapides que le prédit l’équilibre thermodynamique. Cette approximation, intéressante dans des cas théoriques, nécessite l’élaboration de cas tests pertinents physiquement pour certifier l’intérêt de cette étude. L’introduction de cas tests physiques mène à l’élaboration de schéma multi-dimensionnels en traitant complètement le modèle en 6 dimensions. En plus des problèmes mathématiques liés à l’introduction de dimensions supplémentaires (gestion des conditions aux bords et la connexion entre les modèles par exemple), se pose le problème de la gestion du temps de calcul et surtout de la mémoire. Il devient donc intéressant d’évoquer une possible parallélisation (encore non effectuée) ainsi qu’une gestion dynamique de la mémoire liée au domaine <span class="math inline">\(\Omega_K\)</span> lors de l’approximation du modèle <em>micro-macro</em> à l’aide d’une fonction <span class="math inline">\(h(t,x)\)</span>.</p>
+<p>Dans les perspectives de cette étude nous pouvons évoquer l’introduction d’une fonction de transition <span class="math inline">\(h(v)\)</span>, permettant une décomposition de domaine dans l’espace des vitesses, pour étudier des systèmes où des particules rapides coexistent avec des particules à l’équilibre. Cette approximation nécessite l’élaboration de cas tests pertinents physiquement pour certifier l’intérêt de cette étude. L’introduction de cas tests physiques mène à l’élaboration de schéma multi-dimensionnels en traitant complètement le modèle en 6 dimensions. En plus des problèmes mathématiques liés à l’introduction de dimensions supplémentaires (gestion des conditions aux bords et la connexion entre les modèles par exemple), se pose le problème de la gestion du temps de calcul et surtout de la mémoire. Il devient donc intéressant d’évoquer une possible parallélisation (encore non effectuée) ainsi qu’une gestion dynamique de la mémoire liée au domaine <span class="math inline">\(\Omega_K\)</span> lors de l’approximation du modèle <em>micro-macro</em> à l’aide d’une fonction <span class="math inline">\(h(t,x)\)</span>.</p>
 <div id="refs" class="references">
 <div id="ref-BENNOUNE20083781">
 <p>1. Bennoune, M., Lemou, M., &amp; Mieussens, L. (2008). Uniformly stable numerical schemes for the boltzmann equation preserving the compressible navier–stokes asymptotics. <em>Journal of Computational Physics</em>, <em>227</em>(8), 3781–3803. doi:<a href="https://doi.org/https://doi.org/10.1016/j.jcp.2007.11.032">https://doi.org/10.1016/j.jcp.2007.11.032</a></p>
